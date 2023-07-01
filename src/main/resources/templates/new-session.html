@@ -1,0 +1,112 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <style type="text/css">
+        body{
+            background: #f65656;
+        }
+    </style>
+</head>
+<body>
+<div class="app-container app-theme-white body-tabs-shadow ">
+
+    <div class="app-main">
+        <div class="app-main__outer">
+            <div class="app-main__inner">
+<!--                <div class="app-page-title">-->
+<!--                    <div class="page-title-wrapper">-->
+<!--                        <div class="page-title-heading">-->
+<!--                            <div class="page-title-icon">-->
+<!--                                <i class="pe-7s-signal icon-gradient bg-malibu-beach">-->
+<!--                                </i>-->
+<!--                            </div>-->
+<!--                            <div>Count Up-->
+<!--                                <div class="page-title-subheading">Add animations to your numbers. It&#x27;ll make your-->
+<!--                                    next Architect app more user friendly.-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="page-title-actions">-->
+<!--                            <button type="button" data-toggle="tooltip" title="Example Tooltip" data-placement="bottom"-->
+<!--                                    class="btn-shadow mr-3 btn btn-dark">-->
+<!--                                <i class="fa fa-star"></i>-->
+<!--                            </button>-->
+<!--                            <div class="d-inline-block dropdown">-->
+<!--                                <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"-->
+<!--                                        class="btn-shadow dropdown-toggle btn btn-info">-->
+<!--                                        <span class="btn-icon-wrapper pr-2 opacity-7">-->
+<!--                                            <i class="fa fa-business-time fa-w-20"></i>-->
+<!--                                        </span>-->
+<!--                                    Buttons-->
+<!--                                </button>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+                <div>
+                    <div class="row">
+                        <div class="mx-auto col-lg-6">
+                            <div class="main-card mb-3 card">
+                                <div class="card-body">
+<!--                                    <h5 class="card-title">Basic</h5>-->
+<!--                                    <h3><span class="count-up-wrapper">568</span></h3>-->
+                                    <div class="tab-pane" id="tab-faq-2"><h4>Bienvenue sur Adeli</h4>
+                                        <div class="divider"></div>
+                                        <p>Bonjour Mr <strong style="text-transform: capitalize" th:text="${firstname}"></strong>.</p>
+                                        <p>Votre inscription à la plateforme ADELI à titre de <span th:text="${typeAccount}"></span> est réussie.</p>
+                                        <p>Vous pouvez désormais accéder aux différentes foctionallités de la plateforme tout en vous connectant via le lien suivant <span class="text-primary" th:text="${signin}"></span></p>
+                                        <p>Si vous avez des questions, n'hesitez pas à contacter le support via l'e-mail en dessous de la
+                                            page. Nous sommes toujours ravis de vous aider.</p>
+                                        <p>Merci.</p>
+                                        <p>Adeli les Bâtisseurs Solidaires</p>
+                                        <div class="divider"></div>
+                                        <p class="text-alternate">Veuillez ne pas répondre à ce courriel. aucune réponse ne vous sera donnée</p>
+                                        <small class="text-alternate">Veuillez ne pas répondre à ce courriel. aucune réponse ne vous sera donnée</small>
+                                        <div class="mt-5"></div>
+                                        <div class="clearfix">
+                                            <div class="text-center">
+<!--                                                <a href="javascript:void(0);" class="btn-pill btn-wide btn-shadow btn btn-primary btn-lg">Maecenas tempus, tellus</a>-->
+                                                <img src="logo.jpeg" style="width: 40px;height: auto" alt="logo">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="app-wrapper-footer">
+                <div class="app-footer">
+                    <div class="app-footer__inner">
+                        <div class="app-footer-left">
+                            <div class="footer-dots">
+                                <div class="dropdown">
+                                    <a aria-haspopup="true" aria-expanded="false" data-toggle="dropdown"
+                                       class="dot-btn-wrapper">
+                                        Association des Amis de Liège
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="app-footer-right">
+                            <ul class="header-megamenu nav">
+                                <li class="nav-item">
+                                    <a class="nav-link">
+                                        ADELI © 2022. Tous droits réservés
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
