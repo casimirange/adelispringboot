@@ -5,14 +5,10 @@
  */
 package com.adeli.adelispringboot.initDatas;
 
-import com.adeli.adelispringboot.Users.entity.EStatusUser;
-import com.adeli.adelispringboot.Users.entity.ETypeAccount;
-import com.adeli.adelispringboot.Users.entity.StatusUser;
-import com.adeli.adelispringboot.Users.entity.TypeAccount;
-import com.adeli.adelispringboot.Users.repository.IStatusUserRepo;
-import com.adeli.adelispringboot.Users.repository.ITypeAccountRepository;
+import com.adeli.adelispringboot.Mangwa.entity.EStatusTransaction;
+import com.adeli.adelispringboot.Mangwa.entity.TypeTransaction;
+import com.adeli.adelispringboot.Mangwa.repository.IStatusTransactionRepo;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
@@ -25,22 +21,38 @@ import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
-@Order(3)
-public class InitUserStatus implements ApplicationRunner{
+@Order(6)
+public class InitTransactionStatus implements ApplicationRunner{
 
-    private IStatusUserRepo iTypeAccountRepository;
+    private IStatusTransactionRepo iStatusTransactionRepo;
     
     @Override
     public void run(ApplicationArguments args) throws Exception {;
-        System.out.println("initialisation des status utilisateurs");
-        StatusUser userEnable = new StatusUser(EStatusUser.USER_ENABLED);
-        StatusUser userDisable = new StatusUser(EStatusUser.USER_DISABLED);
+        System.out.println("initialisation des status de transaction");
+        TypeTransaction depot = new TypeTransaction(EStatusTransaction.DEPOT);
+        TypeTransaction retrait = new TypeTransaction(EStatusTransaction.RETRAIT);
+        TypeTransaction pret = new TypeTransaction(EStatusTransaction.PRET);
+        TypeTransaction remboursement = new TypeTransaction(EStatusTransaction.REMBOURSEMENT);
+        TypeTransaction np = new TypeTransaction(EStatusTransaction.NON_PAYE);
 
-        if (!iTypeAccountRepository.existsByName(EStatusUser.USER_ENABLED)) {
-            iTypeAccountRepository.save(userEnable);
+        if (!iStatusTransactionRepo.existsByName(EStatusTransaction.DEPOT)) {
+            iStatusTransactionRepo.save(depot);
         }
-        if (!iTypeAccountRepository.existsByName(EStatusUser.USER_DISABLED)) {
-            iTypeAccountRepository.save(userDisable);
+
+        if (!iStatusTransactionRepo.existsByName(EStatusTransaction.RETRAIT)) {
+            iStatusTransactionRepo.save(retrait);
+        }
+
+        if (!iStatusTransactionRepo.existsByName(EStatusTransaction.PRET)) {
+            iStatusTransactionRepo.save(pret);
+        }
+
+        if (!iStatusTransactionRepo.existsByName(EStatusTransaction.REMBOURSEMENT)) {
+            iStatusTransactionRepo.save(remboursement);
+        }
+
+        if (!iStatusTransactionRepo.existsByName(EStatusTransaction.NON_PAYE)) {
+            iStatusTransactionRepo.save(np);
         }
                
     }

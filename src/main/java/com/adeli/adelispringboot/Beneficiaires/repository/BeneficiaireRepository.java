@@ -3,20 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.example.demo.repository;
+package com.adeli.adelispringboot.Beneficiaires.repository;
 
-import com.example.demo.entity.Beneficiaire;
-import com.example.demo.entity.Reunion;
-import com.example.demo.entity.Session;
-import com.example.demo.entity.Tontine;
-import com.example.demo.entity.User;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import com.adeli.adelispringboot.Amandes.entity.Amande;
+import com.adeli.adelispringboot.Beneficiaires.entity.Beneficiaire;
+import com.adeli.adelispringboot.Seance.entity.Seance;
+import com.adeli.adelispringboot.Session.entity.Session;
 import net.minidev.json.JSONObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.time.LocalDate;
+import java.util.List;
 
 /**
  *
@@ -24,16 +25,18 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface BeneficiaireRepository extends JpaRepository<Beneficiaire, Long> {
-    List<Beneficiaire> findByDate(LocalDate date);
-    Boolean existsBySessionAndNom(Session session, String nom);
-    Beneficiaire findFirstByOrderByIdBeneficiaireDesc();
+//    List<Beneficiaire> findByDate(LocalDate date);
+//    Boolean existsBySessionAndNom(Session session, String nom);
+//    Beneficiaire findFirstByOrderByIdBeneficiaireDesc();
+
+    Page<Beneficiaire> findBySeance(Seance seance, Pageable pageable);
     
-    String benefSession = "SELECT b.id_beneficiaire, b.date, b.montant, b.nom\n" +
-        "from beneficiaire b\n" +
-        "join session s on s.id_session = b.id_session \n" +
-        "where b.id_session = ?1 \n"+
-        "order by b.date desc";
-  
-    @Query(value=benefSession, nativeQuery = true)
-    public List<JSONObject> getAllBenefBySession(Long id);
+//    String benefSession = "SELECT b.id_beneficiaire, b.date, b.montant, b.nom\n" +
+//        "from beneficiaire b\n" +
+//        "join session s on s.id_session = b.id_session \n" +
+//        "where b.id_session = ?1 \n"+
+//        "order by b.date desc";
+//
+//    @Query(value=benefSession, nativeQuery = true)
+//    public List<JSONObject> getAllBenefBySession(Long id);
 }

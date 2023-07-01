@@ -122,7 +122,7 @@
                 <tr>
                     <td bgcolor="#ffffff" align="center" valign="top"
                         style="padding: 40px 20px 20px 20px; border-radius: 4px 4px 0px 0px; color: #111111; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 28px; font-weight: 400; letter-spacing: 4px; line-height: 48px;">
-                        <h1 style="font-size: 28px; font-weight: 400; margin: 2;"><span>Nouvelle Session</span></h1>
+                        <h1 style="font-size: 28px; font-weight: 400; margin: 2;"><span>Session Terminée</span></h1>
                         <!--<img src="cid:mail" width="125" height="120" style="display: block; border: 0px;" />-->
                     </td>
                 </tr>
@@ -136,12 +136,9 @@
                     <td bgcolor="#ffffff" align="left"
                         style="padding: 20px 30px 40px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 12px; font-weight: 400; line-height: 25px;">
                         <p style="margin: 0;">Bonjour <span th:text="${name}"></span>,<br>
-                            Une nouvelle session a été créée dans la plateforme par <span th:text="${creator}"></span>.
+                            La session <span th:text="${beginDate}"></span> est sur le point de s'achever.
                         </p>
-                        <p style="margin: 0;">Elle débutera le <strong th:text="${beginDate}"></strong> pour s'achever probablement autour du <strong th:text="${endDate}"></strong>.
-                            <br> Les modalités appliquées à cette nouvelle session sont les suivantes:
-                            <br> Mangwa : <strong th:text="${mangwa}">€</strong>
-                            <br> Les prêts auront un taux appliqué à : <strong th:text="${tax}"></strong>%
+                        <p style="margin: 0;">Nous avons été ravi de vous avoir compté parmi nous et espérons vous retrouver prochainement
                         </p>
                     </td>
                 </tr>

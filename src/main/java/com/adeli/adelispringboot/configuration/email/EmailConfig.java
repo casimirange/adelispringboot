@@ -1,4 +1,4 @@
-package com.adeli.adelispringboot.Users.configuration.email;
+package com.adeli.adelispringboot.configuration.email;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

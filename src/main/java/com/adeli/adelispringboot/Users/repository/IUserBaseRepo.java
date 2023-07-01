@@ -1,6 +1,6 @@
-package com.gulfcam.fuelcoupon.user.repository;
+package com.adeli.adelispringboot.Users.repository;
 
-import com.gulfcam.fuelcoupon.user.entity.Users;
+import com.adeli.adelispringboot.Users.entity.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 

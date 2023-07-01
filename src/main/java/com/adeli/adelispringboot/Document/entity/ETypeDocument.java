@@ -1,4 +1,4 @@
-package com.gulfcam.fuelcoupon.order.entity;
+package com.adeli.adelispringboot.Document.entity;
 
 public enum ETypeDocument {
 	INVOICE, DELIVERY

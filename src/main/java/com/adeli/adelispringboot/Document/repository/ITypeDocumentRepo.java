@@ -1,7 +1,7 @@
-package com.gulfcam.fuelcoupon.order.repository;
+package com.adeli.adelispringboot.Document.repository;
 
-import com.gulfcam.fuelcoupon.order.entity.ETypeDocument;
-import com.gulfcam.fuelcoupon.order.entity.TypeDocument;
+import com.adeli.adelispringboot.Document.entity.ETypeDocument;
+import com.adeli.adelispringboot.Document.entity.TypeDocument;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 

@@ -1,7 +1,6 @@
-package com.gulfcam.fuelcoupon.user.service;
+package com.adeli.adelispringboot.configuration.email.service;
 
-
-import com.gulfcam.fuelcoupon.user.dto.EmailDto;
+import com.adeli.adelispringboot.configuration.email.dto.EmailDto;
 
 public interface IEmailService {
 

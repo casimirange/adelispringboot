@@ -1,22 +1,21 @@
-package com.gulfcam.fuelcoupon.client.service;
+package com.adeli.adelispringboot.Session.service;
 
-import com.gulfcam.fuelcoupon.client.entity.Client;
+import com.adeli.adelispringboot.Session.entity.Session;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface IClientService {
+public interface ISessionService {
 
-    Page<Client> getAllClients(int page, int size, String sort, String order);
-    Optional<Client> getClientByEmail(String email);
-    Optional<Client> getClientByGulfCamAccountNumber(String gulfcamaccountnumber);
-    Optional<Client> getClientById(Long id);
-    List<Client> getClientsByCompanyNameLike(String completeName);
-    Optional<Client> getClientByInternalReference(Long internalReference);
-    void createClient(Client client);
-    void deleteClient(Client client);
-    boolean existsByEmail(String email);
-    boolean existsByGulfCamAccountNumber(String gulfcamaccountnumber);
+    Page<Session> getAllSessions(int page, int size, String sort, String order);
+    Optional<Session> getSessionByName(String name);
+
+    List<Session> getSessionsByNameLike(String name);
+
+    void createSession(Session session);
+    Session endSession(Session session);
+    Session findLastSession();
+
 
 }

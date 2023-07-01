@@ -3,133 +3,52 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.example.demo.entity;
+package com.adeli.adelispringboot.Tontine.entity;
 
+import com.adeli.adelispringboot.Mangwa.entity.TypeTransaction;
+import com.adeli.adelispringboot.Seance.entity.Seance;
+import com.adeli.adelispringboot.Session.entity.Session;
+import com.adeli.adelispringboot.Users.entity.Users;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 
 /**
  *
  * @author Casimir
  */
 @Entity
-@Table(name = "tontine")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Tontine {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idTontine;
- 
-//    @NotBlank
+
     private double montant;
- 
-//    @NotBlank
-    private double credit;
- 
-//    @NotBlank
-    private double debit;
- 
-//    @NotBlank
-    private LocalDate date;
- 
-//    @NotBlank
-    private String motif;
-    
+
+    private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "id_seance")
+    @JsonIgnore
+    private Seance seance;
+
     @ManyToOne(fetch = FetchType.EAGER) //plusieurs lignes pour un département
 	@JoinColumn(name = "idUser")
-    public User user;
-    
-    @ManyToOne(fetch = FetchType.EAGER) //plusieurs lignes pour un département
-	@JoinColumn(name = "idSession")
-    public Session session;
+    public Users user;
 
-    public Tontine(double montant, double credit, double debit, LocalDate date, String motif, User user, Session session) {
-        this.montant = montant;
-        this.credit = credit;
-        this.debit = debit;
-        this.date = date;
-        this.motif = motif;
-        this.user = user;
-        this.session = session;
-    }
+    @ManyToOne
+    private TypeTransaction typeTransaction;
 
-    public Tontine() {
-    }
+    private LocalDateTime createdAt;
 
-    public Long getIdTontine() {
-        return idTontine;
-    }
-
-    public void setIdTontine(Long idTontine) {
-        this.idTontine = idTontine;
-    }
-
-    public double getMontant() {
-        return montant;
-    }
-
-    public void setMontant(double montant) {
-        this.montant = montant;
-    }
-
-    public double getCredit() {
-        return credit;
-    }
-
-    public void setCredit(double credit) {
-        this.credit = credit;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public String getMotif() {
-        return motif;
-    }
-
-    public void setMotif(String motif) {
-        this.motif = motif;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Session getSession() {
-        return session;
-    }
-
-    public void setSession(Session session) {
-        this.session = session;
-    }
-
-    public double getDebit() {
-        return debit;
-    }
-
-    public void setDebit(double debit) {
-        this.debit = debit;
-    }
-
-
+    private LocalDateTime updatedAt;
 }

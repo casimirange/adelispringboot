@@ -3,168 +3,197 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.example.demo.Controller;
+package com.adeli.adelispringboot.Mangwa.controller;
 
-
-//import com.example.demo.entity.Role;
-import com.example.demo.entity.Notifications;
-import com.example.demo.entity.Planing;
-import com.example.demo.entity.Retenue;
-import com.example.demo.entity.User;
-import com.example.demo.message.response.ResponseMessage;
-import com.example.demo.entity.Session;
-import com.example.demo.entity.Tontine;
-import com.example.demo.repository.NotificationsRepository;
-import com.example.demo.repository.PlanningRepository;
-import com.example.demo.repository.RetenueRepository;
-import com.example.demo.repository.ReunionRepository;
-import com.example.demo.repository.SessionRepository;
-import com.example.demo.repository.TontineRepository;
-import com.example.demo.repository.UserRepository;
-import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.HashMap;
-//import com.example.demo.repository.RoleRepository;
-//import com.example.demo.repository.RoleRepository;
-//import com.example.demo.repository.UtilisateurRepository;
-//import com.example.demo.security.jwt.JwtProvider;
-
-//import com.example.demo.util.RoleEnum;
-import java.util.List;
-import java.util.Map;
+import com.adeli.adelispringboot.Mangwa.dto.RetenueReqDto;
+import com.adeli.adelispringboot.Mangwa.dto.RetenueResDto;
+import com.adeli.adelispringboot.Mangwa.entity.EStatusTransaction;
+import com.adeli.adelispringboot.Mangwa.entity.Retenue;
+import com.adeli.adelispringboot.Mangwa.entity.TypeTransaction;
+import com.adeli.adelispringboot.Mangwa.repository.IRetenueRepository;
+import com.adeli.adelispringboot.Mangwa.repository.IStatusTransactionRepo;
+import com.adeli.adelispringboot.Mangwa.service.IMangwaService;
+import com.adeli.adelispringboot.Session.entity.Session;
+import com.adeli.adelispringboot.Session.repository.ISessionRepo;
+import com.adeli.adelispringboot.Users.entity.EStatusUser;
+import com.adeli.adelispringboot.Users.entity.ETypeAccount;
+import com.adeli.adelispringboot.Users.entity.TypeAccount;
+import com.adeli.adelispringboot.Users.entity.Users;
+import com.adeli.adelispringboot.Users.repository.IUserRepo;
+import com.adeli.adelispringboot.Users.service.IUserService;
+import com.adeli.adelispringboot.configuration.email.dto.EmailDto;
+import com.adeli.adelispringboot.configuration.email.service.IEmailService;
+import com.adeli.adelispringboot.configuration.globalConfiguration.ApplicationConstant;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
  *
  * @author Casimir
  */
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/retenue")
+@Tag(name = "Mangwa")
+@RequestMapping("/api/v1.0/mangwa")
+@Slf4j
 public class RetenueController {
-    
     @Autowired
-    ReunionRepository reunionRepository;
-    
+    ResourceBundleMessageSource messageSource;
     @Autowired
-    TontineRepository tontineRepository;
-    
+    IEmailService emailService;
     @Autowired
-    SessionRepository sessionRepository;
-    
-    @Autowired
-    UserRepository userRepository;
-    
-    @Autowired
-    RetenueRepository retenueRepository;
-    
-    @Autowired
-    PlanningRepository planningRepository;
-    
-    @Autowired
-    NotificationsRepository notificationsRepository;
-    
-    JSONObject json;
-    String mts;
+    IStatusTransactionRepo iStatusTransactionRepo;
 
+    @Autowired
+    IUserRepo userRepository;
+    
+    @Autowired
+    IRetenueRepository IRetenueRepository;
+    @Autowired
+    IMangwaService iMangwaService;
+    @Autowired
+    IUserService iUserService;
+    @Value("${mail.from[0]}")
+    String mailFrom;
+    @Value("${mail.replyTo[0]}")
+    String mailReplyTo;
 
-    @GetMapping
-    public List<JSONObject> getRetenue(){      
-        return retenueRepository.findMangwa();
-    }
+    @Operation(summary = "création des informations pour un mangwa", tags = "Mangwa", responses = {
+            @ApiResponse(responseCode = "201", content = @Content(mediaType = "Application/Json", array = @ArraySchema(schema = @Schema(implementation = Retenue.class)))),
+            @ApiResponse(responseCode = "404", description = "Mangwa not found", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "401", description = "Full authentication is required to access this resource", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "403", description = "Forbidden : accès refusé", content = @Content(mediaType = "Application/Json")),})
+    @PostMapping()
+    @PreAuthorize("hasAnyRole('SUPERADMIN', 'USER')")
+    public ResponseEntity<?> addMangwa(@Valid @RequestBody RetenueReqDto retenueReqDto) {
+        Users u = userRepository.findById(retenueReqDto.getUser()).get();
+        TypeTransaction typeTransaction = iStatusTransactionRepo.findByName(retenueReqDto.getTransaction() != null ? EStatusTransaction.valueOf(retenueReqDto.getTransaction()) : EStatusTransaction.DEPOT).orElseThrow(()-> new ResourceNotFoundException("Type de transaction not found"));
+        Retenue retenue = new Retenue();
+        retenue.setDate(retenueReqDto.getDate());
+        retenue.setMotif(retenueReqDto.getMotif());
+        retenue.setMontant(retenueReqDto.getMontant());
+        retenue.setTypeTransaction(typeTransaction);
+        retenue.setUser(u);
+        retenue.setCreatedAt(LocalDateTime.now());
+        iMangwaService.createMangwa(retenue);
 
-    @PostMapping("")
-    public ResponseEntity<?> createMangwa(@RequestBody Retenue ret, @RequestParam("user") User u) { 
-        System.err.println("id: "+u.getId());
-//        Long id = Long.parseLong(x);
-        User user = userRepository.findById(u.getId()).get();  
-//        List<Session> sess = sessionRepository.findByEtat(true);
-//        Session session = sess.get(0);
-        Retenue retenue = retenueRepository.findFirstByOrderByIdRetenueDesc();
-        if(retenue  != null){
-            if(ret.getTransaction().equals("Débit")){
-                double solde = retenue.getSolde() + ret.getDebit();
-                ret.setSolde(solde);
-            }else {
-                double soldes = retenue.getSolde() - ret.getCredit();
-                ret.setSolde(soldes);
-            }
-        }else{
-            if(ret.getTransaction().equals("Débit")){
-                double solde = ret.getDebit();
-                ret.setSolde(solde);
-            }else {
-                double soldes = ret.getCredit();
-                ret.setSolde(soldes);
+        if (typeTransaction.getName().equals(EStatusTransaction.RETRAIT)){
+            double solde = 0;
+            List<Users> usersList = iUserService.getUsers();
+
+            String emailToEnableUser = "";
+            Map<String, Object> emailProps = new HashMap<>();
+            emailProps.put("date", retenueReqDto.getDate());
+            emailProps.put("montant", retenueReqDto.getMontant());
+            emailProps.put("motif", retenueReqDto.getMotif());
+            emailProps.put("solde", solde);
+
+            for (Users user : usersList) {
+                if (user.getStatus().getName() == EStatusUser.USER_ENABLED) {
+                    emailToEnableUser = user.getEmail();
+                    emailProps.put("name", user.getLastName());
+                    emailService.sendEmail(new EmailDto(mailFrom, ApplicationConstant.ENTREPRISE_NAME, emailToEnableUser, mailReplyTo, emailProps, ApplicationConstant.SUBJECT_EMAIL_MANGWA, ApplicationConstant.TEMPLATE_EMAIL_MANGWA));
+                    log.info("Email send successfully to user: " + emailToEnableUser);
+                }
             }
         }
-        
-//        planing.setDate(planing.getDate());
-        ret.setUser(user);
-        
-//        if (planing.getDate().isBefore(session.getDebut())){
-//            return new ResponseEntity<>(new ResponseMessage("Erreur! -> La date ne peut être définié avant la période de session"),
-//              HttpStatus.BAD_REQUEST);
-//        }
-//        
-//        if (planing.getDate().isAfter(session.getFin())){
-//            return new ResponseEntity<>(new ResponseMessage("Erreur! -> La date ne peut être définié après la période de session"),
-//              HttpStatus.BAD_REQUEST);
-//        }
-//        
-//        if (planningRepository.existsByDate(planing.getDate())){
-//            return new ResponseEntity<>(new ResponseMessage("Erreur! -> Cette date a déjà été enregistré au cours de cette session"),
-//              HttpStatus.BAD_REQUEST);
-//        }
-//        
-//        if (planningRepository.countBySession(session) == 12){
-//            return new ResponseEntity<>(new ResponseMessage("Attention! -> Vous avez déjà atteint le nombre maximal d'enregistrement"),
-//              HttpStatus.BAD_REQUEST);
-//        }
-        
-        double x = ret.getDebit() + ret.getCredit();
-        Notifications notifications = new Notifications();
-        notifications.setDescription(ret.getUser().getName() +" a effectué une transaction de "+ x +" € pour motif "+ret.getMotif());
-        notifications.setDate(LocalDate.now());    
-        
-        
-        retenueRepository.save(ret);
-        notificationsRepository.save(notifications); 
-      return new ResponseEntity<>(new ResponseMessage("mouvement mangwa effectué"),
-              HttpStatus.OK);
+
+        return ResponseEntity.ok(retenue);
     }
-    
+
+    @Parameters(value = {
+            @Parameter(name = "sort", schema = @Schema(allowableValues = {"id", "createdAt"})),
+            @Parameter(name = "order", schema = @Schema(allowableValues = {"asc", "desc"}))})
+    @Operation(summary = "Liste des mangwa", tags = "Mangwa", responses = {
+            @ApiResponse(responseCode = "200", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "403", description = "Forbidden : accès refusé", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "404", description = "Client not found", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "401", description = "Full authentication is required to access this resource", content = @Content(mediaType = "Application/Json"))})
+    @PreAuthorize("hasAnyRole('SUPERADMIN', 'USER')")
+    @GetMapping("")
+    public ResponseEntity<?> getMangwa(@RequestParam(required = false, value = "page", defaultValue = "0") String pageParam,
+                                         @RequestParam(required = false, value = "size", defaultValue = ApplicationConstant.DEFAULT_SIZE_PAGINATION) String sizeParam,
+                                         @RequestParam(required = false, defaultValue = "id") String sort,
+                                         @RequestParam(required = false, defaultValue = "desc") String order) {
+        Page<Retenue> list = iMangwaService.getAllMangwa(Integer.parseInt(pageParam), Integer.parseInt(sizeParam), sort, order);
+        return ResponseEntity.ok(list);
+    }
+
+    @Operation(summary = "Liste des mangwa", tags = "Mangwa", responses = {
+            @ApiResponse(responseCode = "200", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "403", description = "Forbidden : accès refusé", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "404", description = "Mangwa not found", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "401", description = "Full authentication is required to access this resource", content = @Content(mediaType = "Application/Json"))})
+    @PreAuthorize("hasAnyRole('SUPERADMIN', 'USER')")
     @GetMapping("/solde")
-    public JSONObject soldeRetenue(){      
-        Retenue retenue = retenueRepository.findFirstByOrderByIdRetenueDesc();
-        Map<String, Object> response = new HashMap<>();
-        JSONObject solde;
-//        response.put("solde", retenue.getSolde());
-        if(retenue != null){
-            response.put("solde", retenue.getSolde());
-        }else{
-            response.put("solde", 0);
-        }
-        solde = new JSONObject(response);
-        return solde;
+    public ResponseEntity<?> soldeMangwa() {
+        double solde = iMangwaService.soldeMangwa();
+        return ResponseEntity.ok(solde);
     }
 
-    @GetMapping("/session/{id}")
-    public List<JSONObject> getSessionTontine(@PathVariable Long id){ 
-        return tontineRepository.TontineSession(id);
-    }
-
-        
+//    @PostMapping("")
+//    public ResponseEntity<RetenueResDto> createMangwa(@RequestBody RetenueReqDto retenueReqDto) {
+//        Users user = userRepository.findById(u.getUserId()).get();
+//        Retenue retenue = IRetenueRepository.findFirstByOrderByIdRetenueDesc();
+//        if(retenue  != null){
+//            if(ret.getTransaction().equals("Débit")){
+//                double solde = retenue.getSolde() + ret.getDebit();
+//                ret.setSolde(solde);
+//            }else {
+//                double soldes = retenue.getSolde() - ret.getCredit();
+//                ret.setSolde(soldes);
+//            }
+//        }else{
+//            if(ret.getTransaction().equals("Débit")){
+//                double solde = ret.getDebit();
+//                ret.setSolde(solde);
+//            }else {
+//                double soldes = ret.getCredit();
+//                ret.setSolde(soldes);
+//            }
+//        }
+//
+//        ret.setUser(user);
+//
+//        double x = ret.getDebit() + ret.getCredit();
+//        IRetenueRepository.save(ret);
+//      return ResponseEntity.ok(ret);
+//    }
+    
+//    @GetMapping("/solde")
+//    public JSONObject soldeRetenue(){
+//        Retenue retenue = IRetenueRepository.findFirstByOrderByIdRetenueDesc();
+//        Map<String, Object> response = new HashMap<>();
+//        JSONObject solde;
+//        if(retenue != null){
+//            response.put("solde", retenue.getSolde());
+//        }else{
+//            response.put("solde", 0);
+//        }
+//        solde = new JSONObject(response);
+//        return solde;
+//    }
 }

@@ -3,101 +3,50 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.example.demo.entity;
+package com.adeli.adelispringboot.Discipline.entity;
 
+import com.adeli.adelispringboot.Mangwa.entity.TypeTransaction;
+import com.adeli.adelispringboot.Seance.entity.Seance;
+import com.adeli.adelispringboot.Session.entity.Session;
+import com.adeli.adelispringboot.Users.entity.Users;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 import java.time.LocalDate;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 
 /**
  *
  * @author Casimir
  */
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Discipline {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idDiscipline;
- 
-//    @NotBlank
-    private LocalDate date;
- 
-//    @NotBlank
-    private String type;
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private TypeDiscipline typeDiscipline;
+
     private String sanction;
     
-    @ManyToOne(fetch = FetchType.EAGER) //plusieurs lignes pour un département
+    @ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "idUser")
-    public User user;
-    
-    @ManyToOne(fetch = FetchType.EAGER) //plusieurs lignes pour un département
-	@JoinColumn(name = "idSession")
-    public Session session;
+    public Users user;
 
-    public Discipline() {
-    }
+    @ManyToOne
+    @JoinColumn(name = "id_seance")
+    @JsonIgnore
+    private Seance seance;
 
-    public Discipline(String type, LocalDate date, User user, Session session) {
-        this.type = type;
-        this.date = date;
-        this.user = user;
-        this.session = session;
-    }
+    private LocalDateTime createdAt;
 
-    public Long getIdDiscipline() {
-        return idDiscipline;
-    }
-
-    public void setIdDiscipline(Long idDiscipline) {
-        this.idDiscipline = idDiscipline;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Session getSession() {
-        return session;
-    }
-
-    public void setSession(Session session) {
-        this.session = session;
-    }
-
-    public String getSanction() {
-        return sanction;
-    }
-
-    public void setSanction(String sanction) {
-        this.sanction = sanction;
-    }
-
-    
+    private LocalDateTime updatedAt;
 
 }

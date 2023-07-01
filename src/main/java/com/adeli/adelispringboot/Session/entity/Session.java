@@ -1,52 +1,42 @@
-package com.gulfcam.fuelcoupon.client.entity;
+package com.adeli.adelispringboot.Session.entity;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-public class Client {
+public class Session {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Schema(description = "Reférence interne", example = "0987698")
-    @NotNull
-    @Column(unique = true)
-    private Long internalReference;
+    @Column(nullable = false)
+    private double mangwa;
 
-    @Column(nullable = true, name = "complete_name")
-    private String completeName;
+    @Column(nullable = false)
+    private LocalDate beginDate;
 
-    @Column(nullable = true, name = "company_name")
-    private String companyName;
+    @Column(nullable = false)
+    private String name;
 
-    private String address;
+    @Column(nullable = false)
+    private LocalDate endDate;
 
-    private String phone;
-
-    @Column(unique = true,nullable = false)
-    @Email
-    private String email;
-
-    private String RCCM;
-
-    @Column(nullable = true, unique = true)
-    private String gulfcamAccountNumber;
+    @Column(nullable = false)
+    private double tax;
 
     @ManyToOne
-    private TypeClient typeClient;
+    private SessionStatus status;
 
     private LocalDateTime createdAt;
 
-    private LocalDateTime updateAt;
+    private LocalDateTime updatedAt;
 }

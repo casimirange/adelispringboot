@@ -1,5 +1,5 @@
-package com.gulfcam.fuelcoupon.client.entity;
+package com.adeli.adelispringboot.Session.entity;
 
-public enum ETypeClient {
-	PARTICULAR, ENTREPRISE, INSTITUTION
+public enum EStatusSession {
+	CREEE, TERMINEE
 }

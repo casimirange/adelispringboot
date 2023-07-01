@@ -1,4 +1,4 @@
-package com.gulfcam.fuelcoupon.exception;
+package com.adeli.adelispringboot.configuration.exception;
 
 public class DocumentsStorageException extends RuntimeException {
 

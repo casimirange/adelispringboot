@@ -1,11 +1,12 @@
-package com.gulfcam.fuelcoupon.client.repository;
+package com.adeli.adelispringboot.Session.repository;
 
-import com.gulfcam.fuelcoupon.client.entity.ETypeClient;
-import com.gulfcam.fuelcoupon.client.entity.TypeClient;
+import com.adeli.adelispringboot.Session.entity.EStatusSession;
+import com.adeli.adelispringboot.Session.entity.SessionStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface ITypeClientRepo extends JpaRepository<TypeClient,Long> {
-    Optional<TypeClient> findByName(ETypeClient name);
+public interface IStatusSessionRepo extends JpaRepository<SessionStatus,Long> {
+    Optional<SessionStatus> findByName(EStatusSession name);
+    boolean existsByName(EStatusSession name);
 }

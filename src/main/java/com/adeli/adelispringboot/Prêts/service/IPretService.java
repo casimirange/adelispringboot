@@ -1,18 +1,19 @@
-package com.adeli.adelispringboot.Tontine.service;
+package com.adeli.adelispringboot.Prêts.service;
 
 
+import com.adeli.adelispringboot.Prêts.entity.Prets;
 import com.adeli.adelispringboot.Tontine.dto.TontineResDto;
 import com.adeli.adelispringboot.Tontine.entity.Tontine;
 import org.springframework.data.domain.Page;
 
-public interface ITontineService {
-    Page<Tontine> getAllTontine(int page, int size, String sort, String order);
+public interface IPretService {
+    Page<Prets> getAllPret(int page, int size, String sort, String order);
 
-    Page<TontineResDto> getTontinesBySeance(Long idSeance, int page, int size, String sort, String order);
+    Page<Prets> getPretBySeance(Long idSeance, int page, int size, String sort, String order);
 
-    void createTontine(Tontine tontine);
+    void createPret(Prets prets);
 
-    Tontine getById(Long id);
+    void rembourserPret(Prets prets);
 
-    Double soldeTontine();
+    Prets getById(Long id);
 }

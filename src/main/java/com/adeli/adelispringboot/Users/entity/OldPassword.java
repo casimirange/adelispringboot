@@ -1,4 +1,4 @@
-package com.gulfcam.fuelcoupon.user.entity;
+package com.adeli.adelispringboot.Users.entity;
 
 import lombok.AccessLevel;
 import lombok.Getter;

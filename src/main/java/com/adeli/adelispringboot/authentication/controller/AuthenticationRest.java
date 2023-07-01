@@ -1,23 +1,19 @@
-package com.gulfcam.fuelcoupon.authentication.controller;
+package com.adeli.adelispringboot.authentication.controller;
 
-import com.gulfcam.fuelcoupon.authentication.dto.*;
-import com.gulfcam.fuelcoupon.authentication.service.IAuthorizationService;
-import com.gulfcam.fuelcoupon.authentication.service.JwtUtils;
-import com.gulfcam.fuelcoupon.authentication.service.UserDetailsImpl;
-import com.gulfcam.fuelcoupon.globalConfiguration.ApplicationConstant;
-import com.gulfcam.fuelcoupon.store.entity.Store;
-import com.gulfcam.fuelcoupon.store.service.IStoreService;
-import com.gulfcam.fuelcoupon.user.dto.*;
-import com.gulfcam.fuelcoupon.user.entity.*;
-import com.gulfcam.fuelcoupon.user.repository.IOldPasswordRepo;
-import com.gulfcam.fuelcoupon.user.repository.IRoleUserRepo;
-import com.gulfcam.fuelcoupon.user.repository.ITypeAccountRepository;
-import com.gulfcam.fuelcoupon.user.repository.IUserRepo;
-import com.gulfcam.fuelcoupon.user.service.IEmailService;
-import com.gulfcam.fuelcoupon.user.service.IUserService;
-import com.gulfcam.fuelcoupon.utilities.entity.ESettingPropertie;
-import com.gulfcam.fuelcoupon.utilities.entity.SettingProperties;
-import com.gulfcam.fuelcoupon.utilities.service.IUtilitieService;
+
+import com.adeli.adelispringboot.Users.dto.*;
+import com.adeli.adelispringboot.Users.entity.*;
+import com.adeli.adelispringboot.Users.repository.IRoleUserRepo;
+import com.adeli.adelispringboot.Users.repository.ITypeAccountRepository;
+import com.adeli.adelispringboot.Users.repository.IUserRepo;
+import com.adeli.adelispringboot.Users.service.IUserService;
+import com.adeli.adelispringboot.authentication.dto.*;
+import com.adeli.adelispringboot.authentication.service.IAuthorizationService;
+import com.adeli.adelispringboot.authentication.service.JwtUtils;
+import com.adeli.adelispringboot.authentication.service.UserDetailsImpl;
+import com.adeli.adelispringboot.configuration.email.dto.EmailDto;
+import com.adeli.adelispringboot.configuration.email.service.IEmailService;
+import com.adeli.adelispringboot.configuration.globalConfiguration.ApplicationConstant;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,8 +25,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -52,43 +49,30 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
-import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@OpenAPIDefinition(info = @Info(title = "API GULFCAM V1.0", description = "Documentation de l'API", version = "1.0"))
+@OpenAPIDefinition(info = @Info(title = "API ADELI V1.0", description = "Documentation de l'API", version = "1.0"))
 @RestController
 @Tag(name = "authentification")
 @RequestMapping("/api/v1.0/auth")
 @Slf4j
+//@RequiredArgsConstructor
 public class AuthenticationRest {
-
     @Autowired
-    AuthenticationManager authenticationManager;
-
+    private AuthenticationManager authenticationManager;
     @Autowired
-    JwtUtils jwtUtils;
-
+    private JwtUtils jwtUtils;
     @Autowired
     private IUserService userService;
-
     @Autowired
     private IUserRepo userRepo;
-
     @Autowired
     private ModelMapper modelMapper;
-
     @Autowired
-    PasswordEncoder encoder;
-
-    @Autowired
-    IStoreService iStoreService;
-
-    @Autowired
-    IUtilitieService utilitieService;
-
+    private PasswordEncoder encoder;
     @Autowired
     private IRoleUserRepo roleRepo;
 
@@ -196,11 +180,7 @@ public class AuthenticationRest {
         Users user = new Users(userAuthDto.getLogin(), userAuthDto.getPassword());
         if (userAuthDto.getLogin().contains("@")) {
             Optional<Users> user2 = userService.getByEmail(userAuthDto.getLogin());
-            if (user2.isPresent()) {
-                user = new Users(user2.get().getEmail(), userAuthDto.getPassword());
-            }
-        }else{
-            Optional<Users> user2 = userService.getByPinCode(Integer.parseInt(userAuthDto.getLogin()));
+            System.out.println(user2.get().getUserId());
             if (user2.isPresent()) {
                 user = new Users(user2.get().getEmail(), userAuthDto.getPassword());
             }
@@ -224,7 +204,7 @@ public class AuthenticationRest {
             emailProps.put("email", email);
 
             emailService.sendEmail(new EmailDto(mailFrom, ApplicationConstant.ENTREPRISE_NAME, email, mailReplyTo, emailProps, ApplicationConstant.SUBJECT_EMAIL_OPT, ApplicationConstant.TEMPLATE_EMAIL_ENTREPRISE_MEMBRE));
-            log.info("Email  send successfull for user: " + email);
+            log.info("Email  send successfully for user: " + email);
             log.info("Code OTP : " + code);
 
             return ResponseEntity.ok().body(new SignInResponse(true, messageSource.getMessage("messages.code-otp", null, LocaleContextHolder.getLocale()), bearerToken, false));
@@ -237,48 +217,34 @@ public class AuthenticationRest {
 
 
     @Parameters(value = {
-            @Parameter(name = "typeAccount", schema = @Schema(allowableValues = {"STORE_KEEPER", "MANAGER_COUPON", "MANAGER_STORE", "TREASURY", "CUSTOMER_SERVICE", "MANAGER_STATION", "POMPIST"}))})
+            @Parameter(name = "typeAccount", schema = @Schema(allowableValues = {"TRESORIER", "SECRETAIRE", "SENSCEUR", "PRESIDENT", "COMISSAIRE_AU_COMPTE", "PORTE_PAROLE", "ADHERANT"}))})
     @Operation(summary = "Inscription sur l'application", tags = "authentification", responses = {
-            @ApiResponse(responseCode = "201", description = "Utilisateur crée avec succès", content = @Content(mediaType = "Application/Json", array = @ArraySchema(schema = @Schema(implementation = UserResDto.class)))),
+            @ApiResponse(responseCode = "201", description = "Utilisateur créé avec succès", content = @Content(mediaType = "Application/Json", array = @ArraySchema(schema = @Schema(implementation = UserResDto.class)))),
             @ApiResponse(responseCode = "400", description = "Erreur: Ce nom d'utilisateur est déjà utilisé/Erreur: Cet email est déjà utilisé", content = @Content(mediaType = "Application/Json")),})
     @PostMapping("/sign-up")
     public ResponseEntity<Object> add(@Valid @RequestBody UserReqDto userAddDto, HttpServletRequest request) {
+        System.out.println("user "+ userAddDto.getEmail());
+        System.out.println(userService.existsByEmail(userAddDto.getEmail(), null));
         if (userService.existsByEmail(userAddDto.getEmail(), null)) {
             return ResponseEntity.badRequest().body(new MessageResponseDto(HttpStatus.BAD_REQUEST,
                     messageSource.getMessage("messages.email_exists", null, LocaleContextHolder.getLocale())));
-        }
-        if (userService.existsByPinCode(userAddDto.getPinCode())) {
-            return ResponseEntity.badRequest().body(new MessageResponseDto(HttpStatus.BAD_REQUEST,
-                    messageSource.getMessage("messages.pin_code_exists", null, LocaleContextHolder.getLocale())));
         }
         if (userService.existsByTelephone(userAddDto.getTelephone(), null)) {
             return ResponseEntity.badRequest().body(new MessageResponseDto(HttpStatus.BAD_REQUEST,
                     messageSource.getMessage("messages.phone_exists", null, LocaleContextHolder.getLocale())));
         }
-        Store store = new Store();
-        if (userAddDto.getIdStore() != null) {
-
-            if(!iStoreService.getByInternalReference(userAddDto.getIdStore()).isPresent())
-                return ResponseEntity.badRequest().body(new MessageResponseDto(HttpStatus.BAD_REQUEST,
-                        messageSource.getMessage("messages.store_exists", null, LocaleContextHolder.getLocale())));
-            store =  iStoreService.getByInternalReference(userAddDto.getIdStore()).get();
-        }
 
         Users u = modelMapper.map(userAddDto, Users.class);
-        u.setUsing2FA(true);
         u.setFirstName(userAddDto.getFirstName());
         u.setLastName(userAddDto.getLastName());
         Set<RoleUser> roles = new HashSet<>();
         RoleUser rolesUser = roleRepo.findByName(userAddDto.getRoleName() != null ? ERole.valueOf(userAddDto.getRoleName()) : ERole.ROLE_USER).orElseThrow(()-> new ResourceNotFoundException("Role not found"));
         roles.add(rolesUser);
         u.setRoles(roles);
-        TypeAccount typeAccount = typeAccountRepo.findByName(userAddDto.getTypeAccount() != null ? ETypeAccount.valueOf(userAddDto.getTypeAccount()) : ETypeAccount.MANAGER_STORE).orElseThrow(()-> new ResourceNotFoundException("Type de compte not found"));
+        TypeAccount typeAccount = typeAccountRepo.findByName(userAddDto.getTypeAccount() != null ? ETypeAccount.valueOf(userAddDto.getTypeAccount()) : ETypeAccount.ADHERANT).orElseThrow(()-> new ResourceNotFoundException("Type de compte not found"));
         u.setTypeAccount(typeAccount);
-        u.setInternalReference(jwtUtils.generateInternalReference());
-        u.setPosition(userAddDto.getPosition());
-        u.setPinCode(userAddDto.getPinCode());
+        u.setMontant(userAddDto.getMontant());
         u.setPassword(encoder.encode(userAddDto.getPassword()));
-        u.setIdStore(userAddDto.getIdStore());
         u.setCreatedDate(LocalDateTime.now());
         Users user = new Users();
         String password = null;
@@ -288,13 +254,14 @@ public class AuthenticationRest {
         user = (Users) userAndPasswordNotEncoded.get("user");
         userService.editStatus(user.getUserId(), Long.valueOf(EStatusUser.USER_ENABLED.ordinal() + 1L));
         UserResDto userResDto = modelMapper.map(u, UserResDto.class);
-        userResDto.setStore(store);
         Map<String, Object> emailProps = new HashMap<>();
         emailProps.put("firstname", userAddDto.getFirstName());
         emailProps.put("lastname", userAddDto.getLastName());
+        emailProps.put("typeAccount", userAddDto.getTypeAccount());
+        emailProps.put("signin", signInUrl);
 
         emailService.sendEmail(new EmailDto(mailFrom, ApplicationConstant.ENTREPRISE_NAME, userAddDto.getEmail(), mailReplyTo, emailProps, ApplicationConstant.SUBJECT_EMAIL_NEW_USER, ApplicationConstant.TEMPLATE_EMAIL_NEW_USER));
-        log.info("Email  send successfull for user: " + userAddDto.getEmail());
+        log.info("Email send successfully for user: " + userAddDto.getEmail());
 
 
         return ResponseEntity.status(HttpStatus.CREATED).body(userResDto);
@@ -309,27 +276,16 @@ public class AuthenticationRest {
     @PreAuthorize("hasAnyRole('SUPERADMIN','ADMIN','AGENT','USER')")
     public ResponseEntity<Object> update(@Valid @RequestBody UserModifyReqDto userModifyReqDto, @PathVariable Long internalReference) {
 
-        Store store = new Store();
-        if (userModifyReqDto.getIdStore() != null) {
-
-            if(!iStoreService.getByInternalReference(userModifyReqDto.getIdStore()).isPresent())
-                return ResponseEntity.badRequest().body(new MessageResponseDto(HttpStatus.BAD_REQUEST,
-                        messageSource.getMessage("messages.store_exists", null, LocaleContextHolder.getLocale())));
-            store =  iStoreService.getByInternalReference(userModifyReqDto.getIdStore()).get();
-        }
 
         Users u = userService.getByInternalReference(internalReference);
         u.setFirstName(userModifyReqDto.getFirstName());
         u.setLastName(userModifyReqDto.getLastName());
-        u.setPinCode(userModifyReqDto.getPinCode());
         Set<RoleUser> roles = new HashSet<>();
         RoleUser rolesUser = roleRepo.findByName(userModifyReqDto.getRoleName() != null ? ERole.valueOf(userModifyReqDto.getRoleName()) : ERole.ROLE_USER).orElseThrow(()-> new ResourceNotFoundException("Role not found"));
         roles.add(rolesUser);
         u.setRoles(roles);
-        TypeAccount typeAccount = typeAccountRepo.findByName(userModifyReqDto.getTypeAccount() != null ? ETypeAccount.valueOf(userModifyReqDto.getTypeAccount()) : ETypeAccount.MANAGER_STORE).orElseThrow(()-> new ResourceNotFoundException("Type de compte not found"));
+        TypeAccount typeAccount = typeAccountRepo.findByName(userModifyReqDto.getTypeAccount() != null ? ETypeAccount.valueOf(userModifyReqDto.getTypeAccount()) : ETypeAccount.ADHERANT).orElseThrow(()-> new ResourceNotFoundException("Type de compte not found"));
         u.setTypeAccount(typeAccount);
-        u.setPosition(userModifyReqDto.getPosition());
-        u.setIdStore(userModifyReqDto.getIdStore());
         u.setCreatedDate(LocalDateTime.now());
         Users user = new Users();
         String password = null;
@@ -338,18 +294,20 @@ public class AuthenticationRest {
         userAndPasswordNotEncoded = userService.modify(u);
         user = (Users) userAndPasswordNotEncoded.get("user");
         UserResDto userResDto = modelMapper.map(u, UserResDto.class);
-        userResDto.setStore(store);
+
 
         return ResponseEntity.status(HttpStatus.CREATED).body(userResDto);
     }
 
 
-    @Operation(summary = "Vérification du code d'authentification à 2FA", tags = "authentification", responses = {
+    @Operation(summary = "Vérification du code d'authentification à 2FA (OTP)", tags = "authentification", responses = {
             @ApiResponse(responseCode = "200", description = "Succès de l'opération", content = @Content(mediaType = "Application/Json", array = @ArraySchema(schema = @Schema(implementation = Users.class)))),
             @ApiResponse(responseCode = "400", description = "code de vérification incorrect", content = @Content(mediaType = "Application/Json"))})
     @GetMapping("/verify")
     public ResponseEntity<?> verifyCode(@NotEmpty @RequestParam(name = "code", required = true) String code) {
         Users users = authorizationService.getUserInContextApp();
+        System.out.println("user otp :"+users.getOtpCode());
+        System.out.println("code otp :"+code);
         log.info("user_otp_code" + users.getOtpCode() + "otpCodeCreatedAt:" + users.getOtpCodeCreatedAT());
         if (code.equals(users.getOtpCode()) && ChronoUnit.MINUTES.between(users.getOtpCodeCreatedAT(), LocalDateTime.now()) < 5) {
             String bearerToken = jwtUtils.generateJwtToken(users.getEmail(),
@@ -438,7 +396,7 @@ public class AuthenticationRest {
         Map<String, Object> emailProps = new HashMap<>();
         emailProps.put("firstname", user.getFirstName());
         emailProps.put("lastname", user.getLastName());
-        emailProps.put("code", user.getEmail());
+        emailProps.put("email", user.getEmail());
         emailProps.put("username", user.getEmail());
         emailProps.put("code", urlConfirmCode + user.getTokenAuth());
 

@@ -1,13 +1,16 @@
-package com.gulfcam.fuelcoupon.client.service.impl;
+package com.adeli.adelispringboot.Session.service.impl;
 
-import com.gulfcam.fuelcoupon.client.entity.Client;
-import com.gulfcam.fuelcoupon.client.repository.IClientRepo;
-import com.gulfcam.fuelcoupon.client.service.IClientService;
+import com.adeli.adelispringboot.Session.entity.EStatusSession;
+import com.adeli.adelispringboot.Session.entity.Session;
+import com.adeli.adelispringboot.Session.entity.SessionStatus;
+import com.adeli.adelispringboot.Session.repository.ISessionRepo;
+import com.adeli.adelispringboot.Session.repository.IStatusSessionRepo;
+import com.adeli.adelispringboot.Session.service.ISessionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,61 +19,45 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class ClientServiceImpl implements IClientService {
+public class SessionServiceImpl implements ISessionService {
 
     @Autowired
-    IClientRepo iClientRepo;
+    ISessionRepo iSessionRepo;
 
     @Autowired
-    ResourceBundleMessageSource messageSource;
-
+    IStatusSessionRepo iStatusSessionRepo;
     @Override
-    public Page<Client> getAllClients(int page, int size, String sort, String order) {
-        return iClientRepo.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(order), sort)));
+    public Page<Session> getAllSessions(int page, int size, String sort, String order) {
+        return iSessionRepo.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(order), sort)));
     }
 
     @Override
-    public Optional<Client> getClientByEmail(String email) {
-        return iClientRepo.getClientByEmail(email);
+    public Optional<Session> getSessionByName(String name) {
+        return iSessionRepo.getSessionByName(name);
     }
 
     @Override
-    public Optional<Client> getClientByGulfCamAccountNumber(String gulfcamaccountnumber) {
-        return iClientRepo.getClientByGulfcamAccountNumber(gulfcamaccountnumber);
+    public List<Session> getSessionsByNameLike(String name) {
+        return iSessionRepo.getSessionsByNameContains(name);
     }
 
     @Override
-    public Optional<Client> getClientById(Long id) {
-        return iClientRepo.findById(id);
+    public void createSession(Session session) {
+        iSessionRepo.save(session);
     }
 
     @Override
-    public List<Client> getClientsByCompanyNameLike(String completeName) {
-        return iClientRepo.getClientsByCompleteNameContains(completeName);
+    public Session endSession(Session session) {
+        SessionStatus sessionStatus = iStatusSessionRepo.findByName(EStatusSession.TERMINEE)
+                .orElseThrow(() -> new ResourceNotFoundException("Ce statut " + EStatusSession.TERMINEE + " n'existe pas"));
+        session.setStatus(sessionStatus);
+        return iSessionRepo.save(session);
     }
 
     @Override
-    public Optional<Client> getClientByInternalReference(Long internalReference) {
-        return iClientRepo.getClientByInternalReference(internalReference);
+    public Session findLastSession() {
+        return iSessionRepo.findFirstByOrderByIdDesc();
     }
 
-    @Override
-    public void createClient(Client client) {
-        iClientRepo.save(client);
-    }
 
-    @Override
-    public void deleteClient(Client client) {
-        iClientRepo.delete(client);
-    }
-
-    @Override
-    public boolean existsByEmail(String email) {
-        return iClientRepo.existsByEmail(email);
-    }
-
-    @Override
-    public boolean existsByGulfCamAccountNumber(String gulfcamaccountnumber) {
-        return iClientRepo.existsByGulfcamAccountNumber(gulfcamaccountnumber);
-    }
 }

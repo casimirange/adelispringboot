@@ -1,13 +1,10 @@
-package com.gulfcam.fuelcoupon.user.dto;
+package com.adeli.adelispringboot.Users.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 
 @Getter
 @Setter
@@ -17,14 +14,6 @@ public class UserModifyReqDto {
 	@Schema(description = "Téléphone")
 	private String telephone;
 
-	@NotNull(message = "{pinCode.required}")
-	@Schema(description = "Code pin")
-	private int pinCode;
-
-	@NotNull(message = "{idStore.required}")
-	@Schema(description = "Reference interne du magasin associé")
-	private Long idStore;
-
 	@NotNull(message = "{firstName.required}")
 	@Schema(description = "Prénom")
 	private String firstName;
@@ -32,13 +21,13 @@ public class UserModifyReqDto {
 	@Schema(description = "Nom")
 	private String lastName;
 
-	@Schema(description = "Poste occupé")
-	private String position;
+	@Schema(description = "montant")
+	private Double montant;
 
-	@Schema(description = "Role de l'utilisateur, defaut ROLE_USER", defaultValue = "ROLE_USER", allowableValues = {"ROLE_ADMIN", "ROLE_SUPERADMIN", "ROLE_AGENT","ROLE_PRE_VERIFICATION_USER","ROLE_USER"})
+	@Schema(description = "Role de l'utilisateur, defaut ROLE_USER", defaultValue = "ROLE_USER", allowableValues = {"ROLE_SUPERADMIN", "ROLE_USER"})
 	private String roleName;
 
-	@Schema(description = "Type de compte de l'utilisateur, defaut MANAGER_STORE", defaultValue = "MANAGER_STORE", allowableValues = {"STORE_KEEPER", "MANAGER_COUPON", "MANAGER_STORE", "TREASURY", "CUSTOMER_SERVICE", "MANAGER_STATION", "POMPIST"})
+	@Schema(description = "Type de compte de l'utilisateur, defaut ADHERANT", defaultValue = "ADHERANT", allowableValues = {"TRESORIER", "SECRETAIRE", "SENSCEUR", "PRESIDENT", "COMISSAIRE_AU_COMPTE", "PORTE_PAROLE", "ADHERANT"})
 	private String typeAccount;
 
 }

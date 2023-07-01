@@ -3,17 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.example.demo.init;
+package com.adeli.adelispringboot.initDatas;
 
-import com.example.demo.models.RoleName;
-import com.example.demo.repository.RoleRepository;
-import com.example.demo.entity.Roles;
-import com.example.demo.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.adeli.adelispringboot.Users.entity.ERole;
+import com.adeli.adelispringboot.Users.entity.RoleUser;
+import com.adeli.adelispringboot.Users.repository.IRoleUserRepo;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 /**
@@ -22,60 +21,23 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
+@AllArgsConstructor
 @Order(1)
 public class InitRoles implements ApplicationRunner{
 
-    
-    @Autowired
-    PasswordEncoder encoder;
-    
-    @Autowired
-    RoleRepository roleRepository;
-    
-    @Autowired
-    UserRepository utilisateurRepository;
+    private IRoleUserRepo roleRepository;
     
     @Override
     public void run(ApplicationArguments args) throws Exception {;
         System.out.println("initialisation des roles");        
-        Roles roleUser = new Roles(RoleName.ROLE_ADHERENT);
-        Roles rolePresident = new Roles(RoleName.ROLE_PRESIDENT);
-        Roles rolePorteParole = new Roles(RoleName.ROLE_PORTE_PAROLE);
-        Roles roleSuperAdmin = new Roles(RoleName.ROLE_SUPER_ADMIN);
-        Roles roleTresorier = new Roles(RoleName.ROLE_TRESORIER);
-        Roles roleSenceur = new Roles(RoleName.ROLE_SENSCEUR);
-        Roles roleSecretaire = new Roles(RoleName.ROLE_SECRETAIRE);
-        Roles roleCommissaire = new Roles(RoleName.ROLE_COMISSAIRE_AU_COMPTE);
+        RoleUser superadmin = new RoleUser(ERole.ROLE_SUPERADMIN);
+        RoleUser user = new RoleUser(ERole.ROLE_USER);
 
-        if (!roleRepository.existsByName(RoleName.ROLE_ADHERENT)) {
-            roleRepository.save(roleUser);
+        if (!roleRepository.existsByName(ERole.ROLE_SUPERADMIN)) {
+            roleRepository.save(superadmin);
         }
-        if (!roleRepository.existsByName(RoleName.ROLE_PRESIDENT)) {
-            roleRepository.save(rolePresident);
-        }
-
-        if (!roleRepository.existsByName(RoleName.ROLE_PORTE_PAROLE)) {
-            roleRepository.save(rolePorteParole);
-        }
-
-        if (!roleRepository.existsByName(RoleName.ROLE_TRESORIER)) {
-            roleRepository.save(roleTresorier);
-        }
-
-        if (!roleRepository.existsByName(RoleName.ROLE_SUPER_ADMIN)) {
-            roleRepository.save(roleSuperAdmin);
-        }
-
-        if (!roleRepository.existsByName(RoleName.ROLE_SENSCEUR)) {
-            roleRepository.save(roleSenceur);
-        }
-
-        if (!roleRepository.existsByName(RoleName.ROLE_SECRETAIRE)) {
-            roleRepository.save(roleSecretaire);
-        }
-
-        if (!roleRepository.existsByName(RoleName.ROLE_COMISSAIRE_AU_COMPTE)) {
-            roleRepository.save(roleCommissaire);
+        if (!roleRepository.existsByName(ERole.ROLE_USER)) {
+            roleRepository.save(user);
         }
                
     }

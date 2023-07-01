@@ -1,5 +1,5 @@
-package com.gulfcam.fuelcoupon.user.entity;
+package com.adeli.adelispringboot.Users.entity;
 
 public enum ETypeAccount {
-	STORE_KEEPER, MANAGER_COUPON, MANAGER_STORE, MANAGER_ORDER, TREASURY, CUSTOMER_SERVICE, MANAGER_STATION, POMPIST
+	TRESORIER, SECRETAIRE, SENSCEUR, PRESIDENT, COMISSAIRE_AU_COMPTE, PORTE_PAROLE, ADHERANT
 }

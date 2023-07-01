@@ -1,14 +1,11 @@
-package com.adeli.adelispringboot.Amandes.service;
+package com.adeli.adelispringboot.Beneficiaires.service;
 import com.adeli.adelispringboot.Amandes.entity.Amande;
-import com.adeli.adelispringboot.Tontine.dto.TontineResDto;
+import com.adeli.adelispringboot.Beneficiaires.entity.Beneficiaire;
 import org.springframework.data.domain.Page;
 
-import java.util.List;
-import java.util.Optional;
+public interface IBeneficiaireService {
+    Page<Beneficiaire> getAllBeneficiaires(int page, int size, String sort, String order);
 
-public interface IAmandeService {
-    Page<Amande> getAllAmandes(int page, int size, String sort, String order);
-
-    Page<Amande> getAmandesBySeance(Long idSeance, int page, int size, String sort, String order);
-    void createAmande(Amande amande);
+    Page<Beneficiaire> getBeneficiaireBySeance(Long idSeance, int page, int size, String sort, String order);
+    void createBeneficiaire(Beneficiaire beneficiaire);
 }

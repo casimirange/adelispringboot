@@ -3,15 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.example.demo.init;
+package com.adeli.adelispringboot.initDatas;
 
-import com.example.demo.entity.User;
-import com.example.demo.models.RoleName;
-import com.example.demo.repository.RoleRepository;
-import com.example.demo.entity.Roles;
-import com.example.demo.repository.UserRepository;
-import java.util.HashSet;
-import java.util.Set;
+import com.adeli.adelispringboot.Users.entity.*;
+import com.adeli.adelispringboot.Users.repository.IRoleUserRepo;
+import com.adeli.adelispringboot.Users.repository.IStatusUserRepo;
+import com.adeli.adelispringboot.Users.repository.ITypeAccountRepository;
+import com.adeli.adelispringboot.Users.repository.IUserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -19,47 +17,61 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  *
  * @author Casimir
  */
 
 @Component
-@Order(2)
+@Order(4)
 public class InitUser implements ApplicationRunner{
     
     @Autowired
     PasswordEncoder encoder;
     
     @Autowired
-    RoleRepository roleRepository;
+    IRoleUserRepo roleRepository;
+
+    @Autowired
+    ITypeAccountRepository iTypeAccountRepository;
     
     @Autowired
-    UserRepository utilisateurRepository;
-    
+    IUserRepo utilisateurRepository;
+    @Autowired
+    private IStatusUserRepo iStatusUserRepo;
+
     @Override
     public void run(ApplicationArguments args) throws Exception {;
-        System.out.println("initialisation de l'user");        
-        String username = "ouandji casimir";
-        String email = "ouandjicasimir@gmail.com";
+        System.out.println("initialisation de l'user");
 
-        if (utilisateurRepository.existsByUsername(username)) {
-            System.out.println("Fail -> Username is already taken!");
-        }else if (utilisateurRepository.existsByEmail(email)) {
+        String email = "ouandji.casimir+1@gmail.com";
+        String phone = "693764260";
+        if (utilisateurRepository.existsByEmail(email)) {
           System.out.println("Fail -> Email is already in use!");
+        }
+        if (utilisateurRepository.existsByTelephone(phone)) {
+          System.out.println("Fail -> Phone is already in use!");
         } else{
                
-        String x = "32494043000";
-        User user = new User();
-        user.setName("Casimir Ouandji");
+
+        Users user = new Users();
+        user.setLastName("Casimir");
+        user.setFirstName("Ouandji");
         user.setEmail(email);
-        user.setUsername(username);
-        user.setPassword(encoder.encode("ange3000"));
-        user.setTel(x);
-        user.setEtat(true); 
-        Set<Roles> roles = new HashSet<>();
-       
-        Roles super_adminRole = roleRepository.findByName(RoleName.ROLE_SUPER_ADMIN)
+        user.setPassword(encoder.encode("Ange3000-"));
+        user.setTelephone(phone);
+        StatusUser statusUser = iStatusUserRepo.findByName(EStatusUser.USER_ENABLED);
+        user.setStatus(statusUser);
+        user.setCreatedDate(LocalDateTime.now());
+        Set<RoleUser> roles = new HashSet<>();
+        TypeAccount rolePresident = iTypeAccountRepository.findByName(ETypeAccount.PRESIDENT).get();
+        user.setTypeAccount(rolePresident);
+
+        RoleUser super_adminRole = roleRepository.findByName(ERole.ROLE_SUPERADMIN)
             .orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
         roles.add(super_adminRole);
         

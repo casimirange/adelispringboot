@@ -1,9 +1,9 @@
-package com.gulfcam.fuelcoupon.user.dto;
+package com.adeli.adelispringboot.Users.dto;
 
+import com.adeli.adelispringboot.Users.entity.RoleUser;
+import com.adeli.adelispringboot.Users.entity.TypeAccount;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.gulfcam.fuelcoupon.store.entity.Store;
-import com.gulfcam.fuelcoupon.user.entity.RoleUser;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -20,8 +20,6 @@ public class UserResDto{
 
 	private Long internalReference;
 
-	private int pinCode;
-
 	private String email;
 
 	private String telephone;
@@ -30,11 +28,11 @@ public class UserResDto{
 
 	private String firstName;
 
-	private String position;
-
-	private Store store;
+	private Double montant;
 
 	private List<RoleUser> roles;
+
+	private TypeAccount typeAccount;
 
 
 }

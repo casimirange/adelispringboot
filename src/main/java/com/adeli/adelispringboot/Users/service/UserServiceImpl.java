@@ -1,11 +1,16 @@
-package com.gulfcam.fuelcoupon.user.service;
+package com.adeli.adelispringboot.Users.service;
 
-import com.gulfcam.fuelcoupon.authentication.service.JwtUtils;
-import com.gulfcam.fuelcoupon.store.service.IStoreService;
-import com.gulfcam.fuelcoupon.user.dto.ResponseUsersDTO;
-import com.gulfcam.fuelcoupon.user.dto.UserEditPasswordDto;
-import com.gulfcam.fuelcoupon.user.entity.*;
-import com.gulfcam.fuelcoupon.user.repository.*;
+
+import com.adeli.adelispringboot.Users.dto.ResponseUsersDTO;
+import com.adeli.adelispringboot.Users.dto.UserEditPasswordDto;
+import com.adeli.adelispringboot.Users.dto.UserReqDto;
+import com.adeli.adelispringboot.Users.dto.UserResDto;
+import com.adeli.adelispringboot.Users.entity.*;
+import com.adeli.adelispringboot.Users.mapper.UserMapper;
+import com.adeli.adelispringboot.Users.repository.*;
+import com.adeli.adelispringboot.authentication.service.JwtUtils;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -18,6 +23,7 @@ import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.*;
@@ -26,51 +32,38 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class UserServiceImpl implements IUserService {
-
 	@Autowired
 	private IUserRepo userRepo;
-
+	@Autowired
+	private UserMapper userMapper;
 	@Autowired
 	private IStatusUserRepo statusRepo;
-
 	@Autowired
 	private IRoleUserRepo roleRepo;
-
-	@Autowired
-	private IStoreService iStoreService;
-
 	@Autowired
 	private IOldPasswordRepo oldPasswordRepo;
-
 	@Autowired
-	ITypeAccountRepository typeAccountRepo;
-
+	private ITypeAccountRepository typeAccountRepo;
 	@Autowired
-    PasswordEncoder encoder;
-
+	private PasswordEncoder encoder;
 	@Autowired
-	JwtUtils jwtUtils;
-
+	private JwtUtils jwtUtils;
 	@Autowired
 	private ResourceBundleMessageSource messageSource;
 
 	@Override
 	@Transactional
 	public Map<String, Object> add(Users u) {
-		Users user = new Users(u.getInternalReference(), u.getEmail(), u.getPassword());
+		Users user = new Users(u.getUserId(), u.getEmail(), u.getPassword());
 
 		StatusUser status = statusRepo.findByName(EStatusUser.USER_ENABLED);
 		user.setStatus(status);
 		user.setTokenAuth(null);
 		user.setCreatedDate(LocalDateTime.now());
-//		OldPassword oldPassword = oldPasswordRepo.save(new OldPassword(u.getPassword()));
-//		user.setOldPasswords(Arrays.asList(oldPassword));
 		user.setFirstName(u.getFirstName());
 		user.setLastName(u.getLastName());
 		user.setTelephone(u.getTelephone());
-		user.setPinCode(u.getPinCode());
-		user.setPosition(u.getPosition());
-		user.setIdStore(u.getIdStore());
+		user.setMontant(u.getMontant());
 		user.setRoles(u.getRoles());
 		user.setTypeAccount(u.getTypeAccount());
 		user.setCreatedDate(LocalDateTime.now());
@@ -80,6 +73,15 @@ public class UserServiceImpl implements IUserService {
 		userAndPasswordNotEncoded.put("password", u.getPassword());
 		return userAndPasswordNotEncoded;
 	}
+
+//	@Override
+//	@Transactional
+//	public UserResDto addUser(UserReqDto userReqDto) {
+//		Users user = userMapper.userReqDtoToUsers(userReqDto);
+//		Users savedUser = userRepo.saveAndFlush(user);
+//		UserResDto userResDto = userMapper.userToUserResDto(savedUser);
+//		return userResDto;
+//	}
 
 	@Override
 	@Transactional
@@ -101,20 +103,18 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public Users getByInternalReference(Long internalReference) {
-		Users user = userRepo.findByInternalReference(internalReference).orElseThrow(() -> new ResourceNotFoundException(
-				messageSource.getMessage("messages.user_not_found", null, LocaleContextHolder.getLocale())));
-
-		return user;
+		return null;
 	}
 
 	@Override
+	@Transactional
 	public Optional<Users> getByEmail(String email) {
 		return userRepo.findByEmail(email);
 	}
 
 	@Override
-	public Optional<Users> getByPinCode(int code) {
-		return userRepo.findByPinCode(code);
+	public Optional<Users> getByPinCode(int pinCode) {
+		return Optional.empty();
 	}
 
 	@Override
@@ -138,9 +138,6 @@ public class UserServiceImpl implements IUserService {
 		user.setFirstName(u.getFirstName());
 		user.setLastName(u.getLastName());
 		user.setTelephone(u.getTelephone());
-		user.setPinCode(u.getPinCode());
-		user.setPosition(u.getPosition());
-		user.setIdStore(u.getIdStore());
 		user.setTypeAccount(u.getTypeAccount());
 		return userRepo.save(user);
 	}
@@ -167,7 +164,7 @@ public class UserServiceImpl implements IUserService {
 	public Users editStatus(Long id, Long statusId) {
 		Users user = getById(id);
 		StatusUser status = statusRepo.findById(statusId)
-				.orElseThrow(() -> new ResourceNotFoundException("Status id " + id + " not found"));
+				.orElseThrow(() -> new ResourceNotFoundException("Status id " + statusId + " not found"));
 		user.setStatus(status);
 		if (user.getStatus().equals(status)) {
 			return user;
@@ -185,7 +182,7 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public Optional<Users> getUserByUniqueConstraints(Users u) {
-		Optional<Users> user = userRepo.findByInternalReference(u.getInternalReference());
+		Optional<Users> user = userRepo.findById(u.getUserId());
 		if(user.isPresent()) {
 			return user;
 		}
@@ -213,14 +210,13 @@ public class UserServiceImpl implements IUserService {
 	}
 
 	@Override
-	public boolean existsByInternalReference(Long internalReference) {
-		return userRepo.existsByInternalReference(internalReference);
+	public boolean existsByPinCode(int code) {
+		return false;
 	}
 
-
 	@Override
-	public boolean existsByPinCode(int pinCode) {
-		return userRepo.existsByPinCode(pinCode);
+	public boolean existsByInternalReference(Long internalReference) {
+		return false;
 	}
 
 	@Override
@@ -236,19 +232,13 @@ public class UserServiceImpl implements IUserService {
 	@Transactional
 	public Users checkUserAndGenerateCode(String login) {
 		Users user;
-		if (login.contains("@")) {
-			user = userRepo.findByEmail(login).orElseThrow(() -> new ResourceNotFoundException(
-					messageSource.getMessage("messages.user_not_found", null, LocaleContextHolder.getLocale())));
-			String token = jwtUtils.generateJwtToken(user.getEmail(), jwtUtils.getExpirationEmailResetPassword(),
-					jwtUtils.getSecretBearerToken(),true);
-			user.setTokenAuth(token);
-		} else {
-			user = getByPinCode(Integer.parseInt(login)).orElseThrow(() -> new ResourceNotFoundException(
-					messageSource.getMessage("messages.user_not_found", null, LocaleContextHolder.getLocale())));
-			String token = jwtUtils.generateJwtToken(user.getEmail(), jwtUtils.getExpirationEmailResetPassword(),
-					jwtUtils.getSecretBearerToken(),true);
-			user.setTokenAuth(token);
-		}
+
+		user = userRepo.findByEmail(login).orElseThrow(() -> new ResourceNotFoundException(
+				messageSource.getMessage("messages.user_not_found", null, LocaleContextHolder.getLocale())));
+		String token = jwtUtils.generateJwtToken(user.getEmail(), jwtUtils.getExpirationEmailResetPassword(),
+				jwtUtils.getSecretBearerToken(),true);
+		user.setTokenAuth(token);
+
 		return userRepo.save(user);
 	}
 
@@ -323,7 +313,7 @@ public class UserServiceImpl implements IUserService {
 	private List<RoleUser> getRolesManagers() {
 		List<ERole> rolesNames = new ArrayList<>();
 		rolesNames.add(ERole.ROLE_SUPERADMIN);
-		rolesNames.add(ERole.ROLE_ADMIN);
+		rolesNames.add(ERole.ROLE_USER);
 		return rolesNames.stream()
 				.map(roleName -> roleRepo.findByName(roleName)
 						.orElseThrow(() -> new ResourceNotFoundException("Role name " + roleName + " not found")))
@@ -349,9 +339,9 @@ public class UserServiceImpl implements IUserService {
 	}
 
 	@Override
+	@Transactional
 	public Page<ResponseUsersDTO> getUsers(int page, int size, String sort, String order) {
 		List<Users> usersList = userRepo.findAll();
-
 		ResponseUsersDTO responseUsersDTO;
 		List<ResponseUsersDTO> responseUsersDTOList = new ArrayList<>();
 
@@ -362,23 +352,26 @@ public class UserServiceImpl implements IUserService {
 			responseUsersDTO.setEmail(user.getEmail());
 			responseUsersDTO.setRoleNames(user.getRoleNames());
 			responseUsersDTO.setFirstName(user.getFirstName());
+			responseUsersDTO.setMontant(user.getMontant());
 			responseUsersDTO.setLastName(user.getLastName());
-			responseUsersDTO.setIdStore(user.getIdStore());
-			responseUsersDTO.setPosition(user.getPosition());
-			responseUsersDTO.setPinCode(user.getPinCode());
 			responseUsersDTO.setRoles(user.getRoles());
 			responseUsersDTO.setTelephone(user.getTelephone());
 			responseUsersDTO.setTypeAccount(user.getTypeAccount());
 			responseUsersDTO.setOtpCode(user.getOtpCode());
-			responseUsersDTO.setStore((user.getIdStore() == null)? null: iStoreService.getByInternalReference(user.getIdStore()).get());
-			responseUsersDTO.setNameStore((user.getIdStore() == null)? null: iStoreService.getByInternalReference(user.getIdStore()).get().getLocalization());
-			responseUsersDTO.setInternalReference(user.getInternalReference());
 			responseUsersDTO.setCreatedDate(user.getCreatedDate());
 			responseUsersDTO.setDateLastLogin(user.getDateLastLogin());
 			responseUsersDTOList.add(responseUsersDTO);
-
 		}
 		Page<ResponseUsersDTO> responseUsersDTOPage = new PageImpl<>(responseUsersDTOList, PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(order), sort)), responseUsersDTOList.size());
+		return responseUsersDTOPage;
+	}
+
+	@Override
+	@Transactional
+	public Page<UserResDto> getAllUsers(int page, int size, String sort, String order) {
+		Page<Users> usersList = userRepo.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(order), sort)));
+
+		Page<UserResDto> responseUsersDTOPage = new PageImpl<>(usersList.stream().map(user -> userMapper.userToUserResDto(user)).collect(Collectors.toList()), PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(order), sort)), userRepo.findAll().size());
 		return responseUsersDTOPage;
 	}
 
@@ -423,7 +416,7 @@ public class UserServiceImpl implements IUserService {
 	}
 	@Override
 	public void updateFistLogin(Long user_id) {
-		Users u = userRepo.getById(user_id);
+		Users u = userRepo.findById(user_id).get();
 		if(u.getOldPasswords().size() <=1 && u.getCreatedDate().isAfter(LocalDateTime.of(2022, Month.NOVEMBER,01, 23, 01, 01))) {
 			u.setFirstConnection(true);
 		} else  {

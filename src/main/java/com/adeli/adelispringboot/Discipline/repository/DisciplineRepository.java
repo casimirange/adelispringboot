@@ -3,27 +3,26 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.example.demo.repository;
+package com.adeli.adelispringboot.Discipline.repository;
 
-import com.example.demo.entity.Amande;
-import com.example.demo.entity.Discipline;
-import com.example.demo.entity.Reunion;
-import com.example.demo.entity.Session;
-import com.example.demo.entity.User;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import com.adeli.adelispringboot.Discipline.entity.Discipline;
+import com.adeli.adelispringboot.Seance.entity.Seance;
+import com.adeli.adelispringboot.Tontine.entity.Tontine;
 import net.minidev.json.JSONObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  *
  * @author Casimir
  */
 @Repository
-public interface DisciplineRepository extends JpaRepository<Discipline, Long> {    
+public interface DisciplineRepository extends JpaRepository<Discipline, Long> {
     String discipline = "select d.id_discipline, d.date, d.type, d.sanction, "
             + "u.name, u.id from discipline d "
             + "join session s on d.id_session = s.id_session "
@@ -42,4 +41,6 @@ public interface DisciplineRepository extends JpaRepository<Discipline, Long> {
   
     @Query(value=disciplineUSER, nativeQuery = true)
     public List<JSONObject> findDisciplineUser(Long id);
+
+    Page<Discipline> findBySeance(Seance seance, Pageable pageable);
 }

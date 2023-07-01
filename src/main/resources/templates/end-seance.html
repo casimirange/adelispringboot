@@ -122,7 +122,7 @@
                 <tr>
                     <td bgcolor="#ffffff" align="center" valign="top"
                         style="padding: 40px 20px 20px 20px; border-radius: 4px 4px 0px 0px; color: #111111; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 28px; font-weight: 400; letter-spacing: 4px; line-height: 48px;">
-                        <h1 style="font-size: 28px; font-weight: 400; margin: 2;"><span>Session Terminée</span></h1>
+                        <h1 style="font-size: 28px; font-weight: 400; margin: 2;"><span>Seance Terminée</span></h1>
                         <!--<img src="cid:mail" width="125" height="120" style="display: block; border: 0px;" />-->
                     </td>
                 </tr>
@@ -136,9 +136,9 @@
                     <td bgcolor="#ffffff" align="left"
                         style="padding: 20px 30px 40px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 12px; font-weight: 400; line-height: 25px;">
                         <p style="margin: 0;">Bonjour <span th:text="${name}"></span>,<br>
-                            La session <span th:text="${beginDate}"></span> est sur le point de s'achever.
+                            La seance du <span th:text="${date}"></span> est <span th:text="${status}"></span>.
                         </p>
-                        <p style="margin: 0;">Nous avons été ravi de vous avoir compté parmi nous et espérons vous retrouver prochainement
+                        <p style="margin: 0;">Retrouvez le rapport de la caisse dans le fichier ci-joint
                         </p>
                     </td>
                 </tr>

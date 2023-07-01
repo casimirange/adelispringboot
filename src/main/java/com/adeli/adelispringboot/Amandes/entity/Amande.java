@@ -3,130 +3,56 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.example.demo.entity;
+package com.adeli.adelispringboot.Amandes.entity;
 
-import java.time.LocalDate;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import com.adeli.adelispringboot.Mangwa.entity.TypeTransaction;
+import com.adeli.adelispringboot.Seance.entity.Seance;
+import com.adeli.adelispringboot.Session.entity.Session;
+import com.adeli.adelispringboot.Users.entity.Users;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  *
  * @author Casimir
  */
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Amande {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idAmande;
- 
+
 //    @NotBlank
-    private double debit;
- 
-//    @NotBlank
-    private double credit;
- 
-//    @NotBlank
-    private double solde;
- 
-//    @NotBlank
-    private LocalDate date;
+    private double montant;
  
 //    @NotBlank
     private String motif;
-    
+
+    @ManyToOne
+    @JoinColumn(name = "id_seance")
+    @JsonIgnore
+    private Seance seance;
+
     @ManyToOne(fetch = FetchType.EAGER) //plusieurs lignes pour un département
-	@JoinColumn(name = "idUser")
-    public User user;
-    
-    @ManyToOne(fetch = FetchType.EAGER) //plusieurs lignes pour un département
-	@JoinColumn(name = "idSession")
-    public Session session;
+    @JoinColumn(name = "idUser")
+    public Users user;
 
-    public Amande() {
-    }
+    @ManyToOne
+    private TypeTransaction typeTransaction;
 
-    public Amande(double debit, double credit, double solde, LocalDate date, String motif, User user, Session session) {
-        this.debit = debit;
-        this.credit = credit;
-        this.solde = solde;
-        this.date = date;
-        this.motif = motif;
-        this.user = user;
-        this.session = session;
-    }
+    private LocalDateTime createdAt;
 
-    public Long getIdAmande() {
-        return idAmande;
-    }
-
-    public void setIdAmande(Long idAmande) {
-        this.idAmande = idAmande;
-    }
-
-    public double getDebit() {
-        return debit;
-    }
-
-    public void setDebit(double debit) {
-        this.debit = debit;
-    }
-
-    public double getCredit() {
-        return credit;
-    }
-
-    public void setCredit(double credit) {
-        this.credit = credit;
-    }
-
-    
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public String getMotif() {
-        return motif;
-    }
-
-    public void setMotif(String motif) {
-        this.motif = motif;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Session getSession() {
-        return session;
-    }
-
-    public void setSession(Session session) {
-        this.session = session;
-    }
-
-    public double getSolde() {
-        return solde;
-    }
-
-    public void setSolde(double solde) {
-        this.solde = solde;
-    }
-    
-    
+    private LocalDateTime updatedAt;
 
 }

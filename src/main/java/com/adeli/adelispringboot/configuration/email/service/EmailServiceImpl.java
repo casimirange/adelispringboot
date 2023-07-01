@@ -1,13 +1,12 @@
-package com.gulfcam.fuelcoupon.user.service;
+package com.adeli.adelispringboot.configuration.email.service;
 
-import com.gulfcam.fuelcoupon.user.dto.EmailDto;
+
+import com.adeli.adelispringboot.configuration.email.dto.EmailDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
@@ -45,7 +44,7 @@ public class EmailServiceImpl implements IEmailService {
 			if(emailDto.getAttachement() != null && emailDto.getNamefile() != null && emailDto.getContentType() != null){
 				mimeMessageHelper.addAttachment(emailDto.getNamefile(), new ByteArrayDataSource(emailDto.getAttachement(), emailDto.getContentType()));
 			}else if(emailDto.getAttachement() != null){
-				mimeMessageHelper.addAttachment("invoice.pdf", new ByteArrayDataSource(emailDto.getAttachement(), "application/pdf"));
+				mimeMessageHelper.addAttachment(emailDto.getFileName(), new ByteArrayDataSource(emailDto.getAttachement(), "application/pdf"));
 			}
 			emailSender.send(mimeMessage);
 			log.info("Email Successful send to {}", emailDto.getTo());

@@ -1,6 +1,6 @@
-package com.gulfcam.fuelcoupon.authentication.dto;
+package com.adeli.adelispringboot.authentication.dto;
 
-import com.gulfcam.fuelcoupon.user.entity.Users;
+import com.adeli.adelispringboot.Users.entity.Users;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

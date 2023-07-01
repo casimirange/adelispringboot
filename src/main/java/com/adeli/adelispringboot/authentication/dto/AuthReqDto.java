@@ -1,4 +1,4 @@
-package com.gulfcam.fuelcoupon.authentication.dto;
+package com.adeli.adelispringboot.authentication.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -14,7 +14,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 public class AuthReqDto {
 
-	@Schema(description = "nom d'utilisateur (email / code pin)")
+	@Schema(description = "nom d'utilisateur (email)")
 	@NotBlank
 	private String login;
 	

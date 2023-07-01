@@ -1,29 +1,37 @@
-package com.adeli.adelispringboot.Seance.dto;
+package com.adeli.adelispringboot.Tontine.dto;
 
-import com.adeli.adelispringboot.Session.entity.Session;
-import com.adeli.adelispringboot.Tontine.entity.Tontine;
+import com.adeli.adelispringboot.Mangwa.entity.TypeTransaction;
+import com.adeli.adelispringboot.Seance.entity.Seance;
 import com.adeli.adelispringboot.Users.entity.Users;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.List;
 
 @Data
-public class SeanceReqDto {
-    @Schema(required = true, example = "17/12/2022", description = "date à laquelle s'est tenue la reunion")
-    @NotNull(message = "{date.required}")
-    private LocalDate date;
+public class TontineReqDto {
+    @Schema(required = true, example = "500 €", description = "montant de la cotisation")
+    @NotNull(message = "{montant.required}")
+    private double montant;
 
-    @Schema(required = true, example = "5 €", description = "membre chez qui se déroule la reunion")
+    @Schema(required = true, description = "membre qui cotise")
     @NotNull(message = "{users.required}")
     private Long users;
 
-//    @Schema(required = true, example = "5 €", description = "session en cours")
-//    @NotNull(message = "{session.required}")
-//    public Session session;
+    @Schema(required = true, description = "motif de la transaction")
+    @NotNull(message = "{description.required}")
+    private String description;
+
+    @Schema(required = true, description = "séance à laquelle s'est tenue la réunion")
+    @NotNull(message = "{seance.required}")
+    private Long seance;
+
+    @Schema(required = true, defaultValue = "{DEPOT}", allowableValues = "{DEPOT, RETRAIT, PRET, REMBOURSEMENT}")
+    @NotNull(message = "{typeTransaction.required}")
+    private Long typeTransaction;
 }

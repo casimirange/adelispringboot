@@ -1,15 +1,16 @@
-package com.adeli.adelispringboot.Seance.service;
+package com.adeli.adelispringboot.Mangwa.service;
 
+import com.adeli.adelispringboot.Mangwa.entity.Retenue;
 import com.adeli.adelispringboot.Seance.entity.Seance;
+import com.adeli.adelispringboot.Tontine.dto.TontineResDto;
 import org.springframework.data.domain.Page;
 
-import java.util.List;
-import java.util.Optional;
+public interface IMangwaService {
+    Page<Retenue> getAllMangwa(int page, int size, String sort, String order);
 
-public interface ISeanceService {
-    Page<Seance> getAllSeances(int page, int size, String sort, String order);
+    Page<Retenue> getMangwaBySeance(Long idSeance, int page, int size, String sort, String order);
 
-    void createSeance(Seance seance);
-
-    Seance getById(Long id);
+    void createMangwa(Retenue retenue);
+    Retenue getById(Long id);
+    Double soldeMangwa();
 }

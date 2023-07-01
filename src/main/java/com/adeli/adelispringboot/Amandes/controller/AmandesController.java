@@ -3,266 +3,233 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.example.demo.Controller;
+package com.adeli.adelispringboot.Amandes.controller;
 
+import com.adeli.adelispringboot.Amandes.dto.AmandeReqDto;
+import com.adeli.adelispringboot.Amandes.entity.Amande;
+import com.adeli.adelispringboot.Amandes.repository.IAmandeRepo;
+import com.adeli.adelispringboot.Amandes.service.IAmandeService;
+import com.adeli.adelispringboot.Discipline.entity.ETypeDiscipline;
+import com.adeli.adelispringboot.Mangwa.entity.EStatusTransaction;
+import com.adeli.adelispringboot.Mangwa.entity.Retenue;
+import com.adeli.adelispringboot.Mangwa.entity.TypeTransaction;
+import com.adeli.adelispringboot.Mangwa.repository.IStatusTransactionRepo;
+import com.adeli.adelispringboot.Mangwa.service.IMangwaService;
+import com.adeli.adelispringboot.Seance.entity.Seance;
+import com.adeli.adelispringboot.Seance.service.ISeanceService;
+import com.adeli.adelispringboot.Session.entity.EStatusSession;
+import com.adeli.adelispringboot.Session.entity.Session;
+import com.adeli.adelispringboot.Session.repository.ISessionRepo;
+import com.adeli.adelispringboot.Session.service.ISessionService;
+import com.adeli.adelispringboot.Tontine.dto.TontineResDto;
+import com.adeli.adelispringboot.Tontine.entity.Tontine;
+import com.adeli.adelispringboot.Users.entity.Users;
+import com.adeli.adelispringboot.Users.repository.IUserRepo;
+import com.adeli.adelispringboot.Users.service.IUserService;
+import com.adeli.adelispringboot.authentication.dto.MessageResponseDto;
+import com.adeli.adelispringboot.configuration.globalConfiguration.ApplicationConstant;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
+import net.minidev.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
-//import com.example.demo.entity.Role;
-import com.example.demo.entity.Amande;
-import com.example.demo.entity.Notifications;
-import com.example.demo.entity.User;
-import com.example.demo.message.response.ResponseMessage;
-import com.example.demo.entity.Session;
-import com.example.demo.repository.AmandeRepository;
-import com.example.demo.repository.RetenueRepository;
-import com.example.demo.repository.SessionRepository;
-import com.example.demo.repository.TontineRepository;
-import com.example.demo.repository.UserRepository;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.minidev.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import com.example.demo.repository.NotificationsRepository;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 /**
  *
  * @author Casimir
  */
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/admin/amandes")
+@Tag(name = "Amande")
+@RequestMapping("/api/v1.0/amandes")
+@Slf4j
 public class AmandesController {
-           
     @Autowired
-    TontineRepository tontineRepository;
-    
-    @Autowired
-    SessionRepository sessionRepository;
+    ISessionRepo sessionRepository;
     
     @Autowired
-    UserRepository userRepository;
-    
-    @Autowired
-    RetenueRepository retenueRepository;
-    
-    @Autowired
-    AmandeRepository amandeRepository;
-    
-    @Autowired
-    NotificationsRepository notificationsRepository;       
-    
-    JSONObject json;
-    String mts;
-    
-    @PostMapping("")
-    public ResponseEntity<?> createAmande(@RequestParam("user") User u, @RequestBody Amande amande) { 
-        User user = userRepository.findById(u.getId()).get(); 
-        List<Session> sess = sessionRepository.findByEtat(true);
-        Amande am = amandeRepository.findFirstByOrderByIdAmandeDesc();
-        amande.setCredit(amande.getCredit());
-        amande.setDebit(amande.getDebit());
-        double solde = 0;
-        if(am != null){
-            if(amande.getCredit() != 0){
-                solde = am.getSolde() - amande.getCredit();
-                amande.setSolde(solde);
-            }else{
-                solde = am.getSolde() + amande.getDebit();
-                amande.setSolde(solde);
-            }
-            
-        }else {
-            solde = amande.getDebit();
-            amande.setSolde(solde);
-        }
-        
-        Session session = sess.get(0);
-        amande.setDate(LocalDate.now());
-        amande.setSession(session);
-        amande.setUser(user);        
-        
-        Notifications notifications = new Notifications();
-        notifications.setDescription(user.getName()+" a été amandé d'un montant de "+amande.getDebit()+ " € pour motif: "+amande.getMotif());
-        notifications.setDate(LocalDate.now());    
-        
-        notificationsRepository.save(notifications);      
-        amandeRepository.save(amande);
-        return new ResponseEntity<>(new ResponseMessage("amande enregistrée"), HttpStatus.CREATED);
-    }
-    
-    
-    @PostMapping("/retrait/{id}")
-    public ResponseEntity<?> retraitAmande(@PathVariable Long id, @RequestBody Amande amande) { 
-        User user = userRepository.findById(id).get(); 
-        List<Session> sess = sessionRepository.findByEtat(true);
-        Amande am = amandeRepository.findFirstByOrderByIdAmandeDesc();
-        double solde = 0;
-        if(am != null){
-            if(amande.getCredit() > am.getSolde()){
-                return new ResponseEntity<>(new ResponseMessage("erreur! -> montant impossible à retiré car supérieur"), HttpStatus.BAD_REQUEST);
-            }
-            solde = am.getSolde() - amande.getCredit();
-            amande.setSolde(solde);
-        }else{
-            solde = amande.getCredit();
-            amande.setSolde(solde);
-        }
-        
-        Session session = sess.get(0);
-        amande.setDate(LocalDate.now());
-        amande.setSession(session);
-        amande.setDebit(0);
-        amande.setUser(user);        
-        
-        Notifications notifications = new Notifications();
-        notifications.setDescription(user.getName()+" a rétiré un montant de "+amande.getCredit()+ " € pour motif: "+amande.getMotif());
-        notifications.setDate(LocalDate.now());    
-        
-        notificationsRepository.save(notifications);      
-        amandeRepository.save(amande);
-        return new ResponseEntity<>(new ResponseMessage("retrait effectué!"), HttpStatus.CREATED);
-    }
-    
-    @PutMapping("/{id}")
-    public ResponseEntity<?> remboursePret(@PathVariable Long id, @RequestBody Amande amande) { 
-        Amande amandes = amandeRepository.findById(id).get();
-//        amandes
-//        prets2.setRembourse(true);
-//        prets2.setDateRemboursement(LocalDate.now());
-//        prets2.setMontant_rembourse(prets.getMontant_rembourse());
-//        
-//        
-//        Notifications notifications = new Notifications(
-//                prets2.getUser().getName()+" a remboursé son prêt de "+prets.getMontant_rembourse()+" €",
-//                LocalDate.now());
-//        
-//        double solde = ton.getMontant() + prets.getMontant_rembourse();
-//        tontine.setMontant(solde);        
-//        tontine.setDebit(prets.getMontant_rembourse());
-//        tontine.setCredit(0);
-//        tontine.setMotif("remboursement de prêt par "+prets2.getUser().getName());
-//        tontine.setUser(prets2.getUser());
-//        tontine.setDate(LocalDate.now()); 
-//        tontine.setSession(session); 
-//        
-//        pretRepository.save(prets2);
-//        notificationsRepository.save(notifications);
-//        tontineRepository.save(tontine);
-        return new ResponseEntity<>(new ResponseMessage("prêt remboursé!"), HttpStatus.CREATED);
-    }
+    IUserRepo userRepository;
 
-//    @PostMapping("/{id}")
-//    public ResponseEntity<?> createTontine(@PathVariable Long id, @RequestBody Tontine tontine) { 
-//        User user = userRepository.findById(id).get();  
-//        Retenue retenue = new Retenue();
-//        System.out.println("user: "+ user.getName());
-//        List<Session> sess = sessionRepository.findByEtat(true);
-//        Session session = sess.get(0);
-//        System.out.println("session: "+ session.getIdSession());
-////        Tontine tontine = new Tontine();
-//        
-//        double montant = session.getMontant();
-//        double mangwa = session.getRetenue();
-//        System.out.println("session montant: "+ montant);
-//        System.out.println("montant: "+ tontine.getDebit());
-//        if (montant > tontine.getDebit()){
-//            return new ResponseEntity<>(new ResponseMessage("Erreur! -> Le montant de la cotisation n'est pas correct"),
-//              HttpStatus.BAD_REQUEST);
-//        }   
-//        Tontine ton = tontineRepository.findFirstByOrderByIdTontineDesc();
-////        System.out.println("last: "+ ton.getIdTontine());
+    @Autowired
+    IUserService iUserService;
+    
+    @Autowired
+    IAmandeRepo amandeRepository;
+    @Autowired
+    IAmandeService iAmandeService;
+
+    @Autowired
+    ISeanceService iSeanceService;
+
+    @Autowired
+    IStatusTransactionRepo iStatusTransactionRepo;
+
+    @Autowired
+    private ResourceBundleMessageSource messageSource;
+
+    @Autowired
+    IMangwaService iMangwaService;
+
+    @Autowired
+    ISessionService iSessionService;
+
+    EStatusTransaction etyp = null;
+
+    @Operation(summary = "création des informations pour une amande", tags = "Amande", responses = {
+            @ApiResponse(responseCode = "201", content = @Content(mediaType = "Application/Json", array = @ArraySchema(schema = @Schema(implementation = Amande.class)))),
+            @ApiResponse(responseCode = "404", description = "Session not found", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "401", description = "Full authentication is required to access this resource", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "403", description = "Forbidden : accès refusé", content = @Content(mediaType = "Application/Json")),})
+    @PostMapping()
+    @PreAuthorize("hasAnyRole('SUPERADMIN', 'USER')")
+    public ResponseEntity<?> createAmande(@RequestBody AmandeReqDto amandeReqDto) {
+        Users user = iUserService.getById(amandeReqDto.getIdUser());
+        Amande amande = new Amande();
+
+        Seance seance = iSeanceService.getById(amandeReqDto.getIdSeance());
+        amande.setMontant(amandeReqDto.getMontant());
+        amande.setMotif(amandeReqDto.getMotif());
+        amande.setSeance(seance);
+        amande.setCreatedAt(LocalDateTime.now());
+        amande.setUser(user);
+        if (amandeReqDto.pay){
+            etyp = EStatusTransaction.DEPOT;
+            Retenue retenue = new Retenue();
+            Session session = iSessionService.findLastSession();
+            retenue.setMontant(amandeReqDto.getMontant());
+            TypeTransaction typeTransaction = iStatusTransactionRepo.findByName(EStatusTransaction.DEPOT).orElseThrow(()-> new ResourceNotFoundException("Type de transaction not found"));
+            retenue.setTypeTransaction(typeTransaction);
+            retenue.setDate(seance.getDate());
+            retenue.setMotif("amande "+user.getLastName());
+            retenue.setCreatedAt(LocalDateTime.now());
+            retenue.setUser(user);
+            iMangwaService.createMangwa(retenue);
+        }else {
+            etyp = EStatusTransaction.NON_PAYE;
+        }
+        TypeTransaction typeTransaction2 = iStatusTransactionRepo.findByName(etyp).orElseThrow(()-> new ResourceNotFoundException("Type de transaction not found"));
+        amande.setTypeTransaction(typeTransaction2);
+        iAmandeService.createAmande(amande);
+        return ResponseEntity.ok(amande);
+    }
+    
+    
+//    @PostMapping("/retrait/{id}")
+//    @Operation(summary = "retirer les sous dans la caisse amande", tags = "Amande", responses = {
+//            @ApiResponse(responseCode = "201", content = @Content(mediaType = "Application/Json", array = @ArraySchema(schema = @Schema(implementation = Amande.class)))),
+//            @ApiResponse(responseCode = "404", description = "Amande not found", content = @Content(mediaType = "Application/Json")),
+//            @ApiResponse(responseCode = "401", description = "Full authentication is required to access this resource", content = @Content(mediaType = "Application/Json")),
+//            @ApiResponse(responseCode = "403", description = "Forbidden : accès refusé", content = @Content(mediaType = "Application/Json")),})
+//    @PreAuthorize("hasAnyRole('SUPERADMIN', 'USER')")
+//    public ResponseEntity<?> retraitAmande(@PathVariable Long id, @RequestBody Amande amande) {
+//        Users user = userRepository.findById(id).get();
+//        Amande am = amandeRepository.findFirstByOrderByIdAmandeDesc();
 //        double solde = 0;
-//        if(ton != null){
-//            solde = ton.getMontant() + montant - mangwa;
-//            tontine.setMontant(solde);
+//        if(am != null){
+//            if(amande.getCredit() > am.getSolde()){
+//                return ResponseEntity.badRequest().body(new MessageResponseDto(HttpStatus.BAD_REQUEST,
+//                        messageSource.getMessage("messages.amount_exced", null, LocaleContextHolder.getLocale())));
+//            }
+//            solde = am.getSolde() - amande.getCredit();
+//            amande.setSolde(solde);
 //        }else{
-//            solde = montant - mangwa;
-//            tontine.setMontant(solde);
+//            solde = amande.getCredit();
+//            amande.setSolde(solde);
 //        }
-////        double solde = ton.getMontant() + tontine.getDebit() - mangwa;
-//        double debit = montant - mangwa;
-//        
-//        tontine.setDebit(debit);
-//        tontine.setCredit(0);
-//        tontine.setMotif("cotisation "+user.getName());
-//        tontine.setUser(user);
-//        if (!planningRepository.existsByDate(LocalDate.now())){
-//            return new ResponseEntity<>(new ResponseMessage("Erreur! -> Ce jour n'est pas inscrit dans le planning de réunion"),
-//              HttpStatus.BAD_REQUEST);
-//        }
-//        tontine.setDate(LocalDate.now()); 
-//        tontine.setSession(session);
-////        session.setReunion(reunion);
-//        System.out.println("session: "+ session.getDebut());
-//        if(tontineRepository.existsByDateAndUser(tontine.getDate(), tontine.getUser())){
-//            return new ResponseEntity<>(new ResponseMessage("Attention! -> l'utilisateur "+user.getName()+" a déjà cotisé"),
-//              HttpStatus.BAD_REQUEST);
-//        }  
-//                
-//        tontineRepository.save(tontine);
-//        
-//        Retenue rete = retenueRepository.findFirstByOrderByIdRetenueDesc();
-////        double ret = tontine.getDebit() - session.getRetenue();
-//        double solde2 = 0;
-//        if(rete != null){
-//            solde2 = rete.getSolde() + mangwa;
-//            retenue.setSolde(solde2);
-//        }else{
-//            solde2 = mangwa;
-//            retenue.setSolde(solde2);
-//        }
-//        retenue.setDebit(mangwa);
-//        retenue.setCredit(0);
-//        retenue.setDate(LocalDate.now());
-//        retenue.setUser(user);
-//        retenue.setMotif("cotisation");
-//        
-//        
-//        System.out.println("mangwa: "+ solde2);
-//        retenueRepository.save(retenue);
-//        
-//      return new ResponseEntity<>(new ResponseMessage("Tontine enregistrée"), HttpStatus.CREATED);
+//
+//        Session session = sessionRepository.findFirstByOrderByIdDesc();
+//        amande.setDate(LocalDate.now());
+//        amande.setSession(session);
+//        amande.setDebit(0);
+//        amande.setUser(user);
+//        return ResponseEntity.ok(amandeRepository.saveAndFlush(amande));
+//    }
+
+//    @GetMapping()
+//    @Operation(summary = "Liste des amandes", tags = "Amande", responses = {
+//            @ApiResponse(responseCode = "201", content = @Content(mediaType = "Application/Json", array = @ArraySchema(schema = @Schema(implementation = Amande.class)))),
+//            @ApiResponse(responseCode = "404", description = "Session not found", content = @Content(mediaType = "Application/Json")),
+//            @ApiResponse(responseCode = "401", description = "Full authentication is required to access this resource", content = @Content(mediaType = "Application/Json")),
+//            @ApiResponse(responseCode = "403", description = "Forbidden : accès refusé", content = @Content(mediaType = "Application/Json")),})
+//    @PreAuthorize("hasAnyRole('SUPERADMIN', 'USER')")
+//    public ResponseEntity<?> getAmandes(@RequestParam(required = false, value = "page", defaultValue = "0") String pageParam,
+//                                        @RequestParam(required = false, value = "size", defaultValue = ApplicationConstant.DEFAULT_SIZE_PAGINATION) String sizeParam,
+//                                        @RequestParam(required = false, defaultValue = "id") String sort,
+//                                        @RequestParam(required = false, defaultValue = "desc") String order){
+//        Page<Amande> list = iAmandeService.getAllAmandes(Integer.parseInt(pageParam), Integer.parseInt(sizeParam), sort, order);
+//        return ResponseEntity.ok(list);
 //    }
 
 
+//    @GetMapping("/solde")
+//    public JSONObject getSoldeAmande(){
+//        Amande amande = amandeRepository.findFirstByOrderByIdAmandeDesc();
+//        Map<String, Object> response = new HashMap<>();
+//        JSONObject solde;
+//        if(amande != null){
+//            response.put("solde", amande.getSolde());
+//        }else{
+//            response.put("solde", 0);
+//        }
+//        solde = new JSONObject(response);
+//        return solde;
+//    }
+
+
+    @Parameters(value = {
+            @Parameter(name = "sort", schema = @Schema(allowableValues = {"id", "createdAt"})),
+            @Parameter(name = "order", schema = @Schema(allowableValues = {"asc", "desc"}))})
+    @Operation(summary = "Liste des amandes par seance", tags = "Amande", responses = {
+            @ApiResponse(responseCode = "200", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "403", description = "Forbidden : accès refusé", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "404", description = "Seance not found", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "401", description = "Full authentication is required to access this resource", content = @Content(mediaType = "Application/Json"))})
+    @PreAuthorize("hasAnyRole('SUPERADMIN','USER')")
+    @GetMapping("/seance/{idSeance:[0-9]+}")
+    public ResponseEntity<Page<Amande>> getAmandeBySeance(@PathVariable Long idSeance,
+                                                                  @RequestParam(required = false, value = "page", defaultValue = "0") String pageParam,
+                                                                  @RequestParam(required = false, value = "size", defaultValue = ApplicationConstant.DEFAULT_SIZE_PAGINATION) String sizeParam,
+                                                                  @RequestParam(required = false, defaultValue = "idAmande") String sort,
+                                                                  @RequestParam(required = false, defaultValue = "desc") String order) {
+        Page<Amande> list = iAmandeService.getAmandesBySeance(idSeance, Integer.parseInt(pageParam), Integer.parseInt(sizeParam), sort, order);
+        return ResponseEntity.ok(list);
+    }
+
+    @Parameters(value = {
+            @Parameter(name = "sort", schema = @Schema(allowableValues = {"id", "createdAt"})),
+            @Parameter(name = "order", schema = @Schema(allowableValues = {"asc", "desc"}))})
+    @Operation(summary = "Liste de toutes les amandes", tags = "Amande", responses = {
+            @ApiResponse(responseCode = "200", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "403", description = "Forbidden : accès refusé", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "404", description = "Seance not found", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "401", description = "Full authentication is required to access this resource", content = @Content(mediaType = "Application/Json"))})
+    @PreAuthorize("hasAnyRole('SUPERADMIN','USER')")
     @GetMapping()
-    public List<JSONObject> getActiveSessionTontine(){
-        return amandeRepository.findAmande();
-    }
-
-
-    @GetMapping("/solde")
-    public JSONObject getSoldeAmande(){
-        Amande amande = amandeRepository.findFirstByOrderByIdAmandeDesc();
-        Map<String, Object> response = new HashMap<>();
-        JSONObject solde;
-//        response.put("solde", amande.getSolde());
-        if(amande != null){
-            response.put("solde", amande.getSolde());
-        }else{
-            response.put("solde", 0);
-        }
-        solde = new JSONObject(response);
-        return solde;
-    }
-             
-    @GetMapping("/id/{id}")
-    public List<JSONObject> getUsers(@PathVariable Long id) {
-        User u = userRepository.findById(id).get();
-        
-        return amandeRepository.findAmandeUser(id);
+    public ResponseEntity<Page<Amande>> getAmandes(  @RequestParam(required = false, value = "page", defaultValue = "0") String pageParam,
+                                                     @RequestParam(required = false, value = "size", defaultValue = ApplicationConstant.DEFAULT_SIZE_PAGINATION) String sizeParam,
+                                                     @RequestParam(required = false, defaultValue = "idAmande") String sort,
+                                                     @RequestParam(required = false, defaultValue = "desc") String order) {
+        Page<Amande> list = iAmandeService.getAllAmandes(Integer.parseInt(pageParam), Integer.parseInt(sizeParam), sort, order);
+        return ResponseEntity.ok(list);
     }
 }

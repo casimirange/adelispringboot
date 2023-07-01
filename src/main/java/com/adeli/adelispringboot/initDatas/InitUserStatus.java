@@ -5,12 +5,13 @@
  */
 package com.adeli.adelispringboot.initDatas;
 
-import com.adeli.adelispringboot.Users.entity.ERole;
+import com.adeli.adelispringboot.Users.entity.EStatusUser;
 import com.adeli.adelispringboot.Users.entity.ETypeAccount;
-import com.adeli.adelispringboot.Users.entity.RoleUser;
+import com.adeli.adelispringboot.Users.entity.StatusUser;
 import com.adeli.adelispringboot.Users.entity.TypeAccount;
-import com.adeli.adelispringboot.Users.repository.IRoleUserRepo;
+import com.adeli.adelispringboot.Users.repository.IStatusUserRepo;
 import com.adeli.adelispringboot.Users.repository.ITypeAccountRepository;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -23,48 +24,23 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-@RequiredArgsConstructor
-@Order(2)
-public class InitTypeAccount implements ApplicationRunner{
+@AllArgsConstructor
+@Order(3)
+public class InitUserStatus implements ApplicationRunner{
 
-    private ITypeAccountRepository iTypeAccountRepository;
+    private IStatusUserRepo iTypeAccountRepository;
     
     @Override
     public void run(ApplicationArguments args) throws Exception {;
-        System.out.println("initialisation des types de comptes");
-        TypeAccount roleUser = new TypeAccount(ETypeAccount.ADHERANT);
-        TypeAccount rolePresident = new TypeAccount(ETypeAccount.PRESIDENT);
-        TypeAccount rolePorteParole = new TypeAccount(ETypeAccount.PORTE_PAROLE);
-        TypeAccount roleTresorier = new TypeAccount(ETypeAccount.TRESORIER);
-        TypeAccount roleSenceur = new TypeAccount(ETypeAccount.SENSCEUR);
-        TypeAccount roleSecretaire = new TypeAccount(ETypeAccount.SECRETAIRE);
-        TypeAccount roleCommissaire = new TypeAccount(ETypeAccount.COMISSAIRE_AU_COMPTE);
+        System.out.println("initialisation des status utilisateurs");
+        StatusUser userEnable = new StatusUser(EStatusUser.USER_ENABLED);
+        StatusUser userDisable = new StatusUser(EStatusUser.USER_DISABLED);
 
-        if (!iTypeAccountRepository.existsByName(ETypeAccount.ADHERANT)) {
-            iTypeAccountRepository.save(roleUser);
+        if (!iTypeAccountRepository.existsByName(EStatusUser.USER_ENABLED)) {
+            iTypeAccountRepository.save(userEnable);
         }
-        if (!iTypeAccountRepository.existsByName(ETypeAccount.PRESIDENT)) {
-            iTypeAccountRepository.save(rolePresident);
-        }
-
-        if (!iTypeAccountRepository.existsByName(ETypeAccount.PORTE_PAROLE)) {
-            iTypeAccountRepository.save(rolePorteParole);
-        }
-
-        if (!iTypeAccountRepository.existsByName(ETypeAccount.TRESORIER)) {
-            iTypeAccountRepository.save(roleTresorier);
-        }
-
-        if (!iTypeAccountRepository.existsByName(ETypeAccount.SENSCEUR)) {
-            iTypeAccountRepository.save(roleSenceur);
-        }
-
-        if (!iTypeAccountRepository.existsByName(ETypeAccount.SECRETAIRE)) {
-            iTypeAccountRepository.save(roleSecretaire);
-        }
-
-        if (!iTypeAccountRepository.existsByName(ETypeAccount.COMISSAIRE_AU_COMPTE)) {
-            iTypeAccountRepository.save(roleCommissaire);
+        if (!iTypeAccountRepository.existsByName(EStatusUser.USER_DISABLED)) {
+            iTypeAccountRepository.save(userDisable);
         }
                
     }

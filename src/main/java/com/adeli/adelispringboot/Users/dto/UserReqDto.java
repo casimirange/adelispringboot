@@ -1,6 +1,5 @@
-package com.gulfcam.fuelcoupon.user.dto;
+package com.adeli.adelispringboot.Users.dto;
 
-import com.gulfcam.fuelcoupon.user.entity.ERole;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,8 +8,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -18,19 +16,16 @@ public class UserReqDto {
 
 	@Email(message = "{email.verified}")
 	@NotNull(message = "email.required")
+	@Schema(description = "adresse email")
 	private String email;
 
 	@NotNull(message = "{phone.required}")
 	@Schema(description = "Téléphone")
 	private String telephone;
 
-	@NotNull(message = "{pinCode.required}")
-	@Schema(description = "Code pin")
-	private int pinCode;
-
-	@NotNull(message = "{idStore.required}")
-	@Schema(description = "Reference interne du magasin associé")
-	private Long idStore;
+	@NotNull(message = "{montant.required}")
+	@Schema(description = "Montant")
+	private Double montant;
 
 	@Size(min = 6,message = "{password.lenght}")
 	@NotNull(message = "{password.required}")
@@ -41,7 +36,7 @@ public class UserReqDto {
 			,
 			@Pattern(regexp = "(?=.*[A-Z]).+", message = "{password.upercase}")
 			,
-			@Pattern(regexp = "(?=.*[!@#$%^&*+=?-_()/\"\\.,<>~`;:]).+", message = "{password.capitalletter}")
+			@Pattern(regexp = "(?=.*[!@#$%^&*+=?-_()/\"\\.,<>~`;:]).+", message = "{password.sepcialcaracter}")
 			,
 			@Pattern(regexp = "(?=\\S+$).+", message = "{password.spacer}")})
 	@Schema(description = "Mot de passe")
@@ -51,11 +46,9 @@ public class UserReqDto {
 	@Schema(description = "Prénom")
 	private String firstName;
 
+	@NotNull(message = "lastName.required")
 	@Schema(description = "Nom")
 	private String lastName;
-
-	@Schema(description = "Poste occupé")
-	private String position;
 
 	@Schema(description = "Role de l'utilisateur, defaut ROLE_USER", defaultValue = "ROLE_USER", allowableValues = {"ROLE_ADMIN", "ROLE_SUPERADMIN", "ROLE_AGENT","ROLE_PRE_VERIFICATION_USER","ROLE_USER"})
 	private String roleName;

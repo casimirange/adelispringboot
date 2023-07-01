@@ -1,17 +1,16 @@
-package com.gulfcam.fuelcoupon.client.repository;
-import com.gulfcam.fuelcoupon.client.entity.Client;
+package com.adeli.adelispringboot.Session.repository;
+import com.adeli.adelispringboot.Session.entity.Session;
+import com.adeli.adelispringboot.Session.entity.SessionStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface IClientRepo extends JpaRepository<Client, Long> {
+public interface ISessionRepo extends JpaRepository<Session, Long> {
 
-    List<Client> getClientsByCompleteNameContains(String completeName);
-    Optional<Client> getClientByEmail(String email);
-    Optional<Client> getClientByGulfcamAccountNumber(String gulfcamaccountnumber);
-    Optional<Client> getClientByInternalReference(Long internalReference);
-
-    boolean existsByEmail(String email);
-    boolean existsByGulfcamAccountNumber(String gulfcamaccountnumber);
+    Optional<Session> getSessionByName(String name);
+    List<Session> getSessionsByNameContains(String name);
+    boolean existsSessionByStatus(SessionStatus sessionStatus);
+    Session findSessionByStatus(SessionStatus sessionStatus);
+    Session findFirstByOrderByIdDesc();
 }

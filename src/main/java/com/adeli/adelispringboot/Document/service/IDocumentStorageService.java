@@ -1,6 +1,7 @@
-package com.gulfcam.fuelcoupon.order.service;
+package com.adeli.adelispringboot.Document.service;
 
-import com.gulfcam.fuelcoupon.order.entity.TypeDocument;
+
+import com.adeli.adelispringboot.Document.entity.TypeDocument;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 

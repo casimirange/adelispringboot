@@ -1,60 +1,78 @@
-package com.gulfcam.fuelcoupon.globalConfiguration;
+package com.adeli.adelispringboot.configuration.globalConfiguration;
 
 import javax.servlet.http.HttpServletRequest;
 
 public class ApplicationConstant {
 
-    public static final String ENTREPRISE_NAME = "GULFCAM";
+    public static final String ENTREPRISE_NAME = "ADELI";
 
-    public static final String SUBJECT_EMAIL_PAY = "GulfCam - Accès espace membres";
+    public static final String SUBJECT_EMAIL_PAY = "ADELI - Accès espace membres";
 
-    public static final String SUBJECT_EMAIL_OPT = "GulfCam - Code OTP";
+    public static final String SUBJECT_EMAIL_OPT = "ADELI - Code OTP";
 
-    public static final String SUBJECT_EMAIL_NEW_USER = "GulfCam - Bienvenue";
+    public static final String SUBJECT_EMAIL_NEW_USER = "ADELI - Bienvenue";
 
-    public static final String SUBJECT_EMAIL_NEW_ORDER = "GulfCam - Nouvelle Commande : #Ref";
+    public static final String SUBJECT_EMAIL_NEW_SESSION = "ADELI - Nouvelle Session";
 
-    public static final String SUBJECT_EMAIL_ORDER_STOCKAGE = "GulfCam - Ordre de stockage";
+    public static final String SUBJECT_EMAIL_DISCIPLINE = "ADELI - ";
 
-    public static final String SUBJECT_EMAIL_ORDER_SUPPLY = "GulfCam - Ordre d'approvisionnement";
+    public static final String SUBJECT_EMAIL_MANGWA = "ADELI - Sortie d'argent";
 
-    public static final String SUBJECT_EMAIL_ORDER_TRANSFER= "GulfCam - Ordre de de transfert de cartons";
+    public static final String SUBJECT_EMAIL_END_SESSION = "ADELI - Fin de Session";
 
-    public static final String SUBJECT_EMAIL_DEMANDE_OPPOSITION= "GulfCam - Demande d'opposition";
+    public static final String SUBJECT_EMAIL_NEW_ORDER = "ADELI - Nouvelle Commande : #Ref";
 
-    public static final String SUBJECT_EMAIL_CREDIT_NOTE= "GulfCam - Note de credit";
+    public static final String SUBJECT_EMAIL_ORDER_STOCKAGE = "ADELI - Ordre de stockage";
 
-    public static final String SUBJECT_EMAIL_ACCEPT_COUPON= "GulfCam - Acceptation du coupon ";
+    public static final String SUBJECT_EMAIL_ORDER_SUPPLY = "ADELI - Ordre d'approvisionnement";
 
-    public static final String SUBJECT_EMAIL_VALID_CREDIT_NOTE= "GulfCam - Validation d'une note de crédit ";
+    public static final String SUBJECT_EMAIL_ORDER_TRANSFER= "ADELI - Ordre de de transfert de cartons";
 
-    public static final String SUBJECT_EMAIL_MODIFY_ORDER = "GulfCam - Modification de la Commande : #Ref";
+    public static final String SUBJECT_EMAIL_DEMANDE_OPPOSITION= "ADELI - Demande d'opposition";
 
-    public static final String SUBJECT_EMAIL_CANCEL_ORDER = "GulfCam - Annulation de la Commande : #Ref";
+    public static final String SUBJECT_EMAIL_CREDIT_NOTE= "ADELI - Note de credit";
 
-    public static final String SUBJECT_EMAIL_CANCEL_MULTI_ORDER = "GulfCam - Annulation en lots des Commandes ";
+    public static final String SUBJECT_EMAIL_ACCEPT_COUPON= "ADELI - Acceptation du coupon ";
 
-    public static final String SUBJECT_EMAIL_NEW_INVOICE = "GulfCam - Nouvelle Proforma : #Ref";
+    public static final String SUBJECT_EMAIL_VALID_CREDIT_NOTE= "ADELI - Validation d'une note de crédit ";
 
-    public static final String SUBJECT_EMAIL_NEW_INVOICE2 = "GulfCam - Nouvelle Préfacture : #Ref";
+    public static final String SUBJECT_EMAIL_MODIFY_ORDER = "ADELI - Modification de la Commande : #Ref";
 
-    public static final String SUBJECT_EMAIL_EXPORT_ORDERS_EXCEL = "GulfCam - Liste des commandes";
+    public static final String SUBJECT_EMAIL_MODIFY_SEANCE = "ADELI - Séance du ";
+    public static final String SUBJECT_EMAIL_COMPTE_RENDU = "ADELI - Compte rendu de la séance du : #";
 
-    public static final String SUBJECT_EMAIL_EXPORT_COUPONS_EXCEL = "GulfCam - Liste des coupons";
+    public static final String SUBJECT_EMAIL_CANCEL_ORDER = "ADELI - Annulation de la Commande : #Ref";
 
-    public static final String SUBJECT_EMAIL_NEW_RECEIVED = "GulfCam - Reçue de paiement : #Ref";
+    public static final String SUBJECT_EMAIL_CANCEL_MULTI_ORDER = "ADELI - Annulation en lots des Commandes ";
 
-    public static final String SUBJECT_EMAIL_NEW_FACTURE = "GulfCam - Facture : #Ref";
+    public static final String SUBJECT_EMAIL_NEW_INVOICE = "ADELI - Nouvelle Proforma : #Ref";
 
-    public static final String SUBJECT_EMAIL_PAY_TEMPORAIRE = "GulfCam - Accès Temporaire";
+    public static final String SUBJECT_EMAIL_NEW_INVOICE2 = "ADELI - Nouvelle Préfacture : #Ref";
 
-    public static final String SUBJECT_EMAIL_VILID_PROFIL = "GulfCam - Validation de profil ";
+    public static final String SUBJECT_EMAIL_EXPORT_ORDERS_EXCEL = "ADELI - Liste des commandes";
 
-    public static final String SUBJECT_EMAIL_VILID_PROFIL_NOT_VALIDE = "GulfCam - Profil non valide";
+    public static final String SUBJECT_EMAIL_EXPORT_COUPONS_EXCEL = "ADELI - Liste des coupons";
 
-    public static final String TEMPLATE_EMAIL_ENTREPRISE_MEMBRE = "email-verification";
+    public static final String SUBJECT_EMAIL_NEW_RECEIVED = "ADELI - Reçue de paiement : #Ref";
 
-    public static final String TEMPLATE_EMAIL_NEW_USER = "new-user";
+    public static final String SUBJECT_EMAIL_NEW_FACTURE = "ADELI - Facture : #Ref";
+
+    public static final String SUBJECT_EMAIL_PAY_TEMPORAIRE = "ADELI - Accès Temporaire";
+
+    public static final String SUBJECT_EMAIL_VILID_PROFIL = "ADELI - Validation de profil ";
+
+    public static final String SUBJECT_EMAIL_VILID_PROFIL_NOT_VALIDE = "ADELI - Profil non valide";
+
+    public static final String TEMPLATE_EMAIL_ENTREPRISE_MEMBRE = "otp";
+
+    public static final String TEMPLATE_EMAIL_NEW_USER = "welcom";
+
+    public static final String TEMPLATE_EMAIL_NEW_SESSION = "new-session";
+
+    public static final String TEMPLATE_EMAIL_DISCIPLINE= "discipline";
+    public static final String TEMPLATE_EMAIL_MANGWA = "mangwa";
+
+    public static final String TEMPLATE_EMAIL_END_SESSION = "end-session";
 
     public static final String TEMPLATE_EMAIL_NEW_ORDER = "new-order";
 
@@ -74,6 +92,10 @@ public class ApplicationConstant {
 
     public static final String TEMPLATE_EMAIL_MODIFY_ORDER = "modify-order";
 
+    public static final String TEMPLATE_EMAIL_END_SEANCE = "end-seance";
+
+    public static final String TEMPLATE_EMAIL_COMPTE_RENDU = "compte-rendu";
+
     public static final String TEMPLATE_EMAIL_CANCEL_ORDER = "cancel-order";
 
     public static final String TEMPLATE_EMAIL_CANCEL_MULTI_ORDER = "cancel-multi-order";
@@ -87,7 +109,7 @@ public class ApplicationConstant {
     public static final String TEMPLATE_EMAIL_NEW_RECEIVED = "new-received";
 
     public static final String TEMPLATE_EMAIL_NEW_FACTURE = "new-facture";
-    public static final String SUBJECT_PASSWORD_RESET = "GulfCam Réinitialisation du mot de passe";
+    public static final String SUBJECT_PASSWORD_RESET = "ADELI - Réinitialisation du mot de passe";
 
     public static final String TEMPLATE_PASSWORD_RESET = "email-password-reset";
 

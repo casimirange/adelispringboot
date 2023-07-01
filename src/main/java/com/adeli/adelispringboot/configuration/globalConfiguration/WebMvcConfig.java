@@ -1,4 +1,4 @@
-package com.gulfcam.fuelcoupon.globalConfiguration;
+package com.adeli.adelispringboot.configuration.globalConfiguration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

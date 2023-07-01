@@ -1,7 +1,8 @@
-package com.gulfcam.fuelcoupon.order.entity;
+package com.adeli.adelispringboot.Document.entity;
 
 import lombok.*;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+
 
 import javax.persistence.*;
 
@@ -11,8 +12,8 @@ import javax.persistence.*;
 @Setter
 @ConfigurationProperties(prefix = "file")
 @NoArgsConstructor
-@EqualsAndHashCode(of = { "documentId", "fileName", "documentType", "documentFormat", "type", "order" })
-@Table(name = "order_documents")
+@EqualsAndHashCode(of = { "documentId", "fileName", "documentType", "documentFormat", "type", "seance" })
+@Table(name = "seance_documents")
 public class DocumentStorageProperties {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +32,6 @@ public class DocumentStorageProperties {
     @Transient
     private String uploadDir;
 
-    @Column(nullable = false, name = "id_order")
-    private Long order;
+    @Column(nullable = false, name = "id_seance")
+    private Long seance;
 }

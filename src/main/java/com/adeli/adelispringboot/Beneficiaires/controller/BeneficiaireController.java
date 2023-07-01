@@ -3,284 +3,191 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.example.demo.Controller;
+package com.adeli.adelispringboot.Beneficiaires.controller;
 
 
 //import com.example.demo.entity.Role;
-import com.example.demo.entity.Beneficiaire;
-import com.example.demo.entity.Notifications;
-import com.example.demo.entity.User;
-import com.example.demo.message.response.ResponseMessage;
-import com.example.demo.entity.Session;
-import com.example.demo.entity.Tontine;
-import com.example.demo.repository.BeneficiaireRepository;
-import com.example.demo.repository.NotificationsRepository;
-import com.example.demo.repository.ReunionRepository;
-import com.example.demo.repository.SessionRepository;
-import com.example.demo.repository.TontineRepository;
-import com.example.demo.repository.UserRepository;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+
+import com.adeli.adelispringboot.Beneficiaires.dto.BenefReqDto;
+import com.adeli.adelispringboot.Beneficiaires.entity.Beneficiaire;
+import com.adeli.adelispringboot.Beneficiaires.repository.BeneficiaireRepository;
+import com.adeli.adelispringboot.Beneficiaires.service.IBeneficiaireService;
+import com.adeli.adelispringboot.Mangwa.entity.EStatusTransaction;
+import com.adeli.adelispringboot.Mangwa.entity.TypeTransaction;
+import com.adeli.adelispringboot.Mangwa.repository.IStatusTransactionRepo;
+import com.adeli.adelispringboot.Prêts.dto.PretReqDto;
+import com.adeli.adelispringboot.Prêts.entity.Prets;
+import com.adeli.adelispringboot.Seance.entity.Seance;
+import com.adeli.adelispringboot.Seance.service.ISeanceService;
+import com.adeli.adelispringboot.Session.entity.EStatusSession;
+import com.adeli.adelispringboot.Session.entity.Session;
+import com.adeli.adelispringboot.Session.entity.SessionStatus;
+import com.adeli.adelispringboot.Session.repository.ISessionRepo;
+import com.adeli.adelispringboot.Session.repository.IStatusSessionRepo;
+import com.adeli.adelispringboot.Tontine.entity.Tontine;
+import com.adeli.adelispringboot.Tontine.repository.TontineRepository;
+import com.adeli.adelispringboot.Tontine.service.ITontineService;
+import com.adeli.adelispringboot.Users.entity.Users;
+import com.adeli.adelispringboot.Users.repository.IUserRepo;
+import com.adeli.adelispringboot.Users.service.IUserService;
+import com.adeli.adelispringboot.authentication.dto.MessageResponseDto;
+import com.adeli.adelispringboot.configuration.globalConfiguration.ApplicationConstant;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 
 /**
  *
  * @author Casimir
  */
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/admin/beneficiaire")
+@RequestMapping("/api/v1.0/beneficiaire")
+@Tag(name = "Beneficiaire")
+@Slf4j
 public class BeneficiaireController {
+
+//    @Autowired
+//    TontineRepository tontineRepository;
     
     @Autowired
-    ReunionRepository reunionRepository;
+    ISessionRepo sessionRepository;
     
     @Autowired
-    TontineRepository tontineRepository;
-    
-    @Autowired
-    SessionRepository sessionRepository;
-    
-    @Autowired
-    UserRepository userRepository;
+    IUserRepo userRepository;
     
     @Autowired
     BeneficiaireRepository beneficiaireRepository;
-    
+
     @Autowired
-    NotificationsRepository notificationsRepository;        
+    private ResourceBundleMessageSource messageSource;
+
+    @Autowired
+    IStatusSessionRepo iStatusSessionRepo;
     
     JSONObject json;
     String mts;
 
-//    @PostMapping("/{id}")
-//    public ResponseEntity<?> createTontine(@RequestParam("id") Long id, @RequestBody Beneficiaire beneficiaire) { 
-//        Tontine tontine = new Tontine();
-////        Beneficiaire beneficiaire = new Beneficiaire();
-//        User user = userRepository.findById(id).get();
-//        System.out.println("user: "+ user.getName());
-//        List<Session> sess = sessionRepository.findByEtat(true);
-//        Session session = sess.get(0);
-//        System.out.println("session: "+ session.getIdSession());
-//        
-//        double montant = session.getMontant();
-//        double mangwa = session.getRetenue();
-//        System.out.println("session montant: "+ montant);
-//        System.out.println("montant: "+ tontine.getDebit());
-//        Beneficiaire b = beneficiaireRepository.findFirstByOrderByIdBeneficiaireDesc();
-////        if(b.getNom().equals("")){
-////        System.out.println("last benef: "+ b.getNom());
-////        }else {
-////            System.out.println("tu es mort");
-////        }
-//        if(beneficiaireRepository.existsBySessionAndNom(session, user.getName())){
-//            return new ResponseEntity<>(new ResponseMessage("Attention! -> l'utilisateur "+user.getName()+" a déjà bouffé cette session"),
-//              HttpStatus.BAD_REQUEST);
-//        }
-//        double bouff = (montant) * session.getParticipants();
-//        System.out.println("nombre d'utilisateur: "+bouff);
-//                
-//        Tontine ton = tontineRepository.findFirstByOrderByIdTontineDesc();
-//        System.out.println("last: "+ ton.getIdTontine());
-//        double credits = (bouff * 3)/4;
-//        if(!ton.equals(null) && ton.getMontant() >= bouff ){
-//            double credit = (bouff *3)/4;
-//            System.out.println("credit: "+ credit);
-//            tontine.setCredit(credit);
-//            double solde = ton.getMontant() - credit;
-//            tontine.setMontant(solde);
-//            beneficiaire.setMontant(credit);
-//        }else{
-//            return new ResponseEntity<>(new ResponseMessage("Erreur! -> montant isuffisant pour bouffer"), 
-//                    HttpStatus.BAD_REQUEST);
-//        }
-//        
-//        tontine.setDebit(0);
-//        
-//        tontine.setMotif(user.getName()+": a bouffé");
-//        tontine.setUser(user);
-//        tontine.setDate(LocalDate.now()); 
-//        tontine.setSession(session);
-////        session.setReunion(reunion);
-//        System.out.println("session: "+ session.getDebut());
-//        System.out.println("count date: "+ tontineRepository.countByDate(LocalDate.now()));
-//        System.out.println("part: "+ session.getParticipants());
-////        if(tontineRepository.existsByDateAndUser(tontine.getDate(), tontine.getUser())){
-////            return new ResponseEntity<>(new ResponseMessage("Attention! -> l'utilisateur "+user.getName()+" a déjà cotisé"),
-////              HttpStatus.BAD_REQUEST);
-////        }
+    @Autowired
+    IUserService iUserService;
+    @Autowired
+    ISeanceService iSeanceService;
+    @Autowired
+    ITontineService iTontineService;
+    @Autowired
+    IStatusTransactionRepo iStatusTransactionRepo;
+    @Autowired
+    IBeneficiaireService iBeneficiaireService;
+
+//    @GetMapping
+//    public List<JSONObject> getTontine(){
+//        List<JSONObject> p ;
+//        SessionStatus sessionStatus = iStatusSessionRepo.findByName(EStatusSession.CREEE)
+//                .orElseThrow(() -> new ResourceNotFoundException("Ce statut " + EStatusSession.CREEE + " n'existe pas"));
 //
+//        Session session = sessionRepository.findSessionByStatus(sessionStatus);
 //
-////        if (!tontineRepository.countByDate(LocalDate.now()).equals(session.getParticipants())){
-////            return new ResponseEntity<>(new ResponseMessage("Attention! -> Vous ne pouvez pas encore bouffer car tout les membres n'ont pas encore cotisé"),
-////              HttpStatus.BAD_REQUEST);
-////        }
-//        
-//        
-//        
-//        beneficiaire.setDate(LocalDate.now());
-//        
-//        beneficiaire.setSession(session);
-//        beneficiaire.setNom(user.getName());
-//        
-//        Notifications notifications = new Notifications(
-//                user.getName()+" a bouffé la tontine",
-//                LocalDate.now());
-//        
-//        beneficiaireRepository.save(beneficiaire);
-//        tontineRepository.save(tontine);
-//        notificationsRepository.save(notifications);
-//      return new ResponseEntity<>(new ResponseMessage("Tontine bouffée"), HttpStatus.CREATED);
+//        p = beneficiaireRepository.getAllBenefBySession(session.getId());
+//        return p ;
 //    }
 
-    @GetMapping
-    public List<JSONObject> getTontine(){     
-        List<Session> sess = sessionRepository.findByEtat(true);
-        List<JSONObject> p ;
-        Session session = new Session();
-        if(!sess.isEmpty()){
-            session = sess.get(0); 
-            p = beneficiaireRepository.getAllBenefBySession(session.getIdSession());
-        }else{
-            p = new ArrayList<>();
-        }
-        return p ;
-    }
-    
-    @GetMapping("/lastMonth")
-    public List<JSONObject> getLastMonthTontine(){  
-        Calendar cal = Calendar.getInstance();
-        cal.setFirstDayOfWeek(0);
-        int month = cal.get(Calendar.MONTH);
-        int year = cal.get(Calendar.YEAR);
-        if((month + 1)< 10){
-            if(month == 0){
-                mts = String.valueOf(year - 1)+"/12";
-            }else{
-                mts = String.valueOf(year)+"/0"+ String.valueOf(month);
-            }                
-        }else{
-            if((month+1) == 10){
-                mts = String.valueOf(year)+"/09";
-            }else{
-                mts = String.valueOf(year)+"/"+ String.valueOf(month);
-            }
-        }
-        return tontineRepository.Tontine(mts);
-    }
 
-    @GetMapping("/thisMonth")
-    public List<JSONObject> getThisMonthTontine(){  
-        Calendar cal = Calendar.getInstance();
-        cal.setFirstDayOfWeek(0);
-        int month = cal.get(Calendar.MONTH);
-        int year = cal.get(Calendar.YEAR);
-        if(month+1 < 10){
-            mts = String.valueOf(year)+"/0"+ String.valueOf(month+1);
-            System.out.println("ce mois: "+ mts);
-        }else{
-            mts = String.valueOf(year)+"/"+ String.valueOf(month+1);
-        }
-        return tontineRepository.Tontine(mts);
-    }
-
-    @GetMapping("/session/{id}")
-    public List<JSONObject> getSessionTontine(@PathVariable Long id){ 
-        return tontineRepository.TontineSession(id);
-    }
-
-    
-    @PostMapping("/news/")
-    public ResponseEntity<?> newBenef(@RequestParam("id") Long id, @RequestBody Beneficiaire beneficiaire) { 
+    @Operation(summary = "création des informations pour un bénéficiaire", tags = "Beneficiaire", responses = {
+            @ApiResponse(responseCode = "201", content = @Content(mediaType = "Application/Json", array = @ArraySchema(schema = @Schema(implementation = Beneficiaire.class)))),
+            @ApiResponse(responseCode = "404", description = "Session not found", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "401", description = "Full authentication is required to access this resource", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "403", description = "Forbidden : accès refusé", content = @Content(mediaType = "Application/Json")),})
+    @PostMapping()
+    @PreAuthorize("hasAnyRole('SUPERADMIN', 'USER')")
+    public ResponseEntity<?> newBenef(@RequestBody BenefReqDto benefReqDto) {
         Tontine tontine = new Tontine();
-//        Beneficiaire beneficiaire = new Beneficiaire();
-        User user = userRepository.findById(id).get();
-        System.out.println("user: "+ user.getName());
-        List<Session> sess = sessionRepository.findByEtat(true);
-        
-        if(sess.isEmpty()){
-            return new ResponseEntity<>(new ResponseMessage("Attention! -> aucune session n'est en cours personne ne peut bouffer pour le moment"),
-              HttpStatus.BAD_REQUEST);
-        }else{
-            
-        
-        
-        Session session = sess.get(0);
-        System.out.println("session: "+ session.getIdSession());
-                
-        Beneficiaire b = beneficiaireRepository.findFirstByOrderByIdBeneficiaireDesc();
-        if(beneficiaireRepository.existsBySessionAndNom(session, user.getName())){
-            return new ResponseEntity<>(new ResponseMessage("Attention! -> l'utilisateur "+user.getName()+" a déjà bouffé cette session"),
-              HttpStatus.BAD_REQUEST);
+        Beneficiaire beneficiaire = new Beneficiaire();
+        Users user = iUserService.getById(benefReqDto.getIdUser());
+        Seance seance = iSeanceService.getById(benefReqDto.getIdSeance());
+        TypeTransaction typeTransaction = iStatusTransactionRepo.findByName(EStatusTransaction.RETRAIT).orElseThrow(()-> new ResourceNotFoundException("Type de transaction not found"));
+
+
+        if(iTontineService.soldeTontine() < benefReqDto.getMontant()){
+            return ResponseEntity.badRequest().body(new MessageResponseDto(HttpStatus.BAD_REQUEST,
+                    messageSource.getMessage("messages.insufficient_amount", null, LocaleContextHolder.getLocale())));
         }
-                        
-        Tontine ton = tontineRepository.findFirstByOrderByIdTontineDesc();
-        System.out.println("last: "+ ton.getMotif());
-        if(!ton.equals(null) && ton.getMontant() >= beneficiaire.getMontant() ){
-            double credit = beneficiaire.getMontant();
-            System.out.println("credit: "+ credit);
-            tontine.setCredit(credit);
-            double solde = ton.getMontant() - credit;
-            tontine.setMontant(solde);
-            beneficiaire.setMontant(credit);
-        }else{
-            return new ResponseEntity<>(new ResponseMessage("Erreur! -> montant isuffisant pour bouffer"), 
-                    HttpStatus.BAD_REQUEST);
-        }
-        
-        tontine.setDebit(0);
-        
-        tontine.setMotif(user.getName()+": a bouffé");
+
+        tontine.setDescription(user.getLastName()+": a bouffé");
         tontine.setUser(user);
-        tontine.setDate(LocalDate.now()); 
-        tontine.setSession(session);
-//        session.setReunion(reunion);
-//        System.out.println("session: "+ session.getDebut());
-//        System.out.println("count date: "+ tontineRepository.countByDate(LocalDate.now()));
-//        System.out.println("part: "+ session.getParticipants());
-//        if(tontineRepository.existsByDateAndUser(tontine.getDate(), tontine.getUser())){
-//            return new ResponseEntity<>(new ResponseMessage("Attention! -> l'utilisateur "+user.getName()+" a déjà cotisé"),
-//              HttpStatus.BAD_REQUEST);
-//        }
+        tontine.setSeance(seance);
+        tontine.setCreatedAt(LocalDateTime.now());
+        tontine.setTypeTransaction(typeTransaction);
+        tontine.setMontant(benefReqDto.getMontant());
 
 
-//        if (!tontineRepository.countByDate(LocalDate.now()).equals(session.getParticipants())){
-//            return new ResponseEntity<>(new ResponseMessage("Attention! -> Vous ne pouvez pas encore bouffer car tout les membres n'ont pas encore cotisé"),
-//              HttpStatus.BAD_REQUEST);
-//        }
-        
-        
-        
-        beneficiaire.setDate(LocalDate.now());
-        
-        beneficiaire.setSession(session);
-        beneficiaire.setNom(user.getName());
-        
-        Notifications notifications = new Notifications(
-                user.getName()+" a bouffé la tontine",
-                LocalDate.now());
-        
-        beneficiaireRepository.save(beneficiaire);
-        tontineRepository.save(tontine);
-        notificationsRepository.save(notifications);
-      return new ResponseEntity<>(new ResponseMessage("Tontine bouffée"), HttpStatus.CREATED);
+        beneficiaire.setCreatedAt(LocalDateTime.now());
+        beneficiaire.setUser(user);
+        beneficiaire.setSeance(seance);
+        beneficiaire.setMontant(benefReqDto.getMontant());
+
+
+        iBeneficiaireService.createBeneficiaire(beneficiaire);
+        iTontineService.createTontine(tontine);
+      return ResponseEntity.ok(beneficiaire);
     }
+
+    @Parameters(value = {
+            @Parameter(name = "sort", schema = @Schema(allowableValues = {"id", "createdAt"})),
+            @Parameter(name = "order", schema = @Schema(allowableValues = {"asc", "desc"}))})
+    @Operation(summary = "Liste des beneficiaires", tags = "Beneficiaire", responses = {
+            @ApiResponse(responseCode = "200", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "403", description = "Forbidden : accès refusé", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "404", description = "Client not found", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "401", description = "Full authentication is required to access this resource", content = @Content(mediaType = "Application/Json"))})
+    @PreAuthorize("hasAnyRole('SUPERADMIN', 'USER')")
+    @GetMapping("")
+    public Page<Beneficiaire> getBeneficiaire(@RequestParam(required = false, value = "page", defaultValue = "0") String pageParam,
+                                @RequestParam(required = false, value = "size", defaultValue = ApplicationConstant.DEFAULT_SIZE_PAGINATION) String sizeParam,
+                                @RequestParam(required = false, defaultValue = "id") String sort,
+                                @RequestParam(required = false, defaultValue = "desc") String order) {
+        return iBeneficiaireService.getAllBeneficiaires(Integer.parseInt(pageParam), Integer.parseInt(sizeParam), sort, order);
+    }
+
+    @Parameters(value = {
+            @Parameter(name = "sort", schema = @Schema(allowableValues = {"id", "createdAt"})),
+            @Parameter(name = "order", schema = @Schema(allowableValues = {"asc", "desc"}))})
+    @Operation(summary = "Liste des prets par seance", tags = "Beneficiaire", responses = {
+            @ApiResponse(responseCode = "200", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "403", description = "Forbidden : accès refusé", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "404", description = "Seance not found", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "401", description = "Full authentication is required to access this resource", content = @Content(mediaType = "Application/Json"))})
+    @PreAuthorize("hasAnyRole('SUPERADMIN','USER')")
+    @GetMapping("/seance/{idSeance:[0-9]+}")
+    public ResponseEntity<Page<Beneficiaire>> getBeneficiaireBySeance(@PathVariable Long idSeance,
+                                                       @RequestParam(required = false, value = "page", defaultValue = "0") String pageParam,
+                                                       @RequestParam(required = false, value = "size", defaultValue = ApplicationConstant.DEFAULT_SIZE_PAGINATION) String sizeParam,
+                                                       @RequestParam(required = false, defaultValue = "id") String sort,
+                                                       @RequestParam(required = false, defaultValue = "desc") String order) {
+        Page<Beneficiaire> list = iBeneficiaireService.getBeneficiaireBySeance(idSeance, Integer.parseInt(pageParam), Integer.parseInt(sizeParam), sort, order);
+        return ResponseEntity.ok(list);
     }
         
 }

@@ -3,250 +3,270 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.example.demo.Controller;
+package com.adeli.adelispringboot.Tontine.controller;
 
-
-//import com.example.demo.entity.Role;
-import com.example.demo.entity.Elections;
-import com.example.demo.entity.Notifications;
-import com.example.demo.entity.Retenue;
-import com.example.demo.entity.User;
-import com.example.demo.message.response.ResponseMessage;
-import com.example.demo.entity.Session;
-import com.example.demo.entity.Tontine;
-import com.example.demo.repository.ElectionRepository;
-import com.example.demo.repository.NotificationsRepository;
-import com.example.demo.repository.PlanningRepository;
-import com.example.demo.repository.RetenueRepository;
-import com.example.demo.repository.ReunionRepository;
-import com.example.demo.repository.SessionRepository;
-import com.example.demo.repository.TontineRepository;
-import com.example.demo.repository.UserRepository;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-//import com.example.demo.repository.RoleRepository;
-//import com.example.demo.repository.RoleRepository;
-//import com.example.demo.repository.UtilisateurRepository;
-//import com.example.demo.security.jwt.JwtProvider;
-
-//import com.example.demo.util.RoleEnum;
-import java.util.List;
-import java.util.Map;
+import com.adeli.adelispringboot.Document.entity.ETypeDocument;
+import com.adeli.adelispringboot.Document.entity.TypeDocument;
+import com.adeli.adelispringboot.Mangwa.entity.EStatusTransaction;
+import com.adeli.adelispringboot.Mangwa.entity.Retenue;
+import com.adeli.adelispringboot.Mangwa.entity.TypeTransaction;
+import com.adeli.adelispringboot.Mangwa.repository.IRetenueRepository;
+import com.adeli.adelispringboot.Mangwa.repository.IStatusTransactionRepo;
+import com.adeli.adelispringboot.Mangwa.service.IMangwaService;
+import com.adeli.adelispringboot.Planning.repository.PlanningRepository;
+import com.adeli.adelispringboot.Seance.entity.Seance;
+import com.adeli.adelispringboot.Seance.repository.ISeanceRepository;
+import com.adeli.adelispringboot.Seance.service.ISeanceService;
+import com.adeli.adelispringboot.Session.entity.EStatusSession;
+import com.adeli.adelispringboot.Session.entity.Session;
+import com.adeli.adelispringboot.Session.entity.SessionStatus;
+import com.adeli.adelispringboot.Session.repository.ISessionRepo;
+import com.adeli.adelispringboot.Session.repository.IStatusSessionRepo;
+import com.adeli.adelispringboot.Session.service.ISessionService;
+import com.adeli.adelispringboot.Tontine.dto.TontineResDto;
+import com.adeli.adelispringboot.Tontine.entity.Tontine;
+import com.adeli.adelispringboot.Tontine.repository.TontineRepository;
+import com.adeli.adelispringboot.Tontine.service.ITontineService;
+import com.adeli.adelispringboot.Users.entity.EStatusUser;
+import com.adeli.adelispringboot.Users.entity.Users;
+import com.adeli.adelispringboot.Users.repository.IUserRepo;
+import com.adeli.adelispringboot.Users.service.IUserService;
+import com.adeli.adelispringboot.authentication.dto.MessageResponseDto;
+import com.adeli.adelispringboot.configuration.email.dto.EmailDto;
+import com.adeli.adelispringboot.configuration.globalConfiguration.ApplicationConstant;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.*;
 
 
 /**
- *
  * @author Casimir
  */
-@CrossOrigin(origins = "*", maxAge = 3600)
+
 @RestController
-@RequestMapping("/admin/tontine")
+@Tag(name = "Tontine")
+@RequestMapping("/api/v1.0/tontine")
+@Slf4j
 public class TontineController {
-    
+
     @Autowired
-    ReunionRepository reunionRepository;
-    
+    IStatusSessionRepo iStatusSessionRepo;
+
     @Autowired
     TontineRepository tontineRepository;
-    
+
     @Autowired
-    SessionRepository sessionRepository;
-    
+    ISessionRepo sessionRepository;
+
     @Autowired
-    UserRepository userRepository;
-    
+    IUserRepo userRepository;
+
     @Autowired
-    RetenueRepository retenueRepository;
-    
+    IRetenueRepository IRetenueRepository;
+
     @Autowired
     PlanningRepository planningRepository;
-    
-    @Autowired
-    NotificationsRepository notificationsRepository;
-    
-    @Autowired
-    ElectionRepository electionRepository;
-    
-    JSONObject json;
-    String mts;
 
+    @Autowired
+    ISeanceService iSeanceService;
+
+    @Autowired
+    IUserService iUserService;
+
+    @Autowired
+    ITontineService iTontineService;
+
+    @Autowired
+    IStatusTransactionRepo iStatusTransactionRepo;
+
+    @Autowired
+    IMangwaService iMangwaService;
+
+    @Autowired
+    ISessionService iSessionService;
+
+    @Autowired
+    private ResourceBundleMessageSource messageSource;
+
+    @Operation(summary = "création des informations pour une tontine", tags = "Tontine", responses = {
+            @ApiResponse(responseCode = "201", content = @Content(mediaType = "Application/Json", array = @ArraySchema(schema = @Schema(implementation = Tontine.class)))),
+            @ApiResponse(responseCode = "404", description = "Session not found", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "401", description = "Full authentication is required to access this resource", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "403", description = "Forbidden : accès refusé", content = @Content(mediaType = "Application/Json")),})
     @PostMapping()
-    public ResponseEntity<?> createTontine(@RequestParam("user") Long id) { 
-        User user = userRepository.findById(id).get();  
-        Tontine tontine = new Tontine();
-        Retenue retenue = new Retenue();
-        System.out.println("user: "+ user.getName());
-        
-        List<Session> sess = sessionRepository.findByEtat(true);
-        Session session = sess.get(0);
-        System.out.println("session: "+ session.getIdSession());
-        Elections e = electionRepository.findByUserAndSession(user.getName(), session);
-//        Tontine tontine = new Tontine();
-        
-        double montant = session.getMontant();
-        double mangwa = session.getRetenue();
-        System.out.println("session montant: "+ montant);
-        System.out.println("montant: "+ tontine.getDebit());
-//        if (montant > tontine.getDebit()){
-//            return new ResponseEntity<>(new ResponseMessage("Erreur! -> Le montant de la cotisation n'est pas correct"),
-//              HttpStatus.BAD_REQUEST);
-//        }   
-        Tontine ton = tontineRepository.findFirstByOrderByIdTontineDesc();
-//        System.out.println("last: "+ ton.getIdTontine());
-        double solde = 0;
-        if(ton != null){
-            solde = ton.getMontant() + e.getMontant();
-            tontine.setMontant(solde);
-        }else{
-            solde = e.getMontant();
-            tontine.setMontant(solde);
-        }
-//        double solde = ton.getMontant() + tontine.getDebit() - mangwa;
-        double debit = e.getMontant();
-        
-        tontine.setDebit(debit);
-        tontine.setCredit(0);
-        tontine.setMotif("cotisation "+user.getName());
-        tontine.setUser(user);
-        if (!planningRepository.existsByDate(LocalDate.now())){
-            return new ResponseEntity<>(new ResponseMessage("Erreur! -> Ce jour n'est pas inscrit dans le planning de réunion"),
-              HttpStatus.BAD_REQUEST);
-        }
-        tontine.setDate(LocalDate.now()); 
-        tontine.setSession(session);
-//        session.setReunion(reunion);
-        System.out.println("session: "+ session.getDebut());
-        if(tontineRepository.existsByDateAndUser(tontine.getDate(), tontine.getUser())){
-            return new ResponseEntity<>(new ResponseMessage("Attention! -> l'utilisateur "+user.getName()+" a déjà cotisé"),
-              HttpStatus.BAD_REQUEST);
-        }  
-                
-        tontineRepository.save(tontine);
-        
-        Retenue rete = retenueRepository.findFirstByOrderByIdRetenueDesc();
-//        double ret = tontine.getDebit() - session.getRetenue();
-        double solde2 = 0;
-        if(rete != null){
-            solde2 = rete.getSolde() + mangwa;
-            retenue.setSolde(solde2);
-        }else{
-            solde2 = mangwa;
-            retenue.setSolde(solde2);
-        }
-        retenue.setDebit(mangwa);
-        retenue.setCredit(0);
-        retenue.setDate(LocalDate.now());
-        retenue.setUser(user);
-        retenue.setMotif("cotisation");
-        
-        
-        System.out.println("mangwa: "+ solde2);
-        retenueRepository.save(retenue);
-        
-        Notifications notifications = new Notifications(
-                user.getName()+" a cotisé "+ e.getMontant()+" €",
-                LocalDate.now());
-        notificationsRepository.save(notifications);
-        
-      return new ResponseEntity<>(new ResponseMessage("Tontine enregistrée"), HttpStatus.CREATED);
-    }
+    @PreAuthorize("hasAnyRole('SUPERADMIN', 'USER')")
+    public ResponseEntity<?> createTontine(@RequestParam("seance") Long idSeance) {
+        List<Users> usersList = iUserService.getUsers();
+        for (Users user : usersList) {
+            if (user.getStatus().getName() == EStatusUser.USER_ENABLED) {
+                Tontine tontine = new Tontine();
+                Retenue retenue = new Retenue();
+                Session session = iSessionService.findLastSession();
+                if (session.getStatus().getName() == EStatusSession.CREEE){
+                    retenue.setMontant(session.getMangwa());
+                }else {
+                    return ResponseEntity.badRequest().body(new MessageResponseDto(HttpStatus.BAD_REQUEST,
+                            messageSource.getMessage("messages.session_exists", null, LocaleContextHolder.getLocale())));
+                }
+                TypeTransaction typeTransaction = iStatusTransactionRepo.findByName(EStatusTransaction.DEPOT).orElseThrow(()-> new ResourceNotFoundException("Type de transaction not found"));
+                Seance seance = iSeanceService.getById(idSeance);
+                tontine.setSeance(seance);
+                tontine.setTypeTransaction(typeTransaction);
+                tontine.setCreatedAt(LocalDateTime.now());
 
-    @GetMapping
-    public List<Tontine> getTontine(){      
-        return tontineRepository.findAll();
-    }
-
-    @GetMapping("/solde")
-    public JSONObject soldeTontine(){      
-        Tontine tontine = tontineRepository.findFirstByOrderByIdTontineDesc();
-        Map<String, Object> response = new HashMap<>();
-        JSONObject solde;
-        if(tontine != null){
-            response.put("solde", tontine.getMontant());
-        }else{
-            response.put("solde", 0);
-        }        
-        solde = new JSONObject(response);
-        return solde;
-    }
-
-    @GetMapping("/lastMonth")
-    public List<JSONObject> getLastMonthTontine(){  
-        Calendar cal = Calendar.getInstance();
-        cal.setFirstDayOfWeek(0);
-        int month = cal.get(Calendar.MONTH);
-        int year = cal.get(Calendar.YEAR);
-        if((month + 1)< 10){
-            if(month == 0){
-                mts = String.valueOf(year - 1)+"/12";
-            }else{
-                mts = String.valueOf(year)+"/0"+ String.valueOf(month);
-            }                
-        }else{
-            if((month+1) == 10){
-                mts = String.valueOf(year)+"/09";
-            }else{
-                mts = String.valueOf(year)+"/"+ String.valueOf(month);
+                retenue.setTypeTransaction(typeTransaction);
+                retenue.setDate(seance.getDate());
+                retenue.setMotif("contribution mangwa");
+                retenue.setCreatedAt(LocalDateTime.now());
+                tontine.setUser(user);
+                tontine.setMontant(user.getMontant());
+                tontine.setDescription(user.getLastName() + " a cotisé");
+                retenue.setUser(user);
+                iTontineService.createTontine(tontine);
+                iMangwaService.createMangwa(retenue);
             }
         }
-        return tontineRepository.Tontine(mts);
+
+//        Elections e = electionRepository.findByUserAndSession(user.getLastName(), session);
+//        double mangwa = session.getMangwa();
+//        Tontine ton = tontineRepository.findFirstByOrderByIdTontineDesc();
+//        double solde = 0;
+//        if (ton != null) {
+//            solde = ton.getMontant() + e.getMontant();
+//            tontine.setMontant(solde);
+//        } else {
+//            solde = e.getMontant();
+//            tontine.setMontant(solde);
+//        }
+//        double debit = e.getMontant();
+//
+//        tontine.setDebit(debit);
+//        tontine.setCredit(0);
+//        tontine.setMotif("cotisation " + user.getLastName());
+//        tontine.setUser(user);
+//        if (!planningRepository.existsByDate(LocalDate.now())) {
+//            return ResponseEntity.badRequest().body(new MessageResponseDto(HttpStatus.BAD_REQUEST,
+//                    messageSource.getMessage("messages.date_not_found", null, LocaleContextHolder.getLocale())));
+//        }
+//        tontine.setDate(LocalDate.now());
+//        tontine.setSession(session);
+//        if (tontineRepository.existsByDateAndUser(tontine.getDate(), tontine.getUser())) {
+//            return ResponseEntity.badRequest().body(new MessageResponseDto(HttpStatus.BAD_REQUEST,
+//                    messageSource.getMessage("messages.user_cotise", null, LocaleContextHolder.getLocale())));
+//        }
+
+//        tontineRepository.save(tontine);
+//
+//        Retenue rete = IRetenueRepository.findFirstByOrderByIdDesc();
+//        double solde2 = 0;
+//        if (rete != null) {
+//            solde2 = rete.getSolde() + mangwa;
+//            retenue.setSolde(solde2);
+//        } else {
+//            solde2 = mangwa;
+//            retenue.setSolde(solde2);
+//        }
+//        retenue.setDebit(mangwa);
+//        retenue.setCredit(0);
+//        retenue.setDate(LocalDate.now());
+//        retenue.setUser(user);
+//        retenue.setMotif("cotisation");
+
+//        IRetenueRepository.save(retenue);
+        return ResponseEntity.ok("tontine");
     }
 
-    @GetMapping("/thisMonth")
-    public List<JSONObject> getThisMonthTontine(){  
-        Calendar cal = Calendar.getInstance();
-        cal.setFirstDayOfWeek(0);
-        int month = cal.get(Calendar.MONTH);
-        int year = cal.get(Calendar.YEAR);
-        if(month+1 < 10){
-            mts = String.valueOf(year)+"/0"+ String.valueOf(month+1);
-            System.out.println("ce mois: "+ mts);
-        }else{
-            mts = String.valueOf(year)+"/"+ String.valueOf(month+1);
-        }
-        return tontineRepository.Tontine(mts);
+    @Parameters(value = {
+            @Parameter(name = "sort", schema = @Schema(allowableValues = {"id", "createdAt"})),
+            @Parameter(name = "order", schema = @Schema(allowableValues = {"asc", "desc"}))})
+    @Operation(summary = "Liste des cotisations par seance", tags = "Tontine", responses = {
+            @ApiResponse(responseCode = "200", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "403", description = "Forbidden : accès refusé", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "404", description = "Seance not found", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "401", description = "Full authentication is required to access this resource", content = @Content(mediaType = "Application/Json"))})
+    @PreAuthorize("hasAnyRole('SUPERADMIN','USER')")
+    @GetMapping("/seance/{idSeance:[0-9]+}")
+    public ResponseEntity<Page<TontineResDto>> getTontineBySeance(@PathVariable Long idSeance,
+                                                                  @RequestParam(required = false, value = "page", defaultValue = "0") String pageParam,
+                                                                  @RequestParam(required = false, value = "size", defaultValue = ApplicationConstant.DEFAULT_SIZE_PAGINATION) String sizeParam,
+                                                                  @RequestParam(required = false, defaultValue = "idTontine") String sort,
+                                                                  @RequestParam(required = false, defaultValue = "desc") String order) {
+        Page<TontineResDto> list = iTontineService.getTontinesBySeance(idSeance, Integer.parseInt(pageParam), Integer.parseInt(sizeParam), sort, order);
+        return ResponseEntity.ok(list);
     }
 
-    @GetMapping("/session/{id}")
-    public List<JSONObject> getSessionTontine(@PathVariable Long id){ 
-        return tontineRepository.TontineSession(id);
+    @Parameters(value = {
+            @Parameter(name = "sort", schema = @Schema(allowableValues = {"id", "createdAt"})),
+            @Parameter(name = "order", schema = @Schema(allowableValues = {"asc", "desc"}))})
+    @Operation(summary = "Liste des cotisations", tags = "Tontine", responses = {
+            @ApiResponse(responseCode = "200", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "403", description = "Forbidden : accès refusé", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "404", description = "Seance not found", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "401", description = "Full authentication is required to access this resource", content = @Content(mediaType = "Application/Json"))})
+    @PreAuthorize("hasAnyRole('SUPERADMIN','USER')")
+    @GetMapping()
+    public ResponseEntity<Page<Tontine>> getTontines( @RequestParam(required = false, value = "page", defaultValue = "0") String pageParam,
+                                                      @RequestParam(required = false, value = "size", defaultValue = ApplicationConstant.DEFAULT_SIZE_PAGINATION) String sizeParam,
+                                                      @RequestParam(required = false, defaultValue = "idTontine") String sort,
+                                                      @RequestParam(required = false, defaultValue = "desc") String order) {
+        Page<Tontine> list = iTontineService.getAllTontine(Integer.parseInt(pageParam), Integer.parseInt(sizeParam), sort, order);
+        return ResponseEntity.ok(list);
     }
 
-    @GetMapping("/session")
-    public List<JSONObject> getActiveSessionTontine(){ 
-        List<Session> sess = sessionRepository.findByEtat(true);
-        List<JSONObject> p ;
-        Session session = new Session();
-        if(!sess.isEmpty()){
-            session = sess.get(0); 
-            p = tontineRepository.TontineSession(session.getIdSession());
-        }else{
-            p = new ArrayList<>();
-        }
-        return p ;
+    @Operation(summary = "Solde tontine", tags = "Tontine", responses = {
+            @ApiResponse(responseCode = "200", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "403", description = "Forbidden : accès refusé", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "404", description = "Mangwa not found", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "401", description = "Full authentication is required to access this resource", content = @Content(mediaType = "Application/Json"))})
+    @PreAuthorize("hasAnyRole('SUPERADMIN', 'USER')")
+    @GetMapping("/solde")
+    public ResponseEntity<?> soldeTontine() {
+        double solde = iTontineService.soldeTontine();
+        return ResponseEntity.ok(solde);
     }
-    
-    
-           
-    @GetMapping("/id/{id}")
-    public List<JSONObject> getUsers(@PathVariable Long id) {
-        User u = userRepository.findById(id).get();
-        
-        return tontineRepository.TontineUser(id);
-    }
-        
+
+//    @GetMapping("/session/{id}")
+//    public List<JSONObject> getSessionTontine(@PathVariable Long id) {
+//        return tontineRepository.TontineSession(id);
+//    }
+
+//    @GetMapping("/session")
+//    public List<JSONObject> getActiveSessionTontine() {
+//        SessionStatus sessionStatus = iStatusSessionRepo.findByName(EStatusSession.CREEE)
+//                .orElseThrow(() -> new ResourceNotFoundException("Ce statut " + EStatusSession.CREEE + " n'existe pas"));
+//
+//        Session session = sessionRepository.findSessionByStatus(sessionStatus);
+//        List<JSONObject> p;
+//
+//        p = tontineRepository.TontineSession(session.getId());
+//
+//        return p;
+//    }
+
+
+//    @GetMapping("/id/{id}")
+//    public List<JSONObject> getUsers(@PathVariable Long id) {
+//        return tontineRepository.TontineUser(id);
+//    }
+
 }

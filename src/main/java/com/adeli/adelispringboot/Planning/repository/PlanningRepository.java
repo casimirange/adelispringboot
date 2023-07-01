@@ -3,16 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.example.demo.repository;
+package com.adeli.adelispringboot.Planning.repository;
 
-import com.example.demo.entity.Planing;
-import com.example.demo.entity.Session;
-import java.time.LocalDate;
-import java.util.List;
+import com.adeli.adelispringboot.Planning.entity.Planing;
+import com.adeli.adelispringboot.Session.entity.Session;
 import net.minidev.json.JSONObject;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.time.LocalDate;
+import java.util.List;
 
 /**
  *

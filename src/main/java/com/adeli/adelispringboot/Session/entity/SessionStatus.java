@@ -1,9 +1,8 @@
-package com.gulfcam.fuelcoupon.client.entity;
+package com.adeli.adelispringboot.Session.entity;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
-import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -14,22 +13,21 @@ import javax.validation.constraints.NotNull;
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @ToString
-@Table(name = "TypeClient")
-@Audited(withModifiedFlag = true)
-public class TypeClient {
+@Table(name = "StatusSession")
+public class SessionStatus {
 
-    @Schema(description = "identifiant unique du type de compte", example = "1", required = true, accessMode = Schema.AccessMode.READ_ONLY)
+    @Schema(description = "identifiant unique du statut de la session", example = "1", required = true, accessMode = Schema.AccessMode.READ_ONLY)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private Long id;
 
     @NotNull
-    @Schema(description = "nom du type de compte", example = "PARTICULAR, ENTREPRISE, INSTITUTION")
+    @Schema(description = "Statut de la session", example = "CREEE, TERMINEE")
     @Enumerated(EnumType.STRING)
-    private ETypeClient name;
+    private EStatusSession name;
 
-    public TypeClient(ETypeClient name) {
+    public SessionStatus(EStatusSession name) {
         this.name = name;
     }
 }

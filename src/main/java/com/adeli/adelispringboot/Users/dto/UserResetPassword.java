@@ -1,4 +1,4 @@
-package com.gulfcam.fuelcoupon.user.dto;
+package com.adeli.adelispringboot.Users.dto;
 
 import lombok.Getter;
 import lombok.Setter;

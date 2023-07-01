@@ -1,9 +1,9 @@
 
-package com.gulfcam.fuelcoupon.authentication.service;
+package com.adeli.adelispringboot.authentication.service;
 
+import com.adeli.adelispringboot.Users.entity.StatusUser;
+import com.adeli.adelispringboot.Users.entity.Users;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.gulfcam.fuelcoupon.user.entity.StatusUser;
-import com.gulfcam.fuelcoupon.user.entity.Users;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,8 +21,6 @@ public class UserDetailsImpl implements UserDetails {
 
 	private Long id;
 
-	private Long internalReference;
-
 	private String username;
 
 	private String email;
@@ -39,7 +37,7 @@ public class UserDetailsImpl implements UserDetails {
 	public static UserDetailsImpl build(Users user) {
 		List<GrantedAuthority> roles = user.getRoles().stream()
 				.map(role -> new SimpleGrantedAuthority(role.getName().name())).collect(Collectors.toList());
-		return new UserDetailsImpl(user.getUserId(), user.getInternalReference(), user.getEmail(),  user.getEmail(), roles, user.getStatus(),
+		return new UserDetailsImpl(user.getUserId(), user.getEmail(), user.getEmail(), roles, user.getStatus(),
 				user.getTokenAuth(), user.getPassword());
 	}
 
@@ -77,4 +75,5 @@ public class UserDetailsImpl implements UserDetails {
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return getRoles();
 	}
+
 }

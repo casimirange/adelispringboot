@@ -1,9 +1,13 @@
-package com.gulfcam.fuelcoupon.user.service;
+package com.adeli.adelispringboot.Users.service;
 
-import com.gulfcam.fuelcoupon.user.dto.ResponseUsersDTO;
-import com.gulfcam.fuelcoupon.user.dto.UserEditPasswordDto;
-import com.gulfcam.fuelcoupon.user.entity.Users;
+
+import com.adeli.adelispringboot.Users.dto.ResponseUsersDTO;
+import com.adeli.adelispringboot.Users.dto.UserEditPasswordDto;
+import com.adeli.adelispringboot.Users.dto.UserReqDto;
+import com.adeli.adelispringboot.Users.dto.UserResDto;
+import com.adeli.adelispringboot.Users.entity.Users;
 import org.springframework.data.domain.Page;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -12,6 +16,7 @@ import java.util.Optional;
 public interface IUserService {
 
 	Map<String, Object> add(Users user);
+//	UserResDto addUser(UserReqDto userReqDto);
 	Map<String, Object> modify(Users user);
 
 	boolean existsByEmail(String email, Long id);
@@ -64,6 +69,8 @@ public interface IUserService {
 	Optional<Users> getUserByUniqueConstraints(Users u);
 
 	Page<ResponseUsersDTO> getUsers(int page, int size, String sort, String order);
+
+	Page<UserResDto> getAllUsers(int page, int size, String sort, String order);
 
 	Page<Users> get20Users(int parseInt, int parseInt2, String sort, String order);
 

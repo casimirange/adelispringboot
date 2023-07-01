@@ -3,92 +3,44 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.example.demo.entity;
+package com.adeli.adelispringboot.Beneficiaires.entity;
 
+import com.adeli.adelispringboot.Seance.entity.Seance;
+import com.adeli.adelispringboot.Session.entity.Session;
+import com.adeli.adelispringboot.Users.entity.Users;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 
 /**
  *
  * @author Casimir
  */
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Beneficiaire {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idBeneficiaire;
- 
-//    @NotBlank
+    private Long id;
+
     private double montant;
- 
-//    @NotBlank
-    private LocalDate date;
- 
-//    @NotBlank
-    private String nom;
-    
-    @ManyToOne(fetch = FetchType.EAGER) //plusieurs lignes pour un département
-	@JoinColumn(name = "idSession")
-    public Session session;
-    
 
-    public Beneficiaire(double montant, LocalDate date, String nom, Session session) {
-        this.montant = montant;
-        this.date = date;
-        this.nom = nom;
-        this.session = session;
-    }
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "idUser")
+    public Users user;
 
-    public Beneficiaire() {
-    }
+    @ManyToOne
+    @JoinColumn(name = "id_seance")
+    private Seance seance;
 
-    public Long getIdBeneficiaire() {
-        return idBeneficiaire;
-    }
+    private LocalDateTime createdAt;
 
-    public void setIdBeneficiaire(Long idBeneficiaire) {
-        this.idBeneficiaire = idBeneficiaire;
-    }
+    private LocalDateTime updatedAt;
 
-    public double getMontant() {
-        return montant;
-    }
-
-    public void setMontant(double montant) {
-        this.montant = montant;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public Session getSession() {
-        return session;
-    }
-
-    public void setSession(Session session) {
-        this.session = session;
-    }
 }

@@ -33974,7 +33974,7 @@ button.toast-close-button {
 }
 
 .slick-loading .slick-list {
-    background:  url(/assets/images/ajax-loader.gif) center center no-repeat
+    background: url(/assets/images/ajax-loader.gif) center center no-repeat
 }
 
 .slick-prev, .slick-next {
@@ -41599,19 +41599,21 @@ span.multiselect-native-select select {
     width: 8px;
     background-color: #F5F5F5;
 }
+
 ::-webkit-scrollbar-track {
     /*-webkit-box-shadow: inset 0 0 6px rgba(74,115,218,1);*/
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
     background-color: #F5F5F5;
     border-radius: 10px;
 }
+
 ::-webkit-scrollbar-thumb {
     /*-webkit-box-shadow: inset 0 0 6px rgba(74,115,218,1);*/
     border-radius: 10px;
     background-image: -webkit-gradient(linear,
     left bottom,
-    left top,
-    color-stop(0.44, rgb(122,153,217)),
-    color-stop(0.72, rgb(73,125,189)),
-    color-stop(0.86, rgb(28,58,148)));
+    left top
+    /*color-stop(0.44, rgb(122, 153, 217)),*/
+    /*color-stop(0.72, rgb(73, 125, 189)),*/
+    /*color-stop(0.86, rgb(28, 58, 148)));*/
 }

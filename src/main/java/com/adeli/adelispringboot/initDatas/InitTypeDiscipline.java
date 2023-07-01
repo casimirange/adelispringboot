@@ -5,14 +5,10 @@
  */
 package com.adeli.adelispringboot.initDatas;
 
-import com.adeli.adelispringboot.Users.entity.ERole;
-import com.adeli.adelispringboot.Users.entity.ETypeAccount;
-import com.adeli.adelispringboot.Users.entity.RoleUser;
-import com.adeli.adelispringboot.Users.entity.TypeAccount;
-import com.adeli.adelispringboot.Users.repository.IRoleUserRepo;
-import com.adeli.adelispringboot.Users.repository.ITypeAccountRepository;
+import com.adeli.adelispringboot.Discipline.entity.ETypeDiscipline;
+import com.adeli.adelispringboot.Discipline.entity.TypeDiscipline;
+import com.adeli.adelispringboot.Discipline.repository.ITypeDisciplineRepo;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
@@ -25,47 +21,27 @@ import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
-@Order(2)
-public class InitTypeAccount implements ApplicationRunner{
+@Order(7)
+public class InitTypeDiscipline implements ApplicationRunner{
 
-    private ITypeAccountRepository iTypeAccountRepository;
+    private ITypeDisciplineRepo iTypeDisciplineRepo;
     
     @Override
     public void run(ApplicationArguments args) throws Exception {;
-        System.out.println("initialisation des types de comptes");
-        TypeAccount roleUser = new TypeAccount(ETypeAccount.ADHERANT);
-        TypeAccount rolePresident = new TypeAccount(ETypeAccount.PRESIDENT);
-        TypeAccount rolePorteParole = new TypeAccount(ETypeAccount.PORTE_PAROLE);
-        TypeAccount roleTresorier = new TypeAccount(ETypeAccount.TRESORIER);
-        TypeAccount roleSenceur = new TypeAccount(ETypeAccount.SENSCEUR);
-        TypeAccount roleSecretaire = new TypeAccount(ETypeAccount.SECRETAIRE);
-        TypeAccount roleCommissaire = new TypeAccount(ETypeAccount.COMISSAIRE_AU_COMPTE);
+        System.out.println("initialisation des types de discipline");
+        TypeDiscipline abs = new TypeDiscipline(ETypeDiscipline.ABSENCE);
+        TypeDiscipline ret = new TypeDiscipline(ETypeDiscipline.RETARD);
+        TypeDiscipline trbl = new TypeDiscipline(ETypeDiscipline.TROUBLE);
 
-        if (!iTypeAccountRepository.existsByName(ETypeAccount.ADHERANT)) {
-            iTypeAccountRepository.save(roleUser);
+        if (!iTypeDisciplineRepo.existsByName(ETypeDiscipline.ABSENCE)) {
+            iTypeDisciplineRepo.save(abs);
         }
-        if (!iTypeAccountRepository.existsByName(ETypeAccount.PRESIDENT)) {
-            iTypeAccountRepository.save(rolePresident);
+        if (!iTypeDisciplineRepo.existsByName(ETypeDiscipline.RETARD)) {
+            iTypeDisciplineRepo.save(ret);
         }
 
-        if (!iTypeAccountRepository.existsByName(ETypeAccount.PORTE_PAROLE)) {
-            iTypeAccountRepository.save(rolePorteParole);
-        }
-
-        if (!iTypeAccountRepository.existsByName(ETypeAccount.TRESORIER)) {
-            iTypeAccountRepository.save(roleTresorier);
-        }
-
-        if (!iTypeAccountRepository.existsByName(ETypeAccount.SENSCEUR)) {
-            iTypeAccountRepository.save(roleSenceur);
-        }
-
-        if (!iTypeAccountRepository.existsByName(ETypeAccount.SECRETAIRE)) {
-            iTypeAccountRepository.save(roleSecretaire);
-        }
-
-        if (!iTypeAccountRepository.existsByName(ETypeAccount.COMISSAIRE_AU_COMPTE)) {
-            iTypeAccountRepository.save(roleCommissaire);
+        if (!iTypeDisciplineRepo.existsByName(ETypeDiscipline.TROUBLE)) {
+            iTypeDisciplineRepo.save(trbl);
         }
                
     }

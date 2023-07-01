@@ -1,9 +1,9 @@
-package com.gulfcam.fuelcoupon.globalConfiguration;
+package com.adeli.adelispringboot.configuration.globalConfiguration;
 
 
-import com.gulfcam.fuelcoupon.authentication.service.UserDetailsImpl;
-import com.gulfcam.fuelcoupon.user.entity.Users;
-import com.gulfcam.fuelcoupon.user.repository.IUserRepo;
+import com.adeli.adelispringboot.Users.entity.Users;
+import com.adeli.adelispringboot.Users.repository.IUserRepo;
+import com.adeli.adelispringboot.authentication.service.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.core.Authentication;

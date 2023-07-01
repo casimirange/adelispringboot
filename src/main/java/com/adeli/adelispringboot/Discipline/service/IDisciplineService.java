@@ -1,21 +1,17 @@
-package com.adeli.adelispringboot.Session.service;
+package com.adeli.adelispringboot.Discipline.service;
 
-import com.adeli.adelispringboot.Session.entity.Session;
+import com.adeli.adelispringboot.Discipline.entity.Discipline;
 import org.springframework.data.domain.Page;
 
-import java.util.List;
-import java.util.Optional;
+public interface IDisciplineService {
 
-public interface ISessionService {
+    Page<Discipline> getAllDiscipline(int page, int size, String sort, String order);
 
-    Page<Session> getAllSessions(int page, int size, String sort, String order);
-    Optional<Session> getSessionByName(String name);
+    Page<Discipline> getDisciplinesBySeance(Long idSeance, int page, int size, String sort, String order);
 
-    List<Session> getSessionsByNameLike(String name);
+    void createDiscipline(Discipline Discipline);
 
-    void createSession(Session session);
-    Session endSession(Session session);
-    Session findLastSession();
+    Discipline getById(Long id);
 
 
 }

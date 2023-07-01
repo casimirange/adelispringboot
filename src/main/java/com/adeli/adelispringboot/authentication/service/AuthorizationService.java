@@ -1,8 +1,8 @@
-package com.gulfcam.fuelcoupon.authentication.service;
+package com.adeli.adelispringboot.authentication.service;
 
 
-import com.gulfcam.fuelcoupon.user.entity.Users;
-import com.gulfcam.fuelcoupon.user.repository.IUserRepo;
+import com.adeli.adelispringboot.Users.entity.Users;
+import com.adeli.adelispringboot.Users.repository.IUserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.security.core.Authentication;
@@ -22,6 +22,7 @@ public class AuthorizationService implements IAuthorizationService {
 	@Override
 	public Users getUserInContextApp() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
 		if (authentication == null || !authentication.isAuthenticated()) {
 			return null;
 		}

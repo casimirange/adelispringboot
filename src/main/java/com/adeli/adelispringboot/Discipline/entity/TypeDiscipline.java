@@ -1,4 +1,4 @@
-package com.adeli.adelispringboot.Session.entity;
+package com.adeli.adelispringboot.Discipline.entity;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -13,8 +13,8 @@ import javax.validation.constraints.NotNull;
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @ToString
-@Table(name = "StatusSession")
-public class SessionStatus {
+@Table(name = "TypeDiscipline")
+public class TypeDiscipline {
 
     @Schema(description = "identifiant unique du statut de la session", example = "1", required = true, accessMode = Schema.AccessMode.READ_ONLY)
     @Id
@@ -23,11 +23,11 @@ public class SessionStatus {
     private Long id;
 
     @NotNull
-    @Schema(description = "Statut de la session", example = "CREEE, TERMINEE")
+    @Schema(description = "Statut de la session", example = "ABSENCE, RETARD, TROUBLE")
     @Enumerated(EnumType.STRING)
-    private EStatusSession name;
+    private ETypeDiscipline name;
 
-    public SessionStatus(EStatusSession name) {
+    public TypeDiscipline(ETypeDiscipline name) {
         this.name = name;
     }
 }

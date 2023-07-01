@@ -1,4 +1,4 @@
-package com.gulfcam.fuelcoupon.order.dto;
+package com.adeli.adelispringboot.Document.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

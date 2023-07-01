@@ -1,9 +1,8 @@
-package com.gulfcam.fuelcoupon.user.entity;
+package com.adeli.adelispringboot.Users.entity;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import lombok.*;
-import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 
@@ -12,7 +11,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode
-@Audited(withModifiedFlag = true)
+
 public class RoleUser {
 	@Schema(description = "identifiant unique du role", example = "1", required = true, accessMode = AccessMode.READ_ONLY)
 	@Id
@@ -24,6 +23,7 @@ public class RoleUser {
 	@Enumerated(EnumType.STRING)
 	private ERole name;
 
-	private String description;
-
+	public RoleUser(ERole name) {
+		this.name = name;
+	}
 }

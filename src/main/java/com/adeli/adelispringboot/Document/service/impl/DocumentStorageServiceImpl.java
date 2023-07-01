@@ -1,10 +1,13 @@
-package com.gulfcam.fuelcoupon.order.service.impl;
+package com.adeli.adelispringboot.Document.service.impl;
 
-import com.gulfcam.fuelcoupon.exception.DocumentsStorageException;
-import com.gulfcam.fuelcoupon.order.entity.DocumentStorageProperties;
-import com.gulfcam.fuelcoupon.order.entity.TypeDocument;
-import com.gulfcam.fuelcoupon.order.repository.IDocumentStoragePropertiesRepo;
-import com.gulfcam.fuelcoupon.order.service.IDocumentStorageService;
+import com.adeli.adelispringboot.Document.entity.DocumentStorageProperties;
+import com.adeli.adelispringboot.Document.entity.TypeDocument;
+import com.adeli.adelispringboot.Document.repository.IDocumentStoragePropertiesRepo;
+import com.adeli.adelispringboot.Document.service.IDocumentStorageService;
+import com.adeli.adelispringboot.Seance.entity.Seance;
+import com.adeli.adelispringboot.Seance.repository.ISeanceRepository;
+import com.adeli.adelispringboot.configuration.exception.DocumentsStorageException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -29,6 +32,9 @@ public class DocumentStorageServiceImpl implements IDocumentStorageService {
     private final Path fileStorageLocation;
     @Autowired
     IDocumentStoragePropertiesRepo docStorageRepo;
+
+    @Autowired
+    ISeanceRepository iSeanceRepository;
     
     @Autowired
     public DocumentStorageServiceImpl(DocumentStorageProperties fileStorageProperties) {
@@ -42,7 +48,8 @@ public class DocumentStorageServiceImpl implements IDocumentStorageService {
     }
     @Override
     @Transactional
-    public String storeFile(MultipartFile file, Long idOrder, String docType, TypeDocument typeDocument) {
+    public String storeFile(MultipartFile file, Long idSeance, String docType, TypeDocument typeDocument) {
+        Seance seance = iSeanceRepository.findById(idSeance).get();
         // Normalize file name
         String originalFilename = StringUtils.cleanPath(file.getOriginalFilename());
         String fileName = "";
@@ -58,12 +65,12 @@ public class DocumentStorageServiceImpl implements IDocumentStorageService {
             } catch (Exception e) {
                 fileExtension = "";
             }
-            fileName = idOrder + "_" + docType + fileExtension;
+            fileName = "CR_" + seance.getDate() + fileExtension;
             // Copy file to the target location (Replacing existing file with the same name)
             Path targetLocation = this.fileStorageLocation.resolve(fileName);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
-            DocumentStorageProperties doc = docStorageRepo.checkDocumentByOrderId(idOrder, docType, typeDocument.getId());
+            DocumentStorageProperties doc = docStorageRepo.checkDocumentByOrderId(idSeance, docType, typeDocument.getId());
             if(doc != null) {
                 doc.setDocumentFormat(file.getContentType());
                 doc.setFileName(fileName);
@@ -71,7 +78,7 @@ public class DocumentStorageServiceImpl implements IDocumentStorageService {
                 docStorageRepo.save(doc);
             } else {
                 DocumentStorageProperties newDoc = new DocumentStorageProperties();
-                newDoc.setOrder(idOrder);
+                newDoc.setSeance(idSeance);
                 newDoc.setDocumentFormat(file.getContentType());
                 newDoc.setFileName(fileName);
                 newDoc.setType(typeDocument);

@@ -1,4 +1,4 @@
-package com.gulfcam.fuelcoupon.authentication.dto;
+package com.adeli.adelispringboot.authentication.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

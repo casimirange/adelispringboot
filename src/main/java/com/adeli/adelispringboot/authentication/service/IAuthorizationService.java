@@ -1,8 +1,6 @@
-package com.gulfcam.fuelcoupon.authentication.service;
+package com.adeli.adelispringboot.authentication.service;
 
-
-
-import com.gulfcam.fuelcoupon.user.entity.Users;
+import com.adeli.adelispringboot.Users.entity.Users;
 
 import java.util.List;
 

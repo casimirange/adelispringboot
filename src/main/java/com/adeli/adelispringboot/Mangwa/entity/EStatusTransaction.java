@@ -1,5 +1,5 @@
-package com.adeli.adelispringboot.Session.entity;
+package com.adeli.adelispringboot.Mangwa.entity;
 
-public enum EStatusSession {
-	CREEE, TERMINEE
+public enum EStatusTransaction {
+	DEPOT, RETRAIT, PRET, REMBOURSEMENT, NON_PAYE
 }

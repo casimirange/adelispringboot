@@ -3,20 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.example.demo.repository;
+package com.adeli.adelispringboot.Prêts.repository;
 
-import com.example.demo.entity.Amande;
-import com.example.demo.entity.Prets;
-import com.example.demo.entity.Reunion;
-import com.example.demo.entity.Session;
-import com.example.demo.entity.User;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import com.adeli.adelispringboot.Discipline.entity.Discipline;
+import com.adeli.adelispringboot.Prêts.entity.Prets;
+import com.adeli.adelispringboot.Seance.entity.Seance;
+import com.adeli.adelispringboot.Users.entity.Users;
 import net.minidev.json.JSONObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.time.LocalDate;
+import java.util.List;
 
 /**
  *
@@ -24,9 +25,10 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface PretRepository extends JpaRepository<Prets, Long> {
-    List<Prets> findByDatePret(LocalDate date);
-    List<Prets> findByRembourse(boolean etat);
-    List<Prets> findByUser(User user);
+//    List<Prets> findByDatePret(LocalDate date);
+//    List<Prets> findByRembourse(boolean etat);
+//    List<Prets> findByUser(Users user);
+    Page<Prets> findBySeance(Seance seance, Pageable pageable);
     
     String planing = "select p.id_pret as id, p.id_pret, p.date_pret, p.date_remboursement, p.montant_prete, p.montant_rembourse,"
             + "p.rembourse, s.taux, u.name as nom from prets p "

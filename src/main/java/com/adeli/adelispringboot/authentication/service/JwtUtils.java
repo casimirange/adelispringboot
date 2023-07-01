@@ -1,4 +1,4 @@
-package com.gulfcam.fuelcoupon.authentication.service;
+package com.adeli.adelispringboot.authentication.service;
 
 import io.jsonwebtoken.*;
 import lombok.Getter;
@@ -67,7 +67,7 @@ public class JwtUtils {
 	} 
 	
 	public int generateOtpCode() {
-		return  (1000 + new Random().nextInt(9000));
+		return  (10000 + new Random().nextInt(90000));
 	}
 
 	public String getIdGulfcamFromJwtToken(String token, String secret) {

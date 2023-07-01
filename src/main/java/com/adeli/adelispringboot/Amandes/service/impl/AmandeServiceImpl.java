@@ -1,11 +1,12 @@
-package com.adeli.adelispringboot.Session.service.impl;
+package com.adeli.adelispringboot.Amandes.service.impl;
 
-import com.adeli.adelispringboot.Session.entity.EStatusSession;
-import com.adeli.adelispringboot.Session.entity.Session;
-import com.adeli.adelispringboot.Session.entity.SessionStatus;
-import com.adeli.adelispringboot.Session.repository.ISessionRepo;
-import com.adeli.adelispringboot.Session.repository.IStatusSessionRepo;
-import com.adeli.adelispringboot.Session.service.ISessionService;
+import com.adeli.adelispringboot.Amandes.entity.Amande;
+import com.adeli.adelispringboot.Amandes.repository.IAmandeRepo;
+import com.adeli.adelispringboot.Amandes.service.IAmandeService;
+import com.adeli.adelispringboot.Seance.entity.Seance;
+import com.adeli.adelispringboot.Seance.service.ISeanceService;
+import com.adeli.adelispringboot.Tontine.dto.TontineResDto;
+import com.adeli.adelispringboot.Tontine.entity.Tontine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,45 +20,29 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class SessionServiceImpl implements ISessionService {
+public class AmandeServiceImpl implements IAmandeService {
 
     @Autowired
-    ISessionRepo iSessionRepo;
+    IAmandeRepo iAmandeRepo;
 
     @Autowired
-    IStatusSessionRepo iStatusSessionRepo;
+    ISeanceService iSeanceService;
+
     @Override
-    public Page<Session> getAllSessions(int page, int size, String sort, String order) {
-        return iSessionRepo.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(order), sort)));
+    public Page<Amande> getAllAmandes(int page, int size, String sort, String order) {
+        return iAmandeRepo.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(order), sort)));
     }
 
     @Override
-    public Optional<Session> getSessionByName(String name) {
-        return iSessionRepo.getSessionByName(name);
+    public Page<Amande> getAmandesBySeance(Long idSeance, int page, int size, String sort, String order) {
+        Seance seance = iSeanceService.getById(idSeance);
+        TontineResDto tontineResDto;
+        Page<Amande> amandes = iAmandeRepo.findBySeance(seance, PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(order), sort)));
+        return amandes;
     }
 
     @Override
-    public List<Session> getSessionsByNameLike(String name) {
-        return iSessionRepo.getSessionsByNameContains(name);
+    public void createAmande(Amande Amande) {
+        iAmandeRepo.save(Amande);
     }
-
-    @Override
-    public void createSession(Session session) {
-        iSessionRepo.save(session);
-    }
-
-    @Override
-    public Session endSession(Session session) {
-        SessionStatus sessionStatus = iStatusSessionRepo.findByName(EStatusSession.TERMINEE)
-                .orElseThrow(() -> new ResourceNotFoundException("Ce statut " + EStatusSession.TERMINEE + " n'existe pas"));
-        session.setStatus(sessionStatus);
-        return iSessionRepo.save(session);
-    }
-
-    @Override
-    public Session findLastSession() {
-        return iSessionRepo.findFirstByOrderByIdDesc();
-    }
-
-
 }

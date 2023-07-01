@@ -1,21 +1,14 @@
-package com.adeli.adelispringboot.Session.service;
-
-import com.adeli.adelispringboot.Session.entity.Session;
+package com.adeli.adelispringboot.Amandes.service;
+import com.adeli.adelispringboot.Amandes.entity.Amande;
+import com.adeli.adelispringboot.Tontine.dto.TontineResDto;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface ISessionService {
+public interface IAmandeService {
+    Page<Amande> getAllAmandes(int page, int size, String sort, String order);
 
-    Page<Session> getAllSessions(int page, int size, String sort, String order);
-    Optional<Session> getSessionByName(String name);
-
-    List<Session> getSessionsByNameLike(String name);
-
-    void createSession(Session session);
-    Session endSession(Session session);
-    Session findLastSession();
-
-
+    Page<Amande> getAmandesBySeance(Long idSeance, int page, int size, String sort, String order);
+    void createAmande(Amande amande);
 }

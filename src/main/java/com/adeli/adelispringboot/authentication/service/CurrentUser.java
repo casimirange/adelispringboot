@@ -1,4 +1,4 @@
-package com.gulfcam.fuelcoupon.authentication.service;
+package com.adeli.adelispringboot.authentication.service;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 

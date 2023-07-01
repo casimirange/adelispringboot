@@ -1,7 +1,7 @@
 
-package com.gulfcam.fuelcoupon.authentication.service;
+package com.adeli.adelispringboot.authentication.service;
 
-import com.gulfcam.fuelcoupon.user.entity.ERole;
+import com.adeli.adelispringboot.Users.entity.ERole;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
@@ -51,7 +51,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 					UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 					Collection<? extends GrantedAuthority> authorities = jwtUtils.isAuthenticated(token)
 							? userDetails.getAuthorities()
-							: Collections.unmodifiableList(Arrays.asList(new SimpleGrantedAuthority(ERole.ROLE_PRE_VERIFICATION_USER.name())));
+							: Collections.unmodifiableList(Arrays.asList(new SimpleGrantedAuthority(ERole.ROLE_SUPERADMIN.name())));
 					UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
 							userDetails, null,
 							authorities);

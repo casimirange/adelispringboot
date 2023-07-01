@@ -1,9 +1,11 @@
-package com.gulfcam.fuelcoupon.authentication;
+package com.adeli.adelispringboot.authentication;
 
-import com.gulfcam.fuelcoupon.authentication.service.AuthEntryPointJwt;
-import com.gulfcam.fuelcoupon.authentication.service.AuthTokenFilter;
-import com.gulfcam.fuelcoupon.authentication.service.JwtUtils;
-import com.gulfcam.fuelcoupon.authentication.service.UserDetailsServiceImpl;
+
+import com.adeli.adelispringboot.authentication.service.AuthEntryPointJwt;
+import com.adeli.adelispringboot.authentication.service.AuthTokenFilter;
+import com.adeli.adelispringboot.authentication.service.JwtUtils;
+import com.adeli.adelispringboot.authentication.service.UserDetailsServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,12 +29,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
 	@Autowired
-	UserDetailsServiceImpl userDetailsService;
+	private UserDetailsServiceImpl userDetailsService;
+
 	@Autowired
 	private AuthEntryPointJwt unauthorizedHandler;
 
 	@Autowired
 	private JwtUtils jwtUtils;
+
 
 	@Bean
 	public AuthTokenFilter authenticationJwtTokenFilter() {

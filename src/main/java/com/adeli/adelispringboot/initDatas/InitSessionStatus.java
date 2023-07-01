@@ -5,14 +5,11 @@
  */
 package com.adeli.adelispringboot.initDatas;
 
-import com.adeli.adelispringboot.Users.entity.EStatusUser;
-import com.adeli.adelispringboot.Users.entity.ETypeAccount;
-import com.adeli.adelispringboot.Users.entity.StatusUser;
-import com.adeli.adelispringboot.Users.entity.TypeAccount;
-import com.adeli.adelispringboot.Users.repository.IStatusUserRepo;
-import com.adeli.adelispringboot.Users.repository.ITypeAccountRepository;
+
+import com.adeli.adelispringboot.Session.entity.EStatusSession;
+import com.adeli.adelispringboot.Session.entity.SessionStatus;
+import com.adeli.adelispringboot.Session.repository.IStatusSessionRepo;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
@@ -25,22 +22,22 @@ import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
-@Order(3)
-public class InitUserStatus implements ApplicationRunner{
+@Order(5)
+public class InitSessionStatus implements ApplicationRunner {
 
-    private IStatusUserRepo iTypeAccountRepository;
+    private IStatusSessionRepo iStatusSessionRepo;
     
     @Override
     public void run(ApplicationArguments args) throws Exception {;
-        System.out.println("initialisation des status utilisateurs");
-        StatusUser userEnable = new StatusUser(EStatusUser.USER_ENABLED);
-        StatusUser userDisable = new StatusUser(EStatusUser.USER_DISABLED);
+        System.out.println("initialisation des status de la session");
+        SessionStatus create = new SessionStatus(EStatusSession.CREEE);
+        SessionStatus close = new SessionStatus(EStatusSession.TERMINEE);
 
-        if (!iTypeAccountRepository.existsByName(EStatusUser.USER_ENABLED)) {
-            iTypeAccountRepository.save(userEnable);
+        if (!iStatusSessionRepo.existsByName(EStatusSession.CREEE)) {
+            iStatusSessionRepo.save(create);
         }
-        if (!iTypeAccountRepository.existsByName(EStatusUser.USER_DISABLED)) {
-            iTypeAccountRepository.save(userDisable);
+        if (!iStatusSessionRepo.existsByName(EStatusSession.TERMINEE)) {
+            iStatusSessionRepo.save(close);
         }
                
     }

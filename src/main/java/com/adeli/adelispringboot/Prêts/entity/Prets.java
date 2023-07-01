@@ -3,26 +3,31 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.example.demo.entity;
+package com.adeli.adelispringboot.Prêts.entity;
 
+import com.adeli.adelispringboot.Discipline.entity.TypeDiscipline;
+import com.adeli.adelispringboot.Mangwa.entity.TypeTransaction;
+import com.adeli.adelispringboot.Seance.entity.Seance;
+import com.adeli.adelispringboot.Session.entity.Session;
+import com.adeli.adelispringboot.Users.entity.Users;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import javax.validation.constraints.Null;
 import java.time.LocalDate;
-import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 
 /**
  *
  * @author Casimir
  */
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Prets {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,103 +35,24 @@ public class Prets {
  
 //    @NotBlank
     private double montant_prete;
-    
-//    @NotBlank
+
     private double montant_rembourse;
  
-//    @NotBlank
-    private LocalDate datePret;
- 
     private LocalDate dateRemboursement;
- 
-//    @NotBlank
-    private boolean rembourse;
-    
-    @ManyToOne(fetch = FetchType.EAGER) //plusieurs lignes pour un département
-	@JoinColumn(name = "idUser")
-    public User user;
-    
-    @ManyToOne(fetch = FetchType.EAGER) //plusieurs lignes pour un département
-	@JoinColumn(name = "idSession")
-    public Session session;
 
-    public Prets(double montant_prete, double montant_rembourse, LocalDate datePret, LocalDate dateRemboursement, boolean rembourse, User user, Session session) {
-        this.montant_prete = montant_prete;
-        this.montant_rembourse = montant_rembourse;
-        this.datePret = datePret;
-        this.dateRemboursement = dateRemboursement;
-        this.rembourse = rembourse;
-        this.user = user;
-        this.session = session;
-    }
+    @ManyToOne
+    private TypeTransaction typeTransaction;
 
-    public Prets() {
-    }
-    
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "idUser")
+    public Users user;
 
-    public Long getIdPret() {
-        return idPret;
-    }
+    @ManyToOne
+    @JoinColumn(name = "id_seance")
+    private Seance seance;
 
-    public void setIdPret(Long idPret) {
-        this.idPret = idPret;
-    }
+    private LocalDateTime createdAt;
 
-    public double getMontant_prete() {
-        return montant_prete;
-    }
+    private LocalDateTime updatedAt;
 
-    public void setMontant_prete(double montant_prete) {
-        this.montant_prete = montant_prete;
-    }
-
-    public double getMontant_rembourse() {
-        return montant_rembourse;
-    }
-
-    public void setMontant_rembourse(double montant_rembourse) {
-        this.montant_rembourse = montant_rembourse;
-    }
-
-    public LocalDate getDatePret() {
-        return datePret;
-    }
-
-    public void setDatePret(LocalDate datePret) {
-        this.datePret = datePret;
-    }
-
-    public LocalDate getDateRemboursement() {
-        return dateRemboursement;
-    }
-
-    public void setDateRemboursement(LocalDate dateRemboursement) {
-        this.dateRemboursement = dateRemboursement;
-    }
-
-    public boolean isRembourse() {
-        return rembourse;
-    }
-
-    public void setRembourse(boolean rembourse) {
-        this.rembourse = rembourse;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Session getSession() {
-        return session;
-    }
-
-    public void setSession(Session session) {
-        this.session = session;
-    }
-
-    
 }

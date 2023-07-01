@@ -1,9 +1,8 @@
-package com.gulfcam.fuelcoupon.user.entity;
+package com.adeli.adelispringboot.Users.entity;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
-import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -15,7 +14,6 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @ToString
 @Table(name = "TypeAccount")
-@Audited(withModifiedFlag = true)
 public class TypeAccount {
 
     @Schema(description = "identifiant unique du type de compte", example = "1", required = true, accessMode = Schema.AccessMode.READ_ONLY)

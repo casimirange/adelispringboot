@@ -1,4 +1,4 @@
-package com.gulfcam.fuelcoupon.user.dto;
+package com.adeli.adelispringboot.configuration.email.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,13 +31,15 @@ public class EmailDto {
 
 	private String contentType;
 
+	private String fileName;
+
 	private MultipartFile[] files;
 
 	private byte[] attachement;
 
 	private Map<String, Object> props = new HashMap<>();
 
-	public EmailDto(String from,String senderName, String to,String replyTo, Map<String, Object> props, String subject, String template) {
+	public EmailDto(String from, String senderName, String to, String replyTo, Map<String, Object> props, String subject, String template) {
 		super();
 		this.from = from;
 		this.senderName = senderName;
@@ -48,7 +50,7 @@ public class EmailDto {
 		this.props = props;
 	}
 
-	public EmailDto(String from,String senderName, String to,String replyTo, Map<String, Object> props, String subject, String template, byte[] attachement) {
+	public EmailDto(String from, String senderName, String to, String replyTo, Map<String, Object> props, String subject, String template, byte[] attachement) {
 		super();
 		this.from = from;
 		this.senderName = senderName;
@@ -59,7 +61,19 @@ public class EmailDto {
 		this.attachement = attachement;
 	}
 
-	public EmailDto(String from,String senderName, String to,String replyTo, Map<String, Object> props, String subject, String template, byte[] attachement, String namefile, String contentType) {
+	public EmailDto(String from, String senderName, String to, String replyTo, Map<String, Object> props, String subject, String template, byte[] attachement, String fileName) {
+		super();
+		this.from = from;
+		this.senderName = senderName;
+		this.to = to;
+		this.replyTo= replyTo;
+		this.subject = subject;
+		this.body = template;
+		this.attachement = attachement;
+		this.fileName = fileName;
+	}
+
+	public EmailDto(String from, String senderName, String to, String replyTo, Map<String, Object> props, String subject, String template, byte[] attachement, String namefile, String contentType) {
 		super();
 		this.from = from;
 		this.senderName = senderName;
