@@ -23,6 +23,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 @EnableAsync
 public class AdelispringbootApplication extends SpringBootServletInitializer {
 
+    public String PORT = System.getenv("PORT");
     public static void main(String[] args) {
         SpringApplication.run(AdelispringbootApplication.class, args);
     }

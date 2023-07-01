@@ -1038,3 +1038,234 @@ List of constraint violations:[
 2023-07-01 12:52:15.570 TRACE 7453 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [RETARD]
 2023-07-01 12:52:15.571 DEBUG 7453 --- [restartedMain] org.hibernate.SQL                        : select typediscip0_.id as col_0_0_ from type_discipline typediscip0_ where typediscip0_.name=? limit ?
 2023-07-01 12:52:15.571 TRACE 7453 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [TROUBLE]
+2023-07-01 13:55:12.198  INFO 7453 --- [Thread-4] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'threadPoolTaskExecutor'
+2023-07-01 13:55:12.219  INFO 7453 --- [Thread-4] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-07-01 13:55:12.228  INFO 7453 --- [Thread-4] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2023-07-01 13:55:12.237  INFO 7453 --- [Thread-4] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2023-07-01 13:55:27.084  INFO 7453 --- [restartedMain] c.a.a.AdelispringbootApplication         : Starting AdelispringbootApplication on casimir-PC with PID 7453 (/home/casimir/Music/adeli/adelispringboot/target/classes started by casimir in /home/casimir/Music/adeli/adelispringboot)
+2023-07-01 13:55:27.084  INFO 7453 --- [restartedMain] c.a.a.AdelispringbootApplication         : The following profiles are active: prod
+2023-07-01 13:55:27.087 ERROR 7453 --- [restartedMain] o.s.boot.SpringApplication               : Application run failed
+
+java.lang.ArrayStoreException: sun.reflect.annotation.TypeNotPresentExceptionProxy
+	at java.base/sun.reflect.annotation.AnnotationParser.parseClassArray(AnnotationParser.java:724) ~[na:na]
+	at java.base/sun.reflect.annotation.AnnotationParser.parseArray(AnnotationParser.java:531) ~[na:na]
+	at java.base/sun.reflect.annotation.AnnotationParser.parseMemberValue(AnnotationParser.java:355) ~[na:na]
+	at java.base/sun.reflect.annotation.AnnotationParser.parseAnnotation2(AnnotationParser.java:286) ~[na:na]
+	at java.base/sun.reflect.annotation.AnnotationParser.parseAnnotations2(AnnotationParser.java:120) ~[na:na]
+	at java.base/sun.reflect.annotation.AnnotationParser.parseAnnotations(AnnotationParser.java:72) ~[na:na]
+	at java.base/java.lang.Class.createAnnotationData(Class.java:3734) ~[na:na]
+	at java.base/java.lang.Class.annotationData(Class.java:3723) ~[na:na]
+	at java.base/java.lang.Class.getDeclaredAnnotations(Class.java:3690) ~[na:na]
+	at org.springframework.core.annotation.AnnotationsScanner.getDeclaredAnnotations(AnnotationsScanner.java:461) ~[spring-core-5.2.2.RELEASE.jar:5.2.2.RELEASE]
+	at org.springframework.core.annotation.AnnotationsScanner.getDeclaredAnnotations(AnnotationsScanner.java:439) ~[spring-core-5.2.2.RELEASE.jar:5.2.2.RELEASE]
+	at org.springframework.core.annotation.AnnotationsScanner.processClassHierarchy(AnnotationsScanner.java:210) ~[spring-core-5.2.2.RELEASE.jar:5.2.2.RELEASE]
+	at org.springframework.core.annotation.AnnotationsScanner.processClassHierarchy(AnnotationsScanner.java:194) ~[spring-core-5.2.2.RELEASE.jar:5.2.2.RELEASE]
+	at org.springframework.core.annotation.AnnotationsScanner.processClass(AnnotationsScanner.java:128) ~[spring-core-5.2.2.RELEASE.jar:5.2.2.RELEASE]
+	at org.springframework.core.annotation.AnnotationsScanner.process(AnnotationsScanner.java:107) ~[spring-core-5.2.2.RELEASE.jar:5.2.2.RELEASE]
+	at org.springframework.core.annotation.AnnotationsScanner.scan(AnnotationsScanner.java:97) ~[spring-core-5.2.2.RELEASE.jar:5.2.2.RELEASE]
+	at org.springframework.core.annotation.AnnotationsScanner.scan(AnnotationsScanner.java:78) ~[spring-core-5.2.2.RELEASE.jar:5.2.2.RELEASE]
+	at org.springframework.core.annotation.TypeMappedAnnotations.scan(TypeMappedAnnotations.java:242) ~[spring-core-5.2.2.RELEASE.jar:5.2.2.RELEASE]
+	at org.springframework.core.annotation.TypeMappedAnnotations.isPresent(TypeMappedAnnotations.java:98) ~[spring-core-5.2.2.RELEASE.jar:5.2.2.RELEASE]
+	at org.springframework.boot.BeanDefinitionLoader.isComponent(BeanDefinitionLoader.java:279) ~[spring-boot-2.2.2.RELEASE.jar:2.2.2.RELEASE]
+	at org.springframework.boot.BeanDefinitionLoader.load(BeanDefinitionLoader.java:156) ~[spring-boot-2.2.2.RELEASE.jar:2.2.2.RELEASE]
+	at org.springframework.boot.BeanDefinitionLoader.load(BeanDefinitionLoader.java:136) ~[spring-boot-2.2.2.RELEASE.jar:2.2.2.RELEASE]
+	at org.springframework.boot.BeanDefinitionLoader.load(BeanDefinitionLoader.java:128) ~[spring-boot-2.2.2.RELEASE.jar:2.2.2.RELEASE]
+	at org.springframework.boot.SpringApplication.load(SpringApplication.java:691) ~[spring-boot-2.2.2.RELEASE.jar:2.2.2.RELEASE]
+	at org.springframework.boot.SpringApplication.prepareContext(SpringApplication.java:392) ~[spring-boot-2.2.2.RELEASE.jar:2.2.2.RELEASE]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:314) ~[spring-boot-2.2.2.RELEASE.jar:2.2.2.RELEASE]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1226) ~[spring-boot-2.2.2.RELEASE.jar:2.2.2.RELEASE]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1215) ~[spring-boot-2.2.2.RELEASE.jar:2.2.2.RELEASE]
+	at com.adeli.adelispringboot.AdelispringbootApplication.main(AdelispringbootApplication.java:27) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49) ~[spring-boot-devtools-2.2.2.RELEASE.jar:2.2.2.RELEASE]
+
+2023-07-01 13:55:33.982  INFO 7453 --- [restartedMain] c.a.a.AdelispringbootApplication         : Starting AdelispringbootApplication on casimir-PC with PID 7453 (/home/casimir/Music/adeli/adelispringboot/target/classes started by casimir in /home/casimir/Music/adeli/adelispringboot)
+2023-07-01 13:55:33.983  INFO 7453 --- [restartedMain] c.a.a.AdelispringbootApplication         : The following profiles are active: prod
+2023-07-01 13:55:34.670  INFO 7453 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-07-01 13:55:34.732  INFO 7453 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 61ms. Found 19 JPA repository interfaces.
+2023-07-01 13:55:34.819  INFO 7453 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-07-01 13:55:34.823  INFO 7453 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.security.config.annotation.configuration.ObjectPostProcessorConfiguration' of type [org.springframework.security.config.annotation.configuration.ObjectPostProcessorConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-07-01 13:55:34.825  INFO 7453 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'objectPostProcessor' of type [org.springframework.security.config.annotation.configuration.AutowireBeanFactoryObjectPostProcessor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-07-01 13:55:34.825  INFO 7453 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@77397bfb' of type [org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-07-01 13:55:34.827  INFO 7453 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration' of type [org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-07-01 13:55:34.827  INFO 7453 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-07-01 13:55:34.830  INFO 7453 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.hateoas.config.HateoasConfiguration' of type [org.springframework.hateoas.config.HateoasConfiguration$$EnhancerBySpringCGLIB$$3dbcfd96] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-07-01 13:55:34.834  INFO 7453 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'relProviderPluginRegistry' of type [org.springframework.plugin.core.support.PluginRegistryFactoryBean] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-07-01 13:55:34.837  INFO 7453 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'relProviderPluginRegistry' of type [org.springframework.plugin.core.OrderAwarePluginRegistry] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-07-01 13:55:34.839  INFO 7453 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean '_relProvider' of type [org.springframework.hateoas.server.core.DelegatingLinkRelationProvider] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-07-01 13:55:34.841  INFO 7453 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'messageResolver' of type [org.springframework.hateoas.mediatype.MessageSourceResolver] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-07-01 13:55:34.841  INFO 7453 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.hateoas.mediatype.hal.HalMediaTypeConfiguration' of type [org.springframework.hateoas.mediatype.hal.HalMediaTypeConfiguration$$EnhancerBySpringCGLIB$$97b18c6b] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-07-01 13:55:34.843  INFO 7453 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'adelispringbootApplication' of type [com.adeli.adelispringboot.AdelispringbootApplication$$EnhancerBySpringCGLIB$$e86b5dc7] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-07-01 13:55:34.846  INFO 7453 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'objectMapper' of type [com.fasterxml.jackson.databind.ObjectMapper] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-07-01 13:55:34.858  INFO 7453 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'hypermediaWebMvcConverters' of type [org.springframework.hateoas.config.WebConverters] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-07-01 13:55:34.928  WARN 7453 --- [restartedMain] org.apache.tomcat.util.modeler.Registry  : The MBean registry cannot be disabled because it has already been initialised
+2023-07-01 13:55:34.952  INFO 7453 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 3000 (http)
+2023-07-01 13:55:34.952  INFO 7453 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-07-01 13:55:34.953  INFO 7453 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.29]
+2023-07-01 13:55:34.971  INFO 7453 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-07-01 13:55:34.971 DEBUG 7453 --- [restartedMain] o.s.web.context.ContextLoader            : Published root WebApplicationContext as ServletContext attribute with name [org.springframework.web.context.WebApplicationContext.ROOT]
+2023-07-01 13:55:34.972  INFO 7453 --- [restartedMain] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 984 ms
+2023-07-01 13:55:35.085  INFO 7453 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-07-01 13:55:35.091  INFO 7453 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
+2023-07-01 13:55:38.302  INFO 2038 --- [main] c.a.a.AdelispringbootApplicationTests    : Starting AdelispringbootApplicationTests on casimir-PC with PID 2038 (started by casimir in /home/casimir/Music/adeli/adelispringboot)
+2023-07-01 13:55:38.304  INFO 2038 --- [main] c.a.a.AdelispringbootApplicationTests    : The following profiles are active: prod
+2023-07-01 13:55:38.362 DEBUG 2038 --- [main] o.s.w.c.s.GenericWebApplicationContext   : Refreshing org.springframework.web.context.support.GenericWebApplicationContext@71ae31b0
+2023-07-01 13:55:38.706  INFO 7453 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
+2023-07-01 13:55:38.823  INFO 7453 --- [restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+2023-07-01 13:55:39.897  INFO 2038 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-07-01 13:55:40.100  INFO 2038 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 193ms. Found 19 JPA repository interfaces.
+2023-07-01 13:55:40.773  INFO 2038 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-07-01 13:55:40.814  INFO 2038 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.security.config.annotation.configuration.ObjectPostProcessorConfiguration' of type [org.springframework.security.config.annotation.configuration.ObjectPostProcessorConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-07-01 13:55:40.827  INFO 2038 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'objectPostProcessor' of type [org.springframework.security.config.annotation.configuration.AutowireBeanFactoryObjectPostProcessor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-07-01 13:55:40.829  INFO 2038 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@54c60202' of type [org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-07-01 13:55:40.839  INFO 2038 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration' of type [org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-07-01 13:55:40.848  INFO 2038 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-07-01 13:55:40.872  INFO 2038 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.hateoas.config.HateoasConfiguration' of type [org.springframework.hateoas.config.HateoasConfiguration$$EnhancerBySpringCGLIB$$11d27ab6] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-07-01 13:55:40.891  INFO 2038 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'relProviderPluginRegistry' of type [org.springframework.plugin.core.support.PluginRegistryFactoryBean] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-07-01 13:55:40.899  INFO 2038 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'relProviderPluginRegistry' of type [org.springframework.plugin.core.OrderAwarePluginRegistry] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-07-01 13:55:40.910  INFO 2038 --- [main] trationDelegate$BeanPostProcessorChecker : Bean '_relProvider' of type [org.springframework.hateoas.server.core.DelegatingLinkRelationProvider] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-07-01 13:55:40.918  INFO 2038 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'messageResolver' of type [org.springframework.hateoas.mediatype.MessageSourceResolver] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-07-01 13:55:40.923  INFO 2038 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.hateoas.mediatype.hal.HalMediaTypeConfiguration' of type [org.springframework.hateoas.mediatype.hal.HalMediaTypeConfiguration$$EnhancerBySpringCGLIB$$6bc7098b] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-07-01 13:55:40.930  INFO 2038 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'adelispringbootApplication' of type [com.adeli.adelispringboot.AdelispringbootApplication$$EnhancerBySpringCGLIB$$bc80dae7] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-07-01 13:55:40.968  INFO 2038 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'objectMapper' of type [com.fasterxml.jackson.databind.ObjectMapper] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-07-01 13:55:41.048  INFO 2038 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'hypermediaWebMvcConverters' of type [org.springframework.hateoas.config.WebConverters] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-07-01 13:55:41.370  INFO 2038 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-07-01 13:55:41.438  INFO 2038 --- [main] org.hibernate.Version                    : HHH000412: Hibernate Core {5.4.9.Final}
+2023-07-01 13:55:41.565  INFO 2038 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2023-07-01 13:55:41.675  INFO 2038 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2023-07-01 13:55:44.883  INFO 2038 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2023-07-01 13:55:44.907  INFO 2038 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+2023-07-01 13:56:08.137  INFO 7453 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-07-01 13:56:08.138  INFO 7453 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-07-01 13:56:08.717 DEBUG 7453 --- [restartedMain] o.s.b.w.s.ServletContextInitializerBeans : Mapping filters: springSecurityFilterChain urls=[/*] order=-100, filterRegistrationBean urls=[/*] order=2147483647, characterEncodingFilter urls=[/*] order=-2147483648, formContentFilter urls=[/*] order=-9900, requestContextFilter urls=[/*] order=-105, authenticationJwtTokenFilter urls=[/*] order=2147483647
+2023-07-01 13:56:08.717 DEBUG 7453 --- [restartedMain] o.s.b.w.s.ServletContextInitializerBeans : Mapping servlets: dispatcherServlet urls=[/]
+2023-07-01 13:56:08.718 DEBUG 7453 --- [restartedMain] o.s.w.s.r.ResourceUrlEncodingFilter      : Filter 'resourceUrlEncodingFilter' configured for use
+2023-07-01 13:56:08.782  INFO 7453 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2023-07-01 13:56:09.955 DEBUG 7453 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerMapping : 65 mappings in 'requestMappingHandlerMapping'
+2023-07-01 13:56:10.345 DEBUG 7453 --- [restartedMain] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2023-07-01 13:56:10.365  INFO 7453 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@14ebf2e5, org.springframework.security.web.context.SecurityContextPersistenceFilter@720141d1, org.springframework.security.web.header.HeaderWriterFilter@66879710, org.springframework.web.filter.CorsFilter@632fe06e, org.springframework.security.web.authentication.logout.LogoutFilter@6234b326, com.adeli.adelispringboot.authentication.service.AuthTokenFilter@52770db9, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@4dbedceb, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@17dbed5b, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@60d0a8e2, org.springframework.security.web.session.SessionManagementFilter@1373dcda, org.springframework.security.web.access.ExceptionTranslationFilter@41dfdbe9, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@44b319c6]
+2023-07-01 13:56:10.369  INFO 7453 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService
+2023-07-01 13:56:10.369  INFO 7453 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'threadPoolTaskExecutor'
+2023-07-01 13:56:10.400 DEBUG 7453 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2023-07-01 13:56:10.425 DEBUG 7453 --- [restartedMain] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 3 @ExceptionHandler, 1 ResponseBodyAdvice
+2023-07-01 13:56:10.582  INFO 7453 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 3000 (http) with context path ''
+2023-07-01 13:56:10.583  INFO 7453 --- [restartedMain] c.a.a.AdelispringbootApplication         : Started AdelispringbootApplication in 36.656 seconds (JVM running for 3843.406)
+2023-07-01 13:56:10.593 DEBUG 7453 --- [restartedMain] org.hibernate.SQL                        : select roleuser0_.id as col_0_0_ from role_user roleuser0_ where roleuser0_.name=? limit ?
+2023-07-01 13:56:10.816 TRACE 7453 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [ROLE_SUPERADMIN]
+2023-07-01 13:56:11.039 DEBUG 7453 --- [restartedMain] org.hibernate.SQL                        : select roleuser0_.id as col_0_0_ from role_user roleuser0_ where roleuser0_.name=? limit ?
+2023-07-01 13:56:11.039 TRACE 7453 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [ROLE_USER]
+2023-07-01 13:56:11.260 DEBUG 7453 --- [restartedMain] org.hibernate.SQL                        : select typeaccoun0_.id as col_0_0_ from type_account typeaccoun0_ where typeaccoun0_.name=? limit ?
+2023-07-01 13:56:11.261 TRACE 7453 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [ADHERANT]
+2023-07-01 13:56:11.478 DEBUG 7453 --- [restartedMain] org.hibernate.SQL                        : select typeaccoun0_.id as col_0_0_ from type_account typeaccoun0_ where typeaccoun0_.name=? limit ?
+2023-07-01 13:56:11.478 TRACE 7453 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [PRESIDENT]
+2023-07-01 13:56:11.698 DEBUG 7453 --- [restartedMain] org.hibernate.SQL                        : select typeaccoun0_.id as col_0_0_ from type_account typeaccoun0_ where typeaccoun0_.name=? limit ?
+2023-07-01 13:56:11.698 TRACE 7453 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [PORTE_PAROLE]
+2023-07-01 13:56:11.924 DEBUG 7453 --- [restartedMain] org.hibernate.SQL                        : select typeaccoun0_.id as col_0_0_ from type_account typeaccoun0_ where typeaccoun0_.name=? limit ?
+2023-07-01 13:56:11.925 TRACE 7453 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [TRESORIER]
+2023-07-01 13:56:12.137 DEBUG 7453 --- [restartedMain] org.hibernate.SQL                        : select typeaccoun0_.id as col_0_0_ from type_account typeaccoun0_ where typeaccoun0_.name=? limit ?
+2023-07-01 13:56:12.137 TRACE 7453 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [SENSCEUR]
+2023-07-01 13:56:12.358 DEBUG 7453 --- [restartedMain] org.hibernate.SQL                        : select typeaccoun0_.id as col_0_0_ from type_account typeaccoun0_ where typeaccoun0_.name=? limit ?
+2023-07-01 13:56:12.359 TRACE 7453 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [SECRETAIRE]
+2023-07-01 13:56:12.578 DEBUG 7453 --- [restartedMain] org.hibernate.SQL                        : select typeaccoun0_.id as col_0_0_ from type_account typeaccoun0_ where typeaccoun0_.name=? limit ?
+2023-07-01 13:56:12.579 TRACE 7453 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [COMISSAIRE_AU_COMPTE]
+2023-07-01 13:56:12.807 DEBUG 7453 --- [restartedMain] org.hibernate.SQL                        : select statususer0_.id as col_0_0_ from status_user statususer0_ where statususer0_.name=? limit ?
+2023-07-01 13:56:12.807 TRACE 7453 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [USER_ENABLED]
+2023-07-01 13:56:13.019 DEBUG 7453 --- [restartedMain] org.hibernate.SQL                        : select statususer0_.id as col_0_0_ from status_user statususer0_ where statususer0_.name=? limit ?
+2023-07-01 13:56:13.019 TRACE 7453 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [USER_DISABLED]
+2023-07-01 13:56:13.248 DEBUG 7453 --- [restartedMain] org.hibernate.SQL                        : select users0_.user_id as col_0_0_ from users users0_ where users0_.email=? limit ?
+2023-07-01 13:56:13.248 TRACE 7453 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [ouandji.casimir@gmail.com]
+2023-07-01 13:56:13.466 DEBUG 7453 --- [restartedMain] org.hibernate.SQL                        : select users0_.user_id as col_0_0_ from users users0_ where users0_.telephone=? limit ?
+2023-07-01 13:56:13.468 TRACE 7453 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [693764263]
+2023-07-01 13:56:13.690 DEBUG 7453 --- [restartedMain] org.hibernate.SQL                        : select sessionsta0_.id as col_0_0_ from status_session sessionsta0_ where sessionsta0_.name=? limit ?
+2023-07-01 13:56:13.691 TRACE 7453 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [CREEE]
+2023-07-01 13:56:13.897 DEBUG 7453 --- [restartedMain] org.hibernate.SQL                        : select sessionsta0_.id as col_0_0_ from status_session sessionsta0_ where sessionsta0_.name=? limit ?
+2023-07-01 13:56:13.898 TRACE 7453 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [TERMINEE]
+2023-07-01 13:56:14.124 DEBUG 7453 --- [restartedMain] org.hibernate.SQL                        : select typetransa0_.id as col_0_0_ from status_transaction typetransa0_ where typetransa0_.name=? limit ?
+2023-07-01 13:56:14.125 TRACE 7453 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [DEPOT]
+2023-07-01 13:56:14.338 DEBUG 7453 --- [restartedMain] org.hibernate.SQL                        : select typetransa0_.id as col_0_0_ from status_transaction typetransa0_ where typetransa0_.name=? limit ?
+2023-07-01 13:56:14.339 TRACE 7453 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [RETRAIT]
+2023-07-01 13:56:14.537 DEBUG 7453 --- [restartedMain] org.hibernate.SQL                        : select typetransa0_.id as col_0_0_ from status_transaction typetransa0_ where typetransa0_.name=? limit ?
+2023-07-01 13:56:14.538 TRACE 7453 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [PRET]
+2023-07-01 13:56:14.747 DEBUG 7453 --- [restartedMain] org.hibernate.SQL                        : select typetransa0_.id as col_0_0_ from status_transaction typetransa0_ where typetransa0_.name=? limit ?
+2023-07-01 13:56:14.748 TRACE 7453 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [REMBOURSEMENT]
+2023-07-01 13:56:14.963 DEBUG 7453 --- [restartedMain] org.hibernate.SQL                        : select typetransa0_.id as col_0_0_ from status_transaction typetransa0_ where typetransa0_.name=? limit ?
+2023-07-01 13:56:14.964 TRACE 7453 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [NON_PAYE]
+2023-07-01 13:56:15.187 DEBUG 7453 --- [restartedMain] org.hibernate.SQL                        : select typediscip0_.id as col_0_0_ from type_discipline typediscip0_ where typediscip0_.name=? limit ?
+2023-07-01 13:56:15.191 TRACE 7453 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [ABSENCE]
+2023-07-01 13:56:15.404 DEBUG 7453 --- [restartedMain] org.hibernate.SQL                        : select typediscip0_.id as col_0_0_ from type_discipline typediscip0_ where typediscip0_.name=? limit ?
+2023-07-01 13:56:15.404 TRACE 7453 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [RETARD]
+2023-07-01 13:56:15.624 DEBUG 7453 --- [restartedMain] org.hibernate.SQL                        : select typediscip0_.id as col_0_0_ from type_discipline typediscip0_ where typediscip0_.name=? limit ?
+2023-07-01 13:56:15.624 TRACE 7453 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [TROUBLE]
+2023-07-01 13:56:15.847 DEBUG 7453 --- [restartedMain] org.hibernate.SQL                        : select typedocume0_.id as col_0_0_ from type_document typedocume0_ where typedocume0_.name=? limit ?
+2023-07-01 13:56:15.849 TRACE 7453 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [DELIVERY]
+2023-07-01 13:56:16.063 DEBUG 7453 --- [restartedMain] org.hibernate.SQL                        : select typedocume0_.id as col_0_0_ from type_document typedocume0_ where typedocume0_.name=? limit ?
+2023-07-01 13:56:16.064 TRACE 7453 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [INVOICE]
+2023-07-01 13:56:16.296  INFO 7453 --- [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2023-07-01 13:56:16.494  INFO 2038 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-07-01 13:56:16.508  INFO 2038 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-07-01 13:56:20.471 DEBUG 2038 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : 65 mappings in 'requestMappingHandlerMapping'
+2023-07-01 13:56:22.318 DEBUG 2038 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2023-07-01 13:56:22.440  INFO 2038 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@36ce48bc, org.springframework.security.web.context.SecurityContextPersistenceFilter@bedebe9, org.springframework.security.web.header.HeaderWriterFilter@7ca0aa55, org.springframework.web.filter.CorsFilter@3d287f7c, org.springframework.security.web.authentication.logout.LogoutFilter@87cb1d8, com.adeli.adelispringboot.authentication.service.AuthTokenFilter@605c2b9f, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@11ce61d1, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@4d65fbad, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@45aa02de, org.springframework.security.web.session.SessionManagementFilter@781ecbac, org.springframework.security.web.access.ExceptionTranslationFilter@11548363, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@12ff3df]
+2023-07-01 13:56:22.493  INFO 2038 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService
+2023-07-01 13:56:22.507  INFO 2038 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'threadPoolTaskExecutor'
+2023-07-01 13:56:23.042 DEBUG 2038 --- [main] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2023-07-01 13:56:24.810 DEBUG 2038 --- [main] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 3 @ExceptionHandler, 1 ResponseBodyAdvice
+2023-07-01 13:56:25.820  INFO 2038 --- [main] c.a.a.AdelispringbootApplicationTests    : Started AdelispringbootApplicationTests in 48.129 seconds (JVM running for 51.611)
+2023-07-01 13:56:25.997 DEBUG 2038 --- [main] org.hibernate.SQL                        : select roleuser0_.id as col_0_0_ from role_user roleuser0_ where roleuser0_.name=? limit ?
+2023-07-01 13:56:26.252 TRACE 2038 --- [main] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [ROLE_SUPERADMIN]
+2023-07-01 13:56:26.493 DEBUG 2038 --- [main] org.hibernate.SQL                        : select roleuser0_.id as col_0_0_ from role_user roleuser0_ where roleuser0_.name=? limit ?
+2023-07-01 13:56:26.501 TRACE 2038 --- [main] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [ROLE_USER]
+2023-07-01 13:56:26.735 DEBUG 2038 --- [main] org.hibernate.SQL                        : select typeaccoun0_.id as col_0_0_ from type_account typeaccoun0_ where typeaccoun0_.name=? limit ?
+2023-07-01 13:56:26.738 TRACE 2038 --- [main] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [ADHERANT]
+2023-07-01 13:56:26.941 DEBUG 2038 --- [main] org.hibernate.SQL                        : select typeaccoun0_.id as col_0_0_ from type_account typeaccoun0_ where typeaccoun0_.name=? limit ?
+2023-07-01 13:56:26.942 TRACE 2038 --- [main] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [PRESIDENT]
+2023-07-01 13:56:27.159 DEBUG 2038 --- [main] org.hibernate.SQL                        : select typeaccoun0_.id as col_0_0_ from type_account typeaccoun0_ where typeaccoun0_.name=? limit ?
+2023-07-01 13:56:27.160 TRACE 2038 --- [main] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [PORTE_PAROLE]
+2023-07-01 13:56:27.404 DEBUG 2038 --- [main] org.hibernate.SQL                        : select typeaccoun0_.id as col_0_0_ from type_account typeaccoun0_ where typeaccoun0_.name=? limit ?
+2023-07-01 13:56:27.405 TRACE 2038 --- [main] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [TRESORIER]
+2023-07-01 13:56:27.622 DEBUG 2038 --- [main] org.hibernate.SQL                        : select typeaccoun0_.id as col_0_0_ from type_account typeaccoun0_ where typeaccoun0_.name=? limit ?
+2023-07-01 13:56:27.623 TRACE 2038 --- [main] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [SENSCEUR]
+2023-07-01 13:56:27.840 DEBUG 2038 --- [main] org.hibernate.SQL                        : select typeaccoun0_.id as col_0_0_ from type_account typeaccoun0_ where typeaccoun0_.name=? limit ?
+2023-07-01 13:56:27.841 TRACE 2038 --- [main] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [SECRETAIRE]
+2023-07-01 13:56:28.058 DEBUG 2038 --- [main] org.hibernate.SQL                        : select typeaccoun0_.id as col_0_0_ from type_account typeaccoun0_ where typeaccoun0_.name=? limit ?
+2023-07-01 13:56:28.059 TRACE 2038 --- [main] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [COMISSAIRE_AU_COMPTE]
+2023-07-01 13:56:28.287 DEBUG 2038 --- [main] org.hibernate.SQL                        : select statususer0_.id as col_0_0_ from status_user statususer0_ where statususer0_.name=? limit ?
+2023-07-01 13:56:28.288 TRACE 2038 --- [main] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [USER_ENABLED]
+2023-07-01 13:56:28.500 DEBUG 2038 --- [main] org.hibernate.SQL                        : select statususer0_.id as col_0_0_ from status_user statususer0_ where statususer0_.name=? limit ?
+2023-07-01 13:56:28.500 TRACE 2038 --- [main] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [USER_DISABLED]
+2023-07-01 13:56:28.724 DEBUG 2038 --- [main] org.hibernate.SQL                        : select users0_.user_id as col_0_0_ from users users0_ where users0_.email=? limit ?
+2023-07-01 13:56:28.724 TRACE 2038 --- [main] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [ouandji.casimir@gmail.com]
+2023-07-01 13:56:28.958 DEBUG 2038 --- [main] org.hibernate.SQL                        : select users0_.user_id as col_0_0_ from users users0_ where users0_.telephone=? limit ?
+2023-07-01 13:56:28.961 TRACE 2038 --- [main] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [693764263]
+2023-07-01 13:56:29.200 DEBUG 2038 --- [main] org.hibernate.SQL                        : select sessionsta0_.id as col_0_0_ from status_session sessionsta0_ where sessionsta0_.name=? limit ?
+2023-07-01 13:56:29.202 TRACE 2038 --- [main] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [CREEE]
+2023-07-01 13:56:29.422 DEBUG 2038 --- [main] org.hibernate.SQL                        : select sessionsta0_.id as col_0_0_ from status_session sessionsta0_ where sessionsta0_.name=? limit ?
+2023-07-01 13:56:29.423 TRACE 2038 --- [main] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [TERMINEE]
+2023-07-01 13:56:29.643 DEBUG 2038 --- [main] org.hibernate.SQL                        : select typetransa0_.id as col_0_0_ from status_transaction typetransa0_ where typetransa0_.name=? limit ?
+2023-07-01 13:56:29.646 TRACE 2038 --- [main] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [DEPOT]
+2023-07-01 13:56:29.858 DEBUG 2038 --- [main] org.hibernate.SQL                        : select typetransa0_.id as col_0_0_ from status_transaction typetransa0_ where typetransa0_.name=? limit ?
+2023-07-01 13:56:29.859 TRACE 2038 --- [main] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [RETRAIT]
+2023-07-01 13:56:30.081 DEBUG 2038 --- [main] org.hibernate.SQL                        : select typetransa0_.id as col_0_0_ from status_transaction typetransa0_ where typetransa0_.name=? limit ?
+2023-07-01 13:56:30.083 TRACE 2038 --- [main] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [PRET]
+2023-07-01 13:56:30.305 DEBUG 2038 --- [main] org.hibernate.SQL                        : select typetransa0_.id as col_0_0_ from status_transaction typetransa0_ where typetransa0_.name=? limit ?
+2023-07-01 13:56:30.306 TRACE 2038 --- [main] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [REMBOURSEMENT]
+2023-07-01 13:56:30.519 DEBUG 2038 --- [main] org.hibernate.SQL                        : select typetransa0_.id as col_0_0_ from status_transaction typetransa0_ where typetransa0_.name=? limit ?
+2023-07-01 13:56:30.522 TRACE 2038 --- [main] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [NON_PAYE]
+2023-07-01 13:56:30.741 DEBUG 2038 --- [main] org.hibernate.SQL                        : select typediscip0_.id as col_0_0_ from type_discipline typediscip0_ where typediscip0_.name=? limit ?
+2023-07-01 13:56:30.742 TRACE 2038 --- [main] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [ABSENCE]
+2023-07-01 13:56:30.958 DEBUG 2038 --- [main] org.hibernate.SQL                        : select typediscip0_.id as col_0_0_ from type_discipline typediscip0_ where typediscip0_.name=? limit ?
+2023-07-01 13:56:30.959 TRACE 2038 --- [main] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [RETARD]
+2023-07-01 13:56:31.179 DEBUG 2038 --- [main] org.hibernate.SQL                        : select typediscip0_.id as col_0_0_ from type_discipline typediscip0_ where typediscip0_.name=? limit ?
+2023-07-01 13:56:31.180 TRACE 2038 --- [main] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [TROUBLE]
+2023-07-01 13:56:31.405 DEBUG 2038 --- [main] org.hibernate.SQL                        : select typedocume0_.id as col_0_0_ from type_document typedocume0_ where typedocume0_.name=? limit ?
+2023-07-01 13:56:31.405 TRACE 2038 --- [main] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [DELIVERY]
+2023-07-01 13:56:31.627 DEBUG 2038 --- [main] org.hibernate.SQL                        : select typedocume0_.id as col_0_0_ from type_document typedocume0_ where typedocume0_.name=? limit ?
+2023-07-01 13:56:31.627 TRACE 2038 --- [main] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [INVOICE]
+2023-07-01 13:56:32.158 DEBUG 2038 --- [SpringContextShutdownHook] o.s.w.c.s.GenericWebApplicationContext   : Closing org.springframework.web.context.support.GenericWebApplicationContext@71ae31b0, started on Sat Jul 01 13:55:38 CAT 2023
+2023-07-01 13:56:32.173  INFO 2038 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'threadPoolTaskExecutor'
+2023-07-01 13:56:32.216  INFO 2038 --- [SpringContextShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-07-01 13:56:32.226  INFO 2038 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2023-07-01 13:56:32.260  INFO 2038 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
