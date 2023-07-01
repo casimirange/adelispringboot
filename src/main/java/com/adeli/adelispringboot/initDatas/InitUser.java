@@ -48,20 +48,22 @@ public class InitUser implements ApplicationRunner{
     public void run(ApplicationArguments args) throws Exception {;
         System.out.println("initialisation de l'user");
 
-        String email = "ouandji.casimir+1@gmail.com";
-        String phone = "693764260";
+        String email = "ouandji.casimir@gmail.com";
+        String phone = "693764263";
         if (utilisateurRepository.existsByEmail(email)) {
           System.out.println("Fail -> Email is already in use!");
         }
         if (utilisateurRepository.existsByTelephone(phone)) {
           System.out.println("Fail -> Phone is already in use!");
         } else{
-               
+
+        double montant = 500;
 
         Users user = new Users();
         user.setLastName("Casimir");
         user.setFirstName("Ouandji");
         user.setEmail(email);
+        user.setMontant(montant);
         user.setPassword(encoder.encode("Ange3000-"));
         user.setTelephone(phone);
         StatusUser statusUser = iStatusUserRepo.findByName(EStatusUser.USER_ENABLED);
