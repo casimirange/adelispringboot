@@ -21,7 +21,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 @EnableConfigurationProperties({DocumentStorageProperties.class})
 @Configuration
 @EnableAsync
-public class AdelispringbootApplication {
+public class AdelispringbootApplication extends SpringBootServletInitializer {
 
     public String PORT = System.getenv("PORT");
 
