@@ -10,9 +10,12 @@ import com.adeli.adelispringboot.Mangwa.entity.TypeTransaction;
 import com.adeli.adelispringboot.Mangwa.repository.IRetenueRepository;
 import com.adeli.adelispringboot.Mangwa.repository.IStatusTransactionRepo;
 import com.adeli.adelispringboot.Prêts.dto.PretReqDto;
+import com.adeli.adelispringboot.Prêts.entity.EStatusPret;
 import com.adeli.adelispringboot.Prêts.entity.Prets;
+import com.adeli.adelispringboot.Prêts.entity.StatutPret;
 import com.adeli.adelispringboot.Prêts.repository.PretRepository;
 import com.adeli.adelispringboot.Prêts.service.IPretService;
+import com.adeli.adelispringboot.Prêts.service.IStatusPretRepo;
 import com.adeli.adelispringboot.Seance.entity.Seance;
 import com.adeli.adelispringboot.Seance.service.ISeanceService;
 import com.adeli.adelispringboot.Session.repository.ISessionRepo;
@@ -90,6 +93,9 @@ public class PretsController {
 
     @Autowired
     IStatusTransactionRepo iStatusTransactionRepo;
+
+    @Autowired
+    IStatusPretRepo iStatusPretRepo;
     
     @Autowired
     PretRepository pretRepository;
@@ -108,6 +114,7 @@ public class PretsController {
         Users user = iUserService.getById(pretReqDto.getIdUser());
         Seance seance = iSeanceService.getById(pretReqDto.getIdSeance());
         TypeTransaction typeTransaction = iStatusTransactionRepo.findByName(EStatusTransaction.PRET).orElseThrow(()-> new ResourceNotFoundException("Type de transaction not found"));
+        StatutPret statutPret = iStatusPretRepo.findByName(EStatusPret.EN_COURS).orElseThrow(()-> new ResourceNotFoundException("Statut prêt not found"));
 
         if(iTontineService.soldeTontine() < pretReqDto.getMontant_prete()){
             return ResponseEntity.badRequest().body(new MessageResponseDto(HttpStatus.BAD_REQUEST,
@@ -120,6 +127,7 @@ public class PretsController {
         prets.setDateRemboursement(null);
         prets.setMontant_rembourse(0);
         prets.setTypeTransaction(typeTransaction);
+        prets.setStatutPret(statutPret);
 
         tontine.setTypeTransaction(typeTransaction);
         tontine.setMontant(pretReqDto.getMontant_prete());
@@ -146,7 +154,8 @@ public class PretsController {
         Users user = iUserService.getById(pretReqDto.getIdUser());
         Seance seance = iSeanceService.getByDate(pretReqDto.getDateRemboursement());
         TypeTransaction typeTransaction = iStatusTransactionRepo.findByName(EStatusTransaction.REMBOURSEMENT).orElseThrow(()-> new ResourceNotFoundException("Type de transaction not found"));
-        System.out.println("montantv prété "+prets.getMontant_prete());
+        StatutPret statutPret = iStatusPretRepo.findByName(pretReqDto.isType() ? EStatusPret.INNACHEVE : EStatusPret.ACHEVE).orElseThrow(()-> new ResourceNotFoundException("Statut prêt not found"));
+        System.out.println("montant prété "+prets.getMontant_prete());
         if(pretReqDto.getMontant_rembourse() < prets.getMontant_prete()){
             return ResponseEntity.badRequest().body(new MessageResponseDto(HttpStatus.BAD_REQUEST,
                     messageSource.getMessage("messages.pret_rembourse_insuffisant", null, LocaleContextHolder.getLocale())));
@@ -162,6 +171,7 @@ public class PretsController {
         prets.setDateRemboursement(seance.getDate());
 //        prets.setMontant_prete(prets.getMontant_prete());
         prets.setTypeTransaction(typeTransaction);
+        prets.setStatutPret(statutPret);
 
         tontine.setTypeTransaction(typeTransaction);
         tontine.setMontant(pretReqDto.getMontant_rembourse());

@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 8.1.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Invoice" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="77f62705-562e-4973-b813-d2af08ae2a10">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Foodmart (localhost)"/>
+	<property name="ireport.jasperserver.url" value="http://127.0.0.1:8080/jasperserver-pro/"/>
+	<property name="ireport.jasperserver.user" value="jasperadmin"/>
+	<property name="ireport.jasperserver.report.resource" value="/public/Christoph/Invoice_files/Invoice_"/>
+	<property name="ireport.jasperserver.reportUnit" value="/public/Christoph/Invoice"/>
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="98"/>
+	<property name="ireport.y" value="425"/>
+	<subDataset name="tontine" uuid="881345ab-2872-4599-a9e3-a65cdb209e37">
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+		<field name="name" class="java.lang.String"/>
+		<field name="montant" class="java.lang.Double"/>
+		<field name="description" class="java.lang.String"/>
+		<field name="status" class="java.lang.String"/>
+	</subDataset>
+	<parameter name="the_date" class="java.lang.String"/>
+	<parameter name="cotisations" class="java.util.List"/>
+	<parameter name="prets" class="java.util.List"/>
+	<parameter name="amandes" class="java.util.List"/>
+	<parameter name="mangwas" class="java.util.List"/>
+	<parameter name="disciplines" class="java.util.List"/>
+	<parameter name="beneficiaire" class="java.util.List"/>
+	<parameter name="logo" class="java.io.InputStream"/>
+	<parameter name="soldeMangwa" class="java.lang.String"/>
+	<parameter name="soldeTontine" class="java.lang.String"/>
+	<parameter name="soldeCaisse" class="java.lang.String"/>
+	<parameter name="solde" class="java.lang.String"/>
+	<parameter name="user" class="java.lang.String"/>
+	<parameter name="session" class="java.lang.String"/>
+	<parameter name="status" class="java.lang.String"/>
+	<parameter name="dateSeance" class="java.lang.String"/>
+	<columnHeader>
+		<band height="50" splitType="Stretch">
+			<image>
+				<reportElement x="35" y="0" width="50" height="50" uuid="e75e55e2-be1e-4335-9aca-b18445b3db28"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="450" y="17" width="100" height="20" uuid="bcc0a870-195d-4617-a68b-b2526fe0d943"/>
+				<textFieldExpression><![CDATA["Edité le, " +$P{the_date}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="348" splitType="Stretch">
+			<staticText>
+				<reportElement x="35" y="328" width="100" height="20" uuid="38d5b9bf-ee82-44cf-b3d7-6f3eb096ef35"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Membre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="187" y="328" width="100" height="20" uuid="76f8e938-2c2a-4b23-9b3d-c16c1888fdb5"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Montant]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="318" y="328" width="100" height="20" uuid="fc01a6b8-f761-48a3-a984-c0483816e981"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Description]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="448" y="328" width="100" height="20" uuid="30a2f457-b373-4c5b-87f1-44164db47670"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Transaction]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="35" y="53" width="100" height="20" uuid="426d97b4-b9bb-4b37-9acd-a9c628e51e1e"/>
+				<text><![CDATA[Lieu de la séance :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="35" y="84" width="100" height="20" uuid="54c1c427-3b91-48bf-ac34-a6e9c86ab7c5"/>
+				<text><![CDATA[Session :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="35" y="116" width="100" height="20" uuid="4d8c5ca6-8c40-43b7-89c0-fd373e6916b1"/>
+				<text><![CDATA[Statut :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="35" y="146" width="100" height="20" uuid="ca683502-92e6-4cfc-b88e-d216986e3923"/>
+				<text><![CDATA[Solde Mangwa :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="35" y="176" width="100" height="20" uuid="80bbe891-a713-4fc4-bea8-22e94593a519"/>
+				<text><![CDATA[Solde Tontine :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="35" y="210" width="100" height="20" uuid="06d93b54-0e8e-4c9e-8749-ae6963ff1781"/>
+				<text><![CDATA[Solde Caisse :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="35" y="243" width="700" height="20" uuid="867bf105-e74d-4e06-a167-a4f6bc5aa12b"/>
+				<text><![CDATA[Solde :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="149" y="-10" width="348" height="31" forecolor="#007934" uuid="3cb71a06-c8ed-4e86-9fd2-7673c0ce514f"/>
+				<textElement>
+					<font size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Rapport de la séance du "+ $P{dateSeance}]]></textFieldExpression>
+			</textField>
+<!--			<staticText>-->
+<!--				<reportElement x="287" y="126" width="83" height="20" uuid="16cc3e10-76d5-4046-b7d8-9cbdf970af50"/>-->
+<!--				<text><![CDATA[Lieu de livraison : ]]></text>-->
+<!--			</staticText>-->
+<!--			<textField>-->
+<!--				<reportElement x="399" y="126" width="83" height="20" uuid="554a3a0b-806d-4b21-b168-a6683d7be493"/>-->
+<!--				<textElement>-->
+<!--					<font isBold="true"/>-->
+<!--				</textElement>-->
+<!--				<textFieldExpression><![CDATA[$P{address}]]></textFieldExpression>-->
+<!--			</textField>-->
+			<textField>
+				<reportElement x="135" y="53" width="100" height="20" uuid="1277ca4d-f569-4d39-8af0-d5f880901e91"/>
+				<textFieldExpression><![CDATA[$P{user}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="135" y="84" width="300" height="20" uuid="5bf440cd-1afd-415e-966b-93ad3d32a6aa"/>
+				<textFieldExpression><![CDATA[$P{session}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="135" y="116" width="100" height="20" uuid="b63046e2-4d23-464d-a945-fc856c7cfabf"/>
+				<textFieldExpression><![CDATA[$P{status}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="135" y="146" width="100" height="20" uuid="4be81d82-b781-4761-806d-3623ddbedebf"/>
+				<textFieldExpression><![CDATA[$P{soldeMangwa} + " €"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="135" y="176" width="100" height="20" uuid="f1d4c6b4-3ce9-4145-9494-aa9bb8fcf071"/>
+				<textFieldExpression><![CDATA[$P{soldeTontine} + " €"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="135" y="210" width="100" height="20" uuid="d2692897-bb04-4920-9995-cc58d682d1cf"/>
+				<textFieldExpression><![CDATA[$P{soldeCaisse} + " €"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="135" y="243" width="700" height="20" uuid="771ba24d-2e63-419a-8a33-052fd0f60125"/>
+				<textFieldExpression><![CDATA[$P{solde}]]></textFieldExpression>
+			</textField>
+
+		</band>
+		<band height="62">
+			<line>
+				<reportElement x="32" y="7" width="512" height="1" uuid="d0bb0969-637f-4319-8b53-9d69f7b62dae"/>
+			</line>
+			<componentElement>
+				<reportElement x="34" y="18" width="512" height="38" uuid="1b046bbe-6081-440e-9494-836180e8281e"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="tontine" uuid="1f735c40-7342-484a-93fd-406a8078b415">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{cotisations})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="38" width="512">
+						<textField>
+							<reportElement x="1" y="8" width="120" height="20" uuid="6c0ecd00-e17e-4b2d-b5fa-37f71d30e257"/>
+							<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="151" y="8" width="100" height="20" uuid="8dfa2b51-8e3f-439a-b43a-33e150e501e2"/>
+							<textFieldExpression><![CDATA[$F{montant} + " €"]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="282" y="8" width="100" height="20" uuid="f1e25db7-362d-41a0-971d-fa06083fcdb3"/>
+							<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="412" y="8" width="100" height="20" uuid="e4a5fb05-180b-41eb-a5b0-cb428efe87d0"/>
+							<textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+		</band>
+<!--		<band height="99">-->
+<!--			<line>-->
+<!--				<reportElement x="33" y="12" width="512" height="1" uuid="53ff5bda-cbde-4163-88e0-4aa045d82a72"/>-->
+<!--			</line>-->
+<!--			<line>-->
+<!--				<reportElement x="333" y="27" width="204" height="2" uuid="42d1960f-5d08-46cf-8290-f32fcd166f3e"/>-->
+<!--			</line>-->
+<!--			<staticText>-->
+<!--				<reportElement x="333" y="74" width="103" height="20" uuid="fbaa069e-12f3-4f15-9375-0c434d0e426f"/>-->
+<!--				<text><![CDATA[Montant Global TTC : ]]></text>-->
+<!--			</staticText>-->
+<!--			<textField>-->
+<!--				<reportElement x="437" y="74" width="100" height="20" uuid="d4d222ae-0717-43a5-86f7-0045403632b0"/>-->
+<!--				<textElement>-->
+<!--					<font size="14" isBold="true"/>-->
+<!--				</textElement>-->
+<!--				<textFieldExpression><![CDATA[$P{TTCAggregateAmount} + " FCFA"]]></textFieldExpression>-->
+<!--			</textField>-->
+<!--			<staticText>-->
+<!--				<reportElement x="333" y="41" width="104" height="20" uuid="689fad0e-883f-4ff7-bf56-574e09ae1040"/>-->
+<!--				<text><![CDATA[Tax : ]]></text>-->
+<!--			</staticText>-->
+<!--			<textField>-->
+<!--				<reportElement x="437" y="41" width="100" height="20" uuid="80bd20de-5f1b-4e89-a485-52736923de53"/>-->
+<!--				<textElement>-->
+<!--					<font size="14" isBold="true"/>-->
+<!--				</textElement>-->
+<!--				<textFieldExpression><![CDATA[$P{tax}]]></textFieldExpression>-->
+<!--			</textField>-->
+<!--		</band>-->
+	</detail>
+</jasperReport>

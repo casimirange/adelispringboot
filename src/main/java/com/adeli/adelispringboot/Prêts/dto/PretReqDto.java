@@ -24,4 +24,6 @@ public class PretReqDto {
     Long idSeance;
 
     LocalDate dateRemboursement;
+
+    boolean type;
 }

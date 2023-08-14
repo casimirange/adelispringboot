@@ -11,7 +11,7 @@
     <groupId>com.adeli</groupId>
     <artifactId>adelispringboot</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-<!--    <packaging>war</packaging>-->
+    <packaging>war</packaging>
     <name>adelispringboot</name>
     <description>adelispringboot</description>
     <properties>

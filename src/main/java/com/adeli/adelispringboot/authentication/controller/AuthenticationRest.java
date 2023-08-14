@@ -368,8 +368,7 @@ public class AuthenticationRest {
             @ApiResponse(responseCode = "400", description = "Erreur dans le format de la requete", content = @Content(mediaType = "Application/Json"))})
 
     @GetMapping("/refresh")
-    public ResponseEntity<Object> refreshUserToken(
-            @RequestHeader(value = HttpHeaders.AUTHORIZATION) String refreshToken) throws Exception {
+    public ResponseEntity<Object> refreshUserToken(@RequestHeader(value = HttpHeaders.AUTHORIZATION) String refreshToken) throws Exception {
         String token = jwtUtils.parseJwt(refreshToken);
         Users user = getUser(token, jwtUtils.getSecretRefreshToken());
         if (token.equals(user.getTokenAuth())) {

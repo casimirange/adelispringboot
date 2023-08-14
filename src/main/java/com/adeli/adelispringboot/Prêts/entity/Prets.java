@@ -43,6 +43,9 @@ public class Prets {
     @ManyToOne
     private TypeTransaction typeTransaction;
 
+    @ManyToOne
+    private StatutPret statutPret;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idUser")
     public Users user;
