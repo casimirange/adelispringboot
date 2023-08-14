@@ -12,7 +12,7 @@
     <artifactId>adelispringboot</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>adelispringboot</name>
+<!--    <name>adelispringboot</name>-->
     <description>adelispringboot</description>
     <properties>
         <java.version>11</java.version>
