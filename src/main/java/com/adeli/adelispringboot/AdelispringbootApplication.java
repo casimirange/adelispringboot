@@ -29,10 +29,10 @@ public class AdelispringbootApplication extends SpringBootServletInitializer {
         SpringApplication.run(AdelispringbootApplication.class, args);
     }
 
-//    @Override
-//    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-//        return builder.sources(AdelispringbootApplication.class);
-//    }
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+        return builder.sources(AdelispringbootApplication.class);
+    }
 
     @Bean
     public TaskExecutor threadPoolTaskExecutor() {
