@@ -16,6 +16,8 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @SpringBootApplication
 @EnableConfigurationProperties({DocumentStorageProperties.class})
@@ -25,13 +27,22 @@ public class AdelispringbootApplication extends SpringBootServletInitializer {
 
     public String PORT = System.getenv("PORT");
 
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+        return builder.sources(AdelispringbootApplication.class);
+    }
+
     public static void main(String[] args) {
         SpringApplication.run(AdelispringbootApplication.class, args);
     }
 
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-        return builder.sources(AdelispringbootApplication.class);
+    @Bean
+    public ViewResolver viewResolver(){
+        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+        resolver.setPrefix("/WEB-INF/classes/");
+        resolver.setSuffix(".jsp");
+        resolver.setExposeContextBeansAsAttributes(true);
+        return resolver;
     }
 
     @Bean

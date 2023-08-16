@@ -364,3 +364,77 @@ java.lang.ArrayStoreException: sun.reflect.annotation.TypeNotPresentExceptionPro
 2023-08-16 11:56:30.441 DEBUG 27335 --- [restartedMain] org.hibernate.SQL                        : select statutpret0_.id as col_0_0_ from status_pret statutpret0_ where statutpret0_.name=? limit ?
 2023-08-16 11:56:30.441 TRACE 27335 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [ACHEVE]
 2023-08-16 11:56:30.654  INFO 27335 --- [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2023-08-16 12:15:10.544  INFO 27335 --- [Thread-6] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'threadPoolTaskExecutor'
+2023-08-16 12:15:10.567  INFO 27335 --- [Thread-6] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-08-16 12:15:10.568  INFO 27335 --- [Thread-6] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown initiated...
+2023-08-16 12:15:10.589  INFO 27335 --- [Thread-6] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown completed.
+2023-08-16 12:15:11.042  INFO 27335 --- [restartedMain] c.a.a.AdelispringbootApplication         : Starting AdelispringbootApplication on casimir-PC with PID 27335 (/home/casimir/Music/adeli/adelispringboot/target/classes started by casimir in /home/casimir/Music/adeli/adelispringboot)
+2023-08-16 12:15:11.042  INFO 27335 --- [restartedMain] c.a.a.AdelispringbootApplication         : The following profiles are active: prod
+2023-08-16 12:15:11.050 ERROR 27335 --- [restartedMain] o.s.boot.SpringApplication               : Application run failed
+
+java.lang.ArrayStoreException: sun.reflect.annotation.TypeNotPresentExceptionProxy
+	at java.base/sun.reflect.annotation.AnnotationParser.parseClassArray(AnnotationParser.java:724) ~[na:na]
+	at java.base/sun.reflect.annotation.AnnotationParser.parseArray(AnnotationParser.java:531) ~[na:na]
+	at java.base/sun.reflect.annotation.AnnotationParser.parseMemberValue(AnnotationParser.java:355) ~[na:na]
+	at java.base/sun.reflect.annotation.AnnotationParser.parseAnnotation2(AnnotationParser.java:286) ~[na:na]
+	at java.base/sun.reflect.annotation.AnnotationParser.parseAnnotations2(AnnotationParser.java:120) ~[na:na]
+	at java.base/sun.reflect.annotation.AnnotationParser.parseAnnotations(AnnotationParser.java:72) ~[na:na]
+	at java.base/java.lang.Class.createAnnotationData(Class.java:3734) ~[na:na]
+	at java.base/java.lang.Class.annotationData(Class.java:3723) ~[na:na]
+	at java.base/java.lang.Class.getDeclaredAnnotations(Class.java:3690) ~[na:na]
+	at org.springframework.core.annotation.AnnotationsScanner.getDeclaredAnnotations(AnnotationsScanner.java:461) ~[spring-core-5.2.2.RELEASE.jar:5.2.2.RELEASE]
+	at org.springframework.core.annotation.AnnotationsScanner.getDeclaredAnnotations(AnnotationsScanner.java:439) ~[spring-core-5.2.2.RELEASE.jar:5.2.2.RELEASE]
+	at org.springframework.core.annotation.AnnotationsScanner.processClassHierarchy(AnnotationsScanner.java:210) ~[spring-core-5.2.2.RELEASE.jar:5.2.2.RELEASE]
+	at org.springframework.core.annotation.AnnotationsScanner.processClassHierarchy(AnnotationsScanner.java:194) ~[spring-core-5.2.2.RELEASE.jar:5.2.2.RELEASE]
+	at org.springframework.core.annotation.AnnotationsScanner.processClass(AnnotationsScanner.java:128) ~[spring-core-5.2.2.RELEASE.jar:5.2.2.RELEASE]
+	at org.springframework.core.annotation.AnnotationsScanner.process(AnnotationsScanner.java:107) ~[spring-core-5.2.2.RELEASE.jar:5.2.2.RELEASE]
+	at org.springframework.core.annotation.AnnotationsScanner.scan(AnnotationsScanner.java:97) ~[spring-core-5.2.2.RELEASE.jar:5.2.2.RELEASE]
+	at org.springframework.core.annotation.AnnotationsScanner.scan(AnnotationsScanner.java:78) ~[spring-core-5.2.2.RELEASE.jar:5.2.2.RELEASE]
+	at org.springframework.core.annotation.TypeMappedAnnotations.scan(TypeMappedAnnotations.java:242) ~[spring-core-5.2.2.RELEASE.jar:5.2.2.RELEASE]
+	at org.springframework.core.annotation.TypeMappedAnnotations.isPresent(TypeMappedAnnotations.java:98) ~[spring-core-5.2.2.RELEASE.jar:5.2.2.RELEASE]
+	at org.springframework.boot.BeanDefinitionLoader.isComponent(BeanDefinitionLoader.java:279) ~[spring-boot-2.2.2.RELEASE.jar:2.2.2.RELEASE]
+	at org.springframework.boot.BeanDefinitionLoader.load(BeanDefinitionLoader.java:156) ~[spring-boot-2.2.2.RELEASE.jar:2.2.2.RELEASE]
+	at org.springframework.boot.BeanDefinitionLoader.load(BeanDefinitionLoader.java:136) ~[spring-boot-2.2.2.RELEASE.jar:2.2.2.RELEASE]
+	at org.springframework.boot.BeanDefinitionLoader.load(BeanDefinitionLoader.java:128) ~[spring-boot-2.2.2.RELEASE.jar:2.2.2.RELEASE]
+	at org.springframework.boot.SpringApplication.load(SpringApplication.java:691) ~[spring-boot-2.2.2.RELEASE.jar:2.2.2.RELEASE]
+	at org.springframework.boot.SpringApplication.prepareContext(SpringApplication.java:392) ~[spring-boot-2.2.2.RELEASE.jar:2.2.2.RELEASE]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:314) ~[spring-boot-2.2.2.RELEASE.jar:2.2.2.RELEASE]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1226) ~[spring-boot-2.2.2.RELEASE.jar:2.2.2.RELEASE]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1215) ~[spring-boot-2.2.2.RELEASE.jar:2.2.2.RELEASE]
+	at com.adeli.adelispringboot.AdelispringbootApplication.main(AdelispringbootApplication.java:29) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49) ~[spring-boot-devtools-2.2.2.RELEASE.jar:2.2.2.RELEASE]
+
+2023-08-16 12:15:18.717  INFO 27335 --- [restartedMain] c.a.a.AdelispringbootApplication         : Starting AdelispringbootApplication on casimir-PC with PID 27335 (/home/casimir/Music/adeli/adelispringboot/target/classes started by casimir in /home/casimir/Music/adeli/adelispringboot)
+2023-08-16 12:15:18.717  INFO 27335 --- [restartedMain] c.a.a.AdelispringbootApplication         : The following profiles are active: prod
+2023-08-16 12:15:19.054  INFO 27335 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-08-16 12:15:19.123  INFO 27335 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 68ms. Found 20 JPA repository interfaces.
+2023-08-16 12:15:19.259  INFO 27335 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-08-16 12:15:19.267  INFO 27335 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.security.config.annotation.configuration.ObjectPostProcessorConfiguration' of type [org.springframework.security.config.annotation.configuration.ObjectPostProcessorConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-08-16 12:15:19.269  INFO 27335 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'objectPostProcessor' of type [org.springframework.security.config.annotation.configuration.AutowireBeanFactoryObjectPostProcessor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-08-16 12:15:19.269  INFO 27335 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@7ba9e8f7' of type [org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-08-16 12:15:19.271  INFO 27335 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration' of type [org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-08-16 12:15:19.272  INFO 27335 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-08-16 12:15:19.276  INFO 27335 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.hateoas.config.HateoasConfiguration' of type [org.springframework.hateoas.config.HateoasConfiguration$$EnhancerBySpringCGLIB$$9a817410] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-08-16 12:15:19.282  INFO 27335 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'relProviderPluginRegistry' of type [org.springframework.plugin.core.support.PluginRegistryFactoryBean] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-08-16 12:15:19.286  INFO 27335 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'relProviderPluginRegistry' of type [org.springframework.plugin.core.OrderAwarePluginRegistry] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-08-16 12:15:19.290  INFO 27335 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean '_relProvider' of type [org.springframework.hateoas.server.core.DelegatingLinkRelationProvider] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-08-16 12:15:19.292  INFO 27335 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'messageResolver' of type [org.springframework.hateoas.mediatype.MessageSourceResolver] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-08-16 12:15:19.293  INFO 27335 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.hateoas.mediatype.hal.HalMediaTypeConfiguration' of type [org.springframework.hateoas.mediatype.hal.HalMediaTypeConfiguration$$EnhancerBySpringCGLIB$$f47602e5] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-08-16 12:15:19.296  INFO 27335 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'adelispringbootApplication' of type [com.adeli.adelispringboot.AdelispringbootApplication$$EnhancerBySpringCGLIB$$452fd441] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-08-16 12:15:19.300  INFO 27335 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'objectMapper' of type [com.fasterxml.jackson.databind.ObjectMapper] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-08-16 12:15:19.321  INFO 27335 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'hypermediaWebMvcConverters' of type [org.springframework.hateoas.config.WebConverters] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-08-16 12:15:19.430  WARN 27335 --- [restartedMain] org.apache.tomcat.util.modeler.Registry  : The MBean registry cannot be disabled because it has already been initialised
+2023-08-16 12:15:19.467  INFO 27335 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-08-16 12:15:19.468  INFO 27335 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-08-16 12:15:19.468  INFO 27335 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.29]
+2023-08-16 12:15:19.482  INFO 27335 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-08-16 12:15:19.482 DEBUG 27335 --- [restartedMain] o.s.web.context.ContextLoader            : Published root WebApplicationContext as ServletContext attribute with name [org.springframework.web.context.WebApplicationContext.ROOT]
+2023-08-16 12:15:19.482  INFO 27335 --- [restartedMain] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 761 ms
+2023-08-16 12:15:19.590  INFO 27335 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-08-16 12:15:19.596  INFO 27335 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Starting...
+2023-08-16 12:15:22.445  INFO 27335 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Start completed.
+2023-08-16 12:15:22.445  INFO 27335 --- [restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5InnoDBDialect
