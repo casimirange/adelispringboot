@@ -5,12 +5,12 @@ import com.adeli.adelispringboot.Users.entity.RoleUser;
 import com.adeli.adelispringboot.Users.entity.Users;
 import java.util.ArrayList;
 import java.util.Set;
-import javax.annotation.processing.Generated;
+import javax.annotation.Generated;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-08-16T12:15:14+0100",
+    date = "2023-08-16T12:23:32+0100",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 11 (Oracle Corporation)"
 )
 @Component
