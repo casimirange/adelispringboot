@@ -14344,3 +14344,77 @@ java.lang.ArrayStoreException: sun.reflect.annotation.TypeNotPresentExceptionPro
 2023-09-11 21:42:04.367 DEBUG 28643 --- [restartedMain] org.hibernate.SQL                        : alter table prets add column date date
 2023-09-11 21:42:27.800  INFO 28643 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
 2023-09-11 21:42:27.800  INFO 28643 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-09-11 21:42:28.012 DEBUG 28643 --- [restartedMain] o.s.b.w.s.ServletContextInitializerBeans : Mapping filters: springSecurityFilterChain urls=[/*] order=-100, filterRegistrationBean urls=[/*] order=2147483647, characterEncodingFilter urls=[/*] order=-2147483648, formContentFilter urls=[/*] order=-9900, requestContextFilter urls=[/*] order=-105, authenticationJwtTokenFilter urls=[/*] order=2147483647
+2023-09-11 21:42:28.012 DEBUG 28643 --- [restartedMain] o.s.b.w.s.ServletContextInitializerBeans : Mapping servlets: dispatcherServlet urls=[/]
+2023-09-11 21:42:28.013 DEBUG 28643 --- [restartedMain] o.s.w.s.r.ResourceUrlEncodingFilter      : Filter 'resourceUrlEncodingFilter' configured for use
+2023-09-11 21:42:28.054  INFO 28643 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2023-09-11 21:42:28.920 DEBUG 28643 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerMapping : 72 mappings in 'requestMappingHandlerMapping'
+2023-09-11 21:42:29.452 DEBUG 28643 --- [restartedMain] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2023-09-11 21:42:29.503  INFO 28643 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@5b329ccf, org.springframework.security.web.context.SecurityContextPersistenceFilter@74c6f81b, org.springframework.security.web.header.HeaderWriterFilter@2f62d89d, org.springframework.web.filter.CorsFilter@2fd44cff, org.springframework.security.web.authentication.logout.LogoutFilter@7f4866d, com.adeli.adelispringboot.authentication.service.AuthTokenFilter@5d5eb386, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3352676, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@3aaaa0bd, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@4e3620f7, org.springframework.security.web.session.SessionManagementFilter@65337ad2, org.springframework.security.web.access.ExceptionTranslationFilter@79e1ccb1, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@78814743]
+2023-09-11 21:42:29.514  INFO 28643 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService
+2023-09-11 21:42:29.514  INFO 28643 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'threadPoolTaskExecutor'
+2023-09-11 21:42:29.555 DEBUG 28643 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2023-09-11 21:42:29.574 DEBUG 28643 --- [restartedMain] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 3 @ExceptionHandler, 1 ResponseBodyAdvice
+2023-09-11 21:42:29.745  INFO 28643 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-09-11 21:42:29.746  INFO 28643 --- [restartedMain] c.a.a.AdelispringbootApplication         : Started AdelispringbootApplication in 40.198 seconds (JVM running for 263.117)
+2023-09-11 21:42:29.757 DEBUG 28643 --- [restartedMain] org.hibernate.SQL                        : select roleuser0_.id as col_0_0_ from role_user roleuser0_ where roleuser0_.name=? limit ?
+2023-09-11 21:42:29.975 TRACE 28643 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [ROLE_SUPERADMIN]
+2023-09-11 21:42:30.196 DEBUG 28643 --- [restartedMain] org.hibernate.SQL                        : select roleuser0_.id as col_0_0_ from role_user roleuser0_ where roleuser0_.name=? limit ?
+2023-09-11 21:42:30.196 TRACE 28643 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [ROLE_USER]
+2023-09-11 21:42:30.415 DEBUG 28643 --- [restartedMain] org.hibernate.SQL                        : select typeaccoun0_.id as col_0_0_ from type_account typeaccoun0_ where typeaccoun0_.name=? limit ?
+2023-09-11 21:42:30.415 TRACE 28643 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [ADHERANT]
+2023-09-11 21:42:30.633 DEBUG 28643 --- [restartedMain] org.hibernate.SQL                        : select typeaccoun0_.id as col_0_0_ from type_account typeaccoun0_ where typeaccoun0_.name=? limit ?
+2023-09-11 21:42:30.635 TRACE 28643 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [PRESIDENT]
+2023-09-11 21:42:30.844 DEBUG 28643 --- [restartedMain] org.hibernate.SQL                        : select typeaccoun0_.id as col_0_0_ from type_account typeaccoun0_ where typeaccoun0_.name=? limit ?
+2023-09-11 21:42:30.845 TRACE 28643 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [PORTE_PAROLE]
+2023-09-11 21:42:31.055 DEBUG 28643 --- [restartedMain] org.hibernate.SQL                        : select typeaccoun0_.id as col_0_0_ from type_account typeaccoun0_ where typeaccoun0_.name=? limit ?
+2023-09-11 21:42:31.055 TRACE 28643 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [TRESORIER]
+2023-09-11 21:42:31.272 DEBUG 28643 --- [restartedMain] org.hibernate.SQL                        : select typeaccoun0_.id as col_0_0_ from type_account typeaccoun0_ where typeaccoun0_.name=? limit ?
+2023-09-11 21:42:31.272 TRACE 28643 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [SENSCEUR]
+2023-09-11 21:42:31.482 DEBUG 28643 --- [restartedMain] org.hibernate.SQL                        : select typeaccoun0_.id as col_0_0_ from type_account typeaccoun0_ where typeaccoun0_.name=? limit ?
+2023-09-11 21:42:31.482 TRACE 28643 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [SECRETAIRE]
+2023-09-11 21:42:31.706 DEBUG 28643 --- [restartedMain] org.hibernate.SQL                        : select typeaccoun0_.id as col_0_0_ from type_account typeaccoun0_ where typeaccoun0_.name=? limit ?
+2023-09-11 21:42:31.706 TRACE 28643 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [COMISSAIRE_AU_COMPTE]
+2023-09-11 21:42:31.929 DEBUG 28643 --- [restartedMain] org.hibernate.SQL                        : select statususer0_.id as col_0_0_ from status_user statususer0_ where statususer0_.name=? limit ?
+2023-09-11 21:42:31.929 TRACE 28643 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [USER_ENABLED]
+2023-09-11 21:42:32.149 DEBUG 28643 --- [restartedMain] org.hibernate.SQL                        : select statususer0_.id as col_0_0_ from status_user statususer0_ where statususer0_.name=? limit ?
+2023-09-11 21:42:32.149 TRACE 28643 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [USER_DISABLED]
+2023-09-11 21:42:32.407 DEBUG 28643 --- [restartedMain] org.hibernate.SQL                        : select users0_.user_id as col_0_0_ from users users0_ where users0_.email=? limit ?
+2023-09-11 21:42:32.407 TRACE 28643 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [ouandji.casimir@gmail.com]
+2023-09-11 21:42:32.630 DEBUG 28643 --- [restartedMain] org.hibernate.SQL                        : select users0_.user_id as col_0_0_ from users users0_ where users0_.telephone=? limit ?
+2023-09-11 21:42:32.630 TRACE 28643 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [693764263]
+2023-09-11 21:42:32.876 DEBUG 28643 --- [restartedMain] org.hibernate.SQL                        : select sessionsta0_.id as col_0_0_ from status_session sessionsta0_ where sessionsta0_.name=? limit ?
+2023-09-11 21:42:32.877 TRACE 28643 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [CREEE]
+2023-09-11 21:42:33.098 DEBUG 28643 --- [restartedMain] org.hibernate.SQL                        : select sessionsta0_.id as col_0_0_ from status_session sessionsta0_ where sessionsta0_.name=? limit ?
+2023-09-11 21:42:33.099 TRACE 28643 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [TERMINEE]
+2023-09-11 21:42:33.314 DEBUG 28643 --- [restartedMain] org.hibernate.SQL                        : select typetransa0_.id as col_0_0_ from status_transaction typetransa0_ where typetransa0_.name=? limit ?
+2023-09-11 21:42:33.315 TRACE 28643 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [DEPOT]
+2023-09-11 21:42:33.541 DEBUG 28643 --- [restartedMain] org.hibernate.SQL                        : select typetransa0_.id as col_0_0_ from status_transaction typetransa0_ where typetransa0_.name=? limit ?
+2023-09-11 21:42:33.541 TRACE 28643 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [RETRAIT]
+2023-09-11 21:42:33.745 DEBUG 28643 --- [restartedMain] org.hibernate.SQL                        : select typetransa0_.id as col_0_0_ from status_transaction typetransa0_ where typetransa0_.name=? limit ?
+2023-09-11 21:42:33.745 TRACE 28643 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [PRET]
+2023-09-11 21:42:34.004 DEBUG 28643 --- [restartedMain] org.hibernate.SQL                        : select typetransa0_.id as col_0_0_ from status_transaction typetransa0_ where typetransa0_.name=? limit ?
+2023-09-11 21:42:34.004 TRACE 28643 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [REMBOURSEMENT]
+2023-09-11 21:42:34.218 DEBUG 28643 --- [restartedMain] org.hibernate.SQL                        : select typetransa0_.id as col_0_0_ from status_transaction typetransa0_ where typetransa0_.name=? limit ?
+2023-09-11 21:42:34.219 TRACE 28643 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [NON_PAYE]
+2023-09-11 21:42:34.427 DEBUG 28643 --- [restartedMain] org.hibernate.SQL                        : select typediscip0_.id as col_0_0_ from type_discipline typediscip0_ where typediscip0_.name=? limit ?
+2023-09-11 21:42:34.428 TRACE 28643 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [ABSENCE]
+2023-09-11 21:42:34.651 DEBUG 28643 --- [restartedMain] org.hibernate.SQL                        : select typediscip0_.id as col_0_0_ from type_discipline typediscip0_ where typediscip0_.name=? limit ?
+2023-09-11 21:42:34.651 TRACE 28643 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [RETARD]
+2023-09-11 21:42:34.862 DEBUG 28643 --- [restartedMain] org.hibernate.SQL                        : select typediscip0_.id as col_0_0_ from type_discipline typediscip0_ where typediscip0_.name=? limit ?
+2023-09-11 21:42:34.863 TRACE 28643 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [TROUBLE]
+2023-09-11 21:42:35.073 DEBUG 28643 --- [restartedMain] org.hibernate.SQL                        : select typedocume0_.id as col_0_0_ from type_document typedocume0_ where typedocume0_.name=? limit ?
+2023-09-11 21:42:35.073 TRACE 28643 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [DELIVERY]
+2023-09-11 21:42:35.293 DEBUG 28643 --- [restartedMain] org.hibernate.SQL                        : select typedocume0_.id as col_0_0_ from type_document typedocume0_ where typedocume0_.name=? limit ?
+2023-09-11 21:42:35.293 TRACE 28643 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [INVOICE]
+2023-09-11 21:42:35.516 DEBUG 28643 --- [restartedMain] org.hibernate.SQL                        : select statutpret0_.id as col_0_0_ from status_pret statutpret0_ where statutpret0_.name=? limit ?
+2023-09-11 21:42:35.517 TRACE 28643 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [EN_COURS]
+2023-09-11 21:42:35.726 DEBUG 28643 --- [restartedMain] org.hibernate.SQL                        : select statutpret0_.id as col_0_0_ from status_pret statutpret0_ where statutpret0_.name=? limit ?
+2023-09-11 21:42:35.726 TRACE 28643 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [INNACHEVE]
+2023-09-11 21:42:35.936 DEBUG 28643 --- [restartedMain] org.hibernate.SQL                        : select statutpret0_.id as col_0_0_ from status_pret statutpret0_ where statutpret0_.name=? limit ?
+2023-09-11 21:42:35.936 TRACE 28643 --- [restartedMain] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [VARCHAR] - [ACHEVE]
+2023-09-11 21:42:36.161  INFO 28643 --- [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2023-09-11 21:52:50.506  INFO 28643 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'threadPoolTaskExecutor'
+2023-09-11 21:52:50.516  INFO 28643 --- [SpringContextShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-09-11 21:52:50.517  INFO 28643 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown initiated...
+2023-09-11 21:52:50.530  INFO 28643 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown completed.
