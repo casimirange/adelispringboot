@@ -7,6 +7,7 @@ import com.adeli.adelispringboot.Users.entity.StatusUser;
 import com.adeli.adelispringboot.Users.entity.Users;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,5 +29,5 @@ public interface IUserRepo extends IUserBaseRepo<Users> {
 
 	Page<Users> findTop20ByStatus(StatusUser status, Pageable p);
 
-
+	Page<Users> findAll(Specification<Users> specification, Pageable pageable);
 }

@@ -1,7 +1,7 @@
 package com.adeli.adelispringboot.Tontine.service;
 
+import com.adeli.adelispringboot.Mangwa.entity.TypeTransaction;
 import com.adeli.adelispringboot.Seance.entity.Seance;
-import com.adeli.adelispringboot.Seance.repository.ISeanceRepository;
 import com.adeli.adelispringboot.Seance.service.ISeanceService;
 import com.adeli.adelispringboot.Tontine.dto.TontineResDto;
 import com.adeli.adelispringboot.Tontine.entity.Tontine;
@@ -63,8 +63,33 @@ public class TontineServiceImpl implements ITontineService{
     }
 
     @Override
+    public Tontine getTontineByDescriptionAndSeance(Seance seance, String description) {
+        return tontineRepository.findTontineBySeanceAndDescription(seance, description);
+    }
+
+    @Override
+    public Tontine getTontineByDescriptionAndSeanceAndAmount(Seance seance, String description, Double montant) {
+        return tontineRepository.findTontineBySeanceAndDescriptionAndMontant(seance, description, montant);
+    }
+
+    @Override
+    public void createTontines(List<Tontine> tontine) {
+        tontineRepository.saveAll(tontine);
+    }
+
+    @Override
     public void createTontine(Tontine tontine) {
         tontineRepository.save(tontine);
+    }
+
+    @Override
+    public void deleteTontine(Tontine tontine) {
+        tontineRepository.deleteById(tontine.getIdTontine());
+    }
+
+    @Override
+    public boolean existByDate(Seance seance, TypeTransaction typeTransaction) {
+        return tontineRepository.existsBySeanceAndTypeTransaction(seance, typeTransaction);
     }
 
     @Override

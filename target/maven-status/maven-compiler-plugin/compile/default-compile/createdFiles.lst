@@ -7,6 +7,7 @@ com/adeli/adelispringboot/Beneficiaires/entity/Beneficiaire.class
 com/adeli/adelispringboot/authentication/WebSecurityConfig.class
 com/adeli/adelispringboot/Document/repository/IDocumentStoragePropertiesRepo.class
 com/adeli/adelispringboot/configuration/globalConfiguration/ApplicationConstant.class
+com/adeli/adelispringboot/Beneficiaires/dto/BenefUptDto.class
 com/adeli/adelispringboot/Tontine/service/ITontineService.class
 com/adeli/adelispringboot/Discipline/repository/DisciplineRepository.class
 com/adeli/adelispringboot/configuration/globalConfiguration/CustomLocaleResolver.class
@@ -39,6 +40,7 @@ com/adeli/adelispringboot/Users/service/IUserService.class
 com/adeli/adelispringboot/authentication/service/UserDetailsImpl.class
 com/adeli/adelispringboot/Document/service/IDocumentStorageService.class
 com/adeli/adelispringboot/Users/dto/ResponseUsersDTO.class
+com/adeli/adelispringboot/Prêts/dto/PretCreateReqDto.class
 com/adeli/adelispringboot/Session/service/ISessionService.class
 com/adeli/adelispringboot/Users/dto/UserResetPassword.class
 com/adeli/adelispringboot/configuration/globalConfiguration/WebMvcConfig.class
@@ -98,6 +100,7 @@ com/adeli/adelispringboot/Session/service/impl/SessionServiceImpl.class
 com/adeli/adelispringboot/Session/entity/EStatusSession.class
 com/adeli/adelispringboot/authentication/dto/ResetPasswordDto.class
 com/adeli/adelispringboot/authentication/dto/EmailResetPasswordDto.class
+com/adeli/adelispringboot/Discipline/dto/DisciplineReqDto.class
 com/adeli/adelispringboot/Planning/controller/PlanningController.class
 com/adeli/adelispringboot/Users/entity/EStatusUser.class
 com/adeli/adelispringboot/Planning/entity/Planing.class
@@ -109,6 +112,7 @@ com/adeli/adelispringboot/Discipline/controller/DisciplineController.class
 com/adeli/adelispringboot/authentication/dto/EmailVerificationDto.class
 com/adeli/adelispringboot/Users/dto/UserEditPasswordDto.class
 com/adeli/adelispringboot/Mangwa/entity/TypeTransaction.class
+com/adeli/adelispringboot/QrCode/QRCodeGenerator.class
 com/adeli/adelispringboot/authentication/service/IAuthorizationService.class
 com/adeli/adelispringboot/Beneficiaires/repository/BeneficiaireRepository.class
 com/adeli/adelispringboot/Users/dto/UserReqDto.class
@@ -130,7 +134,7 @@ com/adeli/adelispringboot/Users/service/UserServiceImpl.class
 com/adeli/adelispringboot/Tontine/controller/TontineController.class
 com/adeli/adelispringboot/configuration/globalException/GlobalExceptionHandler.class
 com/adeli/adelispringboot/Amandes/entity/Amande.class
-com/adeli/adelispringboot/Prêts/dto/PretReqDto.class
+com/adeli/adelispringboot/Prêts/dto/PretRembReqDto.class
 com/adeli/adelispringboot/initDatas/InitTypeAccount.class
 com/adeli/adelispringboot/Users/repository/IUserBaseRepo.class
 com/adeli/adelispringboot/Session/repository/ISessionRepo.class

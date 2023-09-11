@@ -39,12 +39,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -137,8 +139,11 @@ public class RetenueController {
     public ResponseEntity<?> getMangwa(@RequestParam(required = false, value = "page", defaultValue = "0") String pageParam,
                                          @RequestParam(required = false, value = "size", defaultValue = ApplicationConstant.DEFAULT_SIZE_PAGINATION) String sizeParam,
                                          @RequestParam(required = false, defaultValue = "id") String sort,
+                                       @RequestParam(required = false, value = "name") String member,
+                                       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam(required = false, value = "date") LocalDate date,
+                                       @RequestParam(required = false, value = "type") String type,
                                          @RequestParam(required = false, defaultValue = "desc") String order) {
-        Page<Retenue> list = iMangwaService.getAllMangwa(Integer.parseInt(pageParam), Integer.parseInt(sizeParam), sort, order);
+        Page<Retenue> list = iMangwaService.getAllMangwa(member, date, type,Integer.parseInt(pageParam), Integer.parseInt(sizeParam), sort, order);
         return ResponseEntity.ok(list);
     }
 

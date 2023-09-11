@@ -31,6 +31,11 @@ public class BeneficiaireServiceImpl implements IBeneficiaireService {
     }
 
     @Override
+    public Beneficiaire getBeneficiaire(Long id) {
+        return beneficiaireRepository.findById(id).get();
+    }
+
+    @Override
     public Page<Beneficiaire> getBeneficiaireBySeance(Long idSeance, int page, int size, String sort, String order) {
         Seance seance = iSeanceService.getById(idSeance);
         Page<Beneficiaire> benefs = beneficiaireRepository.findBySeance(seance, PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(order), sort)));
@@ -40,5 +45,10 @@ public class BeneficiaireServiceImpl implements IBeneficiaireService {
     @Override
     public void createBeneficiaire(Beneficiaire beneficiaire) {
         beneficiaireRepository.save(beneficiaire);
+    }
+
+    @Override
+    public void deleteBeneficiaire(Beneficiaire beneficiaire) {
+        beneficiaireRepository.deleteById(beneficiaire.getId());
     }
 }

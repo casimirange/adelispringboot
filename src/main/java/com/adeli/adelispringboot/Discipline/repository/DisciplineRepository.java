@@ -5,12 +5,14 @@
  */
 package com.adeli.adelispringboot.Discipline.repository;
 
+import com.adeli.adelispringboot.Amandes.entity.Amande;
 import com.adeli.adelispringboot.Discipline.entity.Discipline;
 import com.adeli.adelispringboot.Seance.entity.Seance;
 import com.adeli.adelispringboot.Tontine.entity.Tontine;
 import net.minidev.json.JSONObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -43,4 +45,5 @@ public interface DisciplineRepository extends JpaRepository<Discipline, Long> {
     public List<JSONObject> findDisciplineUser(Long id);
 
     Page<Discipline> findBySeance(Seance seance, Pageable pageable);
+    Page<Discipline> findAll(Specification<Discipline> specification, Pageable pageable);
 }

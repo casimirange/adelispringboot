@@ -30,18 +30,14 @@ import com.adeli.adelispringboot.Seance.dto.SeanceReqDto;
 import com.adeli.adelispringboot.Seance.entity.Seance;
 import com.adeli.adelispringboot.Seance.repository.ISeanceRepository;
 import com.adeli.adelispringboot.Seance.service.ISeanceService;
-import com.adeli.adelispringboot.Session.dto.SessionResDto;
 import com.adeli.adelispringboot.Session.entity.EStatusSession;
 import com.adeli.adelispringboot.Session.entity.Session;
 import com.adeli.adelispringboot.Session.entity.SessionStatus;
 import com.adeli.adelispringboot.Session.repository.ISessionRepo;
 import com.adeli.adelispringboot.Session.repository.IStatusSessionRepo;
-import com.adeli.adelispringboot.Session.service.ISessionService;
 import com.adeli.adelispringboot.Tontine.dto.TontineResDto;
-import com.adeli.adelispringboot.Tontine.entity.Tontine;
 import com.adeli.adelispringboot.Tontine.service.ITontineService;
 import com.adeli.adelispringboot.Users.entity.EStatusUser;
-import com.adeli.adelispringboot.Users.entity.ETypeAccount;
 import com.adeli.adelispringboot.Users.entity.Users;
 import com.adeli.adelispringboot.Users.repository.IUserRepo;
 import com.adeli.adelispringboot.Users.service.IUserService;
@@ -59,7 +55,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-import net.minidev.json.JSONObject;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
@@ -86,7 +81,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.*;
 
 
@@ -302,32 +296,66 @@ public class SeanceController {
             @ApiResponse(responseCode = "403", description = "Forbidden : accès refusé", content = @Content(mediaType = "Application/Json")),})
     @PutMapping("/end/{id:[0-9]+}")
     @PreAuthorize("hasAnyRole('SUPERADMIN','ADMIN')")
-    public ResponseEntity<?> terminerSeance(@PathVariable("id") Long id) throws JRException, IOException {
+    public ResponseEntity<?> terminerSeance(@PathVariable() Long id) throws JRException, IOException {
 
         SessionStatus sessionStatus = iStatusSessionRepo.findByName(EStatusSession.TERMINEE)
                 .orElseThrow(() -> new ResourceNotFoundException("Ce statut " + EStatusSession.TERMINEE + " n'existe pas"));
 
         Seance seance = iSeanceService.getById(id);
+        log.info(seance.getDate()+"");
         seance.setUpdatedAt(LocalDateTime.now());
         seance.setStatus(sessionStatus);
+        double sm = iMangwaService.soldeMangwa();
+        double st = iTontineService.soldeTontine();
+        double sc = sm + st;
+        Page<Beneficiaire> beneficiaires = iBeneficiaireService.getBeneficiaireBySeance(id, 0, 20, "id", "desc");
+//        Page<Prets> prets = iPretService.getAllPret("", null, "PRET", 0, 20, "idPret", "desc");
+        Page<TontineResDto> tontines = iTontineService.getTontinesBySeance(seance.getId(), 0, 20, "idTontine", "desc");
+        Page<Prets> prets = iPretService.getPretBySeance(seance.getId(), 0, 20, "idPret", "desc");
+        Page<Amande> amandes = iAmandeService.getAmandesBySeance(seance.getId(), 0, 20, "idAmande", "desc");
+        Page<Discipline> disciplines = iDisciplineService.getDisciplinesBySeance(seance.getId(), 0, 20, "id", "desc");
+        Page<Retenue> mangwa = iMangwaService.getMangwaBySeance(seance.getId(), 0, 20, "id", "desc");
 //        seance.getTontines().get(0).getTypeTransaction().getName();
 
-        log.info("La séance du " + seance.getDate() + " est terminée");
+//        log.info("La séance du " + seance.getDate() + " est terminée");
+//        log.info("La séance du " + sm + " est terminée");
+//        log.info("La séance du " + st + " est terminée");
+//        log.info("La séance du " + sc + " est terminée");
+//        log.info("La séance du " + prets.getContent().get(0).getMontant_prete() + " est terminée");
+//        log.info("La séance du " + disciplines.getContent().get(0).getTypeDiscipline().getName() + " est terminée");
 
-        byte[] data = generateReportSeance(seance);
-
+        
+        String status  = seance.getStatus().getName().toString();
+        String sm1  = sm+"";
+//        byte[] data = generateReportSeance(seance);
         Map<String, Object> emailProps = new HashMap<>();
-        emailProps.put("status", seance.getStatus().getName());
+        emailProps.put("status", status);
         emailProps.put("date", seance.getDate());
+        emailProps.put("soldeMangwa", sm1);
+        emailProps.put("soldeTontine", st);
+        emailProps.put("soldeCaisse", sc);
+        emailProps.put("beneficiaires", beneficiaires);
+        emailProps.put("prets", prets);
+        emailProps.put("amandes", amandes);
+        emailProps.put("disciplines", disciplines);
+        emailProps.put("mangwa", mangwa);
+        emailProps.put("tontines", tontines);
         List<Users> usersList = iUserService.getUsers();
         for (Users user : usersList) {
             if (user.getStatus().getName() == EStatusUser.USER_ENABLED) {
-                emailProps.put("name", user.getLastName());
-                emailService.sendEmail(new EmailDto(mailFrom, ApplicationConstant.ENTREPRISE_NAME, user.getEmail(), mailReplyTo, emailProps, ApplicationConstant.SUBJECT_EMAIL_MODIFY_SEANCE+seance.getDate()+" - "+EStatusSession.TERMINEE, ApplicationConstant.TEMPLATE_EMAIL_END_SEANCE, data, "seance du " + seance.getDate() + ".pdf"));
+                emailProps.put("name", user.getLastName() +" "+user.getFirstName());
+//                emailService.sendEmail(new EmailDto(mailFrom, ApplicationConstant.ENTREPRISE_NAME, user.getEmail(), mailReplyTo, emailProps, ApplicationConstant.SUBJECT_EMAIL_MODIFY_SEANCE+seance.getDate()+" - "+EStatusSession.TERMINEE, ApplicationConstant.TEMPLATE_EMAIL_END_SEANCE, data, "seance du " + seance.getDate() + ".pdf"));
+                emailService.sendEmail(new EmailDto(mailFrom, ApplicationConstant.ENTREPRISE_NAME, user.getEmail(), mailReplyTo, emailProps, ApplicationConstant.SUBJECT_EMAIL_MODIFY_SEANCE+seance.getDate()+" - "+EStatusSession.TERMINEE, ApplicationConstant.TEMPLATE_EMAIL_END_SEANCE));
                 log.info("Email  send successfull for user: " + user.getEmail());
             }
         }
 
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.set(HttpHeaders.CONTENT_DISPOSITION, "inline;filename=seance du " + seance.getDate() + ".pdf");
+//        iSeanceService.createSeance(seance);
+//        return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF).body(data);
+
+        byte[] data = new byte[0];
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.CONTENT_DISPOSITION, "inline;filename=seance du " + seance.getDate() + ".pdf");
         iSeanceService.createSeance(seance);

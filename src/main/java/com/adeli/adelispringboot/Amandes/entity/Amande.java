@@ -39,6 +39,8 @@ public class Amande {
 //    @NotBlank
     private String motif;
 
+    private LocalDate date;
+
     @ManyToOne
     @JoinColumn(name = "id_seance")
     @JsonIgnore

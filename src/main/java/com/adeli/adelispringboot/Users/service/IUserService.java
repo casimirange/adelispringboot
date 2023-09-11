@@ -81,4 +81,7 @@ public interface IUserService {
 	void updateFistLogin(Long user_id);
 
 	Users lockAndUnlockUsers(Long id_user, boolean status);
+
+	Page<ResponseUsersDTO> filtres(String statut, String typeAccount, Double montant, String firstName, String lastName, int page, int size, String sort, String order);
+
 }

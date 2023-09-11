@@ -43,6 +43,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -56,7 +57,6 @@ import java.util.Map;
 
 
 /**
- *
  * @author Casimir
  */
 @RestController
@@ -66,13 +66,13 @@ import java.util.Map;
 public class AmandesController {
     @Autowired
     ISessionRepo sessionRepository;
-    
+
     @Autowired
     IUserRepo userRepository;
 
     @Autowired
     IUserService iUserService;
-    
+
     @Autowired
     IAmandeRepo amandeRepository;
     @Autowired
@@ -110,30 +110,90 @@ public class AmandesController {
         amande.setMontant(amandeReqDto.getMontant());
         amande.setMotif(amandeReqDto.getMotif());
         amande.setSeance(seance);
+        amande.setDate(seance.getDate());
         amande.setCreatedAt(LocalDateTime.now());
         amande.setUser(user);
-        if (amandeReqDto.pay){
+        if (amandeReqDto.pay) {
             etyp = EStatusTransaction.DEPOT;
             Retenue retenue = new Retenue();
             Session session = iSessionService.findLastSession();
             retenue.setMontant(amandeReqDto.getMontant());
-            TypeTransaction typeTransaction = iStatusTransactionRepo.findByName(EStatusTransaction.DEPOT).orElseThrow(()-> new ResourceNotFoundException("Type de transaction not found"));
+            TypeTransaction typeTransaction = iStatusTransactionRepo.findByName(EStatusTransaction.DEPOT).orElseThrow(() -> new ResourceNotFoundException("Type de transaction not found"));
             retenue.setTypeTransaction(typeTransaction);
             retenue.setDate(seance.getDate());
-            retenue.setMotif("amande "+user.getLastName());
+            retenue.setMotif("amande " + user.getLastName());
             retenue.setCreatedAt(LocalDateTime.now());
             retenue.setUser(user);
             iMangwaService.createMangwa(retenue);
-        }else {
+        } else {
             etyp = EStatusTransaction.NON_PAYE;
         }
-        TypeTransaction typeTransaction2 = iStatusTransactionRepo.findByName(etyp).orElseThrow(()-> new ResourceNotFoundException("Type de transaction not found"));
+        TypeTransaction typeTransaction2 = iStatusTransactionRepo.findByName(etyp).orElseThrow(() -> new ResourceNotFoundException("Type de transaction not found"));
         amande.setTypeTransaction(typeTransaction2);
         iAmandeService.createAmande(amande);
         return ResponseEntity.ok(amande);
     }
-    
-    
+
+    @Operation(summary = "création des informations pour une amande", tags = "Amande", responses = {
+            @ApiResponse(responseCode = "201", content = @Content(mediaType = "Application/Json", array = @ArraySchema(schema = @Schema(implementation = Amande.class)))),
+            @ApiResponse(responseCode = "404", description = "Session not found", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "401", description = "Full authentication is required to access this resource", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "403", description = "Forbidden : accès refusé", content = @Content(mediaType = "Application/Json")),})
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('SUPERADMIN', 'USER')")
+    public ResponseEntity<?> updateAmande(@RequestBody AmandeReqDto amandeReqDto, @PathVariable Long id) {
+        Users user = iUserService.getById(amandeReqDto.getIdUser());
+        Amande amande = iAmandeService.getAmandeById(id);
+
+
+        if (amandeReqDto.pay) {
+            etyp = EStatusTransaction.DEPOT;
+            Retenue retenue = new Retenue();
+            Session session = iSessionService.findLastSession();
+            retenue.setMontant(amandeReqDto.getMontant());
+            TypeTransaction typeTransaction = iStatusTransactionRepo.findByName(EStatusTransaction.DEPOT).orElseThrow(() -> new ResourceNotFoundException("Type de transaction not found"));
+            retenue.setTypeTransaction(typeTransaction);
+            retenue.setDate(amande.getDate());
+            retenue.setMotif("amande " + user.getLastName());
+            retenue.setCreatedAt(LocalDateTime.now());
+            retenue.setUser(user);
+            iMangwaService.createMangwa(retenue);
+        } else {
+            etyp = EStatusTransaction.NON_PAYE;
+            if (!amande.getTypeTransaction().getName().equals(etyp)) {
+                Retenue retenue = iMangwaService.getByMotifAndDateType("amande " + amande.getUser().getLastName(), amande.getMontant(), amande.getDate(), amande.getTypeTransaction());
+                iMangwaService.deleteMangwas(retenue.getId());
+            }
+        }
+        TypeTransaction typeTransaction2 = iStatusTransactionRepo.findByName(etyp).orElseThrow(() -> new ResourceNotFoundException("Type de transaction not found"));
+        amande.setTypeTransaction(typeTransaction2);
+        amande.setMontant(amandeReqDto.getMontant());
+        amande.setMotif(amandeReqDto.getMotif());
+        amande.setUpdatedAt(LocalDateTime.now());
+        amande.setUser(user);
+        iAmandeService.createAmande(amande);
+        return ResponseEntity.ok(amande);
+    }
+
+    @Operation(summary = "création des informations pour une amande", tags = "Amande", responses = {
+            @ApiResponse(responseCode = "201", content = @Content(mediaType = "Application/Json", array = @ArraySchema(schema = @Schema(implementation = Amande.class)))),
+            @ApiResponse(responseCode = "404", description = "Session not found", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "401", description = "Full authentication is required to access this resource", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "403", description = "Forbidden : accès refusé", content = @Content(mediaType = "Application/Json")),})
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('SUPERADMIN', 'USER')")
+    public ResponseEntity<?> deleteAmande(@PathVariable Long id) {
+        Amande amande = iAmandeService.getAmandeById(id);
+        etyp = EStatusTransaction.DEPOT;
+        if (amande.getTypeTransaction().getName().equals(etyp)) {
+            Retenue retenue = iMangwaService.getByMotifAndDateType("amande " + amande.getUser().getLastName(), amande.getMontant(), amande.getDate(), amande.getTypeTransaction());
+            iMangwaService.deleteMangwas(retenue.getId());
+        }
+        iAmandeService.deleteAmande(amande.getIdAmande());
+        return ResponseEntity.ok(amande);
+    }
+
+
 //    @PostMapping("/retrait/{id}")
 //    @Operation(summary = "retirer les sous dans la caisse amande", tags = "Amande", responses = {
 //            @ApiResponse(responseCode = "201", content = @Content(mediaType = "Application/Json", array = @ArraySchema(schema = @Schema(implementation = Amande.class)))),
@@ -207,10 +267,10 @@ public class AmandesController {
     @PreAuthorize("hasAnyRole('SUPERADMIN','USER')")
     @GetMapping("/seance/{idSeance:[0-9]+}")
     public ResponseEntity<Page<Amande>> getAmandeBySeance(@PathVariable Long idSeance,
-                                                                  @RequestParam(required = false, value = "page", defaultValue = "0") String pageParam,
-                                                                  @RequestParam(required = false, value = "size", defaultValue = ApplicationConstant.DEFAULT_SIZE_PAGINATION) String sizeParam,
-                                                                  @RequestParam(required = false, defaultValue = "idAmande") String sort,
-                                                                  @RequestParam(required = false, defaultValue = "desc") String order) {
+                                                          @RequestParam(required = false, value = "page", defaultValue = "0") String pageParam,
+                                                          @RequestParam(required = false, value = "size", defaultValue = ApplicationConstant.DEFAULT_SIZE_PAGINATION) String sizeParam,
+                                                          @RequestParam(required = false, defaultValue = "idAmande") String sort,
+                                                          @RequestParam(required = false, defaultValue = "desc") String order) {
         Page<Amande> list = iAmandeService.getAmandesBySeance(idSeance, Integer.parseInt(pageParam), Integer.parseInt(sizeParam), sort, order);
         return ResponseEntity.ok(list);
     }
@@ -225,11 +285,14 @@ public class AmandesController {
             @ApiResponse(responseCode = "401", description = "Full authentication is required to access this resource", content = @Content(mediaType = "Application/Json"))})
     @PreAuthorize("hasAnyRole('SUPERADMIN','USER')")
     @GetMapping()
-    public ResponseEntity<Page<Amande>> getAmandes(  @RequestParam(required = false, value = "page", defaultValue = "0") String pageParam,
-                                                     @RequestParam(required = false, value = "size", defaultValue = ApplicationConstant.DEFAULT_SIZE_PAGINATION) String sizeParam,
-                                                     @RequestParam(required = false, defaultValue = "idAmande") String sort,
-                                                     @RequestParam(required = false, defaultValue = "desc") String order) {
-        Page<Amande> list = iAmandeService.getAllAmandes(Integer.parseInt(pageParam), Integer.parseInt(sizeParam), sort, order);
+    public ResponseEntity<Page<Amande>> getAmandes(@RequestParam(required = false, value = "page", defaultValue = "0") String pageParam,
+                                                   @RequestParam(required = false, value = "size", defaultValue = ApplicationConstant.DEFAULT_SIZE_PAGINATION) String sizeParam,
+                                                   @RequestParam(required = false, defaultValue = "idAmande") String sort,
+                                                   @RequestParam(required = false, value = "name") String member,
+                                                   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam(required = false, value = "date") LocalDate date,
+                                                   @RequestParam(required = false, value = "type") String type,
+                                                   @RequestParam(required = false, defaultValue = "desc") String order) {
+        Page<Amande> list = iAmandeService.getAllAmandes(member, date, type, Integer.parseInt(pageParam), Integer.parseInt(sizeParam), sort, order);
         return ResponseEntity.ok(list);
     }
 }

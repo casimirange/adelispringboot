@@ -5,10 +5,9 @@
  */
 package com.adeli.adelispringboot.Tontine.repository;
 
+import com.adeli.adelispringboot.Mangwa.entity.TypeTransaction;
 import com.adeli.adelispringboot.Seance.entity.Seance;
-import com.adeli.adelispringboot.Session.entity.Session;
 import com.adeli.adelispringboot.Tontine.entity.Tontine;
-import com.adeli.adelispringboot.Users.entity.Users;
 import net.minidev.json.JSONObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,7 +15,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -28,8 +26,10 @@ public interface TontineRepository extends JpaRepository<Tontine, Long> {
 //    List<Tontine> findByDate(LocalDate date);
 //    List<Tontine> findBySession(Session session);
     Tontine findFirstByOrderByIdTontineDesc();
+    Tontine findTontineBySeanceAndDescription(Seance seance, String description);
+    Tontine findTontineBySeanceAndDescriptionAndMontant(Seance seance, String description, Double montant);
     Page<Tontine> findBySeance(Seance seance, Pageable pageable);
-//    Boolean existsByDateAndUser(LocalDate date, Users user);
+    Boolean existsBySeanceAndTypeTransaction(Seance seance, TypeTransaction typeTransaction);
 //    Integer countByDate(LocalDate date);
 
     String solde = "SELECT SUM(c.montant) as montant, t.name FROM tontine c INNER JOIN status_transaction t on t.id = c.type_transaction_id GROUP BY c.type_transaction_id";

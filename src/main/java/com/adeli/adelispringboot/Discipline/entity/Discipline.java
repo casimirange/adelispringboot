@@ -47,6 +47,8 @@ public class Discipline {
 
     private LocalDateTime createdAt;
 
+    private LocalDate date;
+
     private LocalDateTime updatedAt;
 
 }

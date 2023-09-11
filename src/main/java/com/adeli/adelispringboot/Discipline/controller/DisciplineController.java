@@ -8,6 +8,8 @@ package com.adeli.adelispringboot.Discipline.controller;
 
 //import com.example.demo.entity.Role;
 
+import com.adeli.adelispringboot.Beneficiaires.entity.Beneficiaire;
+import com.adeli.adelispringboot.Discipline.dto.DisciplineReqDto;
 import com.adeli.adelispringboot.Discipline.entity.Discipline;
 import com.adeli.adelispringboot.Discipline.entity.ETypeDiscipline;
 import com.adeli.adelispringboot.Discipline.entity.TypeDiscipline;
@@ -51,6 +53,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -109,37 +112,60 @@ public class DisciplineController {
             @ApiResponse(responseCode = "403", description = "Forbidden : accès refusé", content = @Content(mediaType = "Application/Json")),})
     @PostMapping()
     @PreAuthorize("hasAnyRole('SUPERADMIN', 'USER')")
-    public ResponseEntity<?> createDiscipline(@RequestBody Discipline discipline, @RequestParam("user") Long userId, @RequestParam("seance") Long idSeance, @RequestParam("type") String type) {
-        Users user = iUserService.getById(userId);
-        Seance seance = iSeanceService.getById(idSeance);
+    public ResponseEntity<?> createDiscipline(@RequestBody DisciplineReqDto disciplineReqDto) {
+        Users user = iUserService.getById(disciplineReqDto.getIdUser());
+        Seance seance = iSeanceService.getById(disciplineReqDto.getIdSeance());
+        Discipline discipline = new Discipline();
 
-        if (type.toUpperCase().equals(ETypeDiscipline.ABSENCE.toString())){
+        if (disciplineReqDto.getSanction().toUpperCase().equals(ETypeDiscipline.ABSENCE.toString())){
             etyp = ETypeDiscipline.ABSENCE;
         }
 
-        if (type.toUpperCase().equals(ETypeDiscipline.RETARD.toString())){
+        if (disciplineReqDto.getSanction().toUpperCase().equals(ETypeDiscipline.RETARD.toString())){
             etyp = ETypeDiscipline.RETARD;
         }
 
-        if (type.toUpperCase().equals(ETypeDiscipline.TROUBLE.toString())){
+        if (disciplineReqDto.getSanction().toUpperCase().equals(ETypeDiscipline.TROUBLE.toString())){
             etyp = ETypeDiscipline.TROUBLE;
         }
         TypeDiscipline typeDiscipline = iTypeDisciplineRepo.findByName(etyp).orElseThrow(()-> new ResourceNotFoundException("Type de discipline not found"));
         discipline.setTypeDiscipline(typeDiscipline);
         discipline.setSeance(seance);
+        discipline.setDate(seance.getDate());
         discipline.setUser(user);
         discipline.setCreatedAt(LocalDateTime.now());
         iDisciplineService.createDiscipline(discipline);
 
-        String emailToEnableUser = "";
-        Map<String, Object> emailProps = new HashMap<>();
-        emailProps.put("type", etyp);
-        emailProps.put("date", seance.getDate());
-        emailToEnableUser = user.getEmail();
-        emailProps.put("name", user.getLastName());
-        emailService.sendEmail(new EmailDto(mailFrom, ApplicationConstant.ENTREPRISE_NAME, emailToEnableUser, mailReplyTo, emailProps, ApplicationConstant.SUBJECT_EMAIL_DISCIPLINE + etyp, ApplicationConstant.TEMPLATE_EMAIL_DISCIPLINE));
-        log.info("Email send successfull to user: " + emailToEnableUser);
+        return ResponseEntity.ok(discipline);
+    }
 
+    @Operation(summary = "création des informations pour une sanction", tags = "Discipline", responses = {
+            @ApiResponse(responseCode = "201", content = @Content(mediaType = "Application/Json", array = @ArraySchema(schema = @Schema(implementation = Discipline.class)))),
+            @ApiResponse(responseCode = "404", description = "Session not found", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "401", description = "Full authentication is required to access this resource", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "403", description = "Forbidden : accès refusé", content = @Content(mediaType = "Application/Json")),})
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('SUPERADMIN', 'USER')")
+    public ResponseEntity<?> updateDiscipline(@RequestBody DisciplineReqDto disciplineReqDto, @PathVariable Long id) {
+        Users user = iUserService.getById(disciplineReqDto.getIdUser());
+        Discipline discipline = iDisciplineService.getById(id);
+
+        if (disciplineReqDto.getSanction().toUpperCase().equals(ETypeDiscipline.ABSENCE.toString())){
+            etyp = ETypeDiscipline.ABSENCE;
+        }
+
+        if (disciplineReqDto.getSanction().toUpperCase().equals(ETypeDiscipline.RETARD.toString())){
+            etyp = ETypeDiscipline.RETARD;
+        }
+
+        if (disciplineReqDto.getSanction().toUpperCase().equals(ETypeDiscipline.TROUBLE.toString())){
+            etyp = ETypeDiscipline.TROUBLE;
+        }
+        TypeDiscipline typeDiscipline = iTypeDisciplineRepo.findByName(etyp).orElseThrow(()-> new ResourceNotFoundException("Type de discipline not found"));
+        discipline.setTypeDiscipline(typeDiscipline);
+        discipline.setUser(user);
+        discipline.setUpdatedAt(LocalDateTime.now());
+        iDisciplineService.createDiscipline(discipline);
 
         return ResponseEntity.ok(discipline);
     }
@@ -162,50 +188,38 @@ public class DisciplineController {
         Page<Discipline> list = iDisciplineService.getDisciplinesBySeance(idSeance, Integer.parseInt(pageParam), Integer.parseInt(sizeParam), sort, order);
         return ResponseEntity.ok(list);
     }
-//    @PostMapping("")
-//    public ResponseEntity<?> createAmande(@RequestBody Discipline discipline, @RequestParam("user") Users u) {
-//        Users user = userRepository.findById(u.getUserId()).get();
-//        SessionStatus sessionStatus = iStatusSessionRepo.findByName(EStatusSession.CREEE)
-//                .orElseThrow(() -> new ResourceNotFoundException("Ce statut " + EStatusSession.CREEE + " n'existe pas"));
-//        Session session = sessionRepository.findSessionByStatus(sessionStatus);
-//        discipline.setSession(session);
-//        discipline.setUser(user);
-//        disciplineRepository.save(discipline);
-//        return ResponseEntity.ok(discipline);
-//    }
-    
-//    @PutMapping("")
-//    public ResponseEntity<?> updateDiscipline(@RequestBody Discipline disc, @RequestParam("user") Users u, @RequestParam("id") Long id) {
-//        Users user = userRepository.findById(u.getUserId()).get();
-//        SessionStatus sessionStatus = iStatusSessionRepo.findByName(EStatusSession.CREEE)
-//                .orElseThrow(() -> new ResourceNotFoundException("Ce statut " + EStatusSession.CREEE + " n'existe pas"));
-//
-//        Session session = sessionRepository.findSessionByStatus(sessionStatus);
-//        Discipline discipline = disciplineRepository.findById(id).get();
-//        discipline.setSession(session);
-//        discipline.setUser(user);
-//        discipline.setSanction(disc.getSanction());
-//        discipline.setType(disc.getType());
-//        discipline.setDate(disc.getDate());
-//
-//        disciplineRepository.save(discipline);
-//        return ResponseEntity.ok(discipline);
-//    }
 
+    @Parameters(value = {
+            @Parameter(name = "sort", schema = @Schema(allowableValues = {"id", "createdAt"})),
+            @Parameter(name = "order", schema = @Schema(allowableValues = {"asc", "desc"}))})
+    @Operation(summary = "Liste des disciplines", tags = "Discipline", responses = {
+            @ApiResponse(responseCode = "200", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "403", description = "Forbidden : accès refusé", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "404", description = "Client not found", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "401", description = "Full authentication is required to access this resource", content = @Content(mediaType = "Application/Json"))})
+    @PreAuthorize("hasAnyRole('SUPERADMIN', 'USER')")
     @GetMapping()
-    public List<JSONObject> getActiveSessionTontine(){
-        return disciplineRepository.findDiscipline();
+    public ResponseEntity<?> getDisciplines(@RequestParam(required = false, value = "page", defaultValue = "0") String pageParam,
+                                       @RequestParam(required = false, value = "size", defaultValue = ApplicationConstant.DEFAULT_SIZE_PAGINATION) String sizeParam,
+                                       @RequestParam(required = false, defaultValue = "id") String sort,
+                                        @RequestParam(required = false, value = "name") String member,
+                                        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam(required = false, value = "date") LocalDate date,
+                                        @RequestParam(required = false, value = "type") String type,
+                                       @RequestParam(required = false, defaultValue = "desc") String order) {
+        Page<Discipline> list = iDisciplineService.getAllDiscipline(member, date, type,Integer.parseInt(pageParam), Integer.parseInt(sizeParam), sort, order);
+        return ResponseEntity.ok(list);
     }
-             
-    @GetMapping("/id/{id}")
-    public List<JSONObject> getUsers(@PathVariable Long id) {
-        Users u = userRepository.findById(id).get();
-        
-        return disciplineRepository.findDisciplineUser(id);
-    }
-             
-    @DeleteMapping("")
-    public void deleDepartement(@RequestParam("id") Long id) {
-        disciplineRepository.deleteById(id);
+
+    @Operation(summary = "création des informations pour un bénéficiaire", tags = "Beneficiaire", responses = {
+            @ApiResponse(responseCode = "201", content = @Content(mediaType = "Application/Json", array = @ArraySchema(schema = @Schema(implementation = Beneficiaire.class)))),
+            @ApiResponse(responseCode = "404", description = "Session not found", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "401", description = "Full authentication is required to access this resource", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "403", description = "Forbidden : accès refusé", content = @Content(mediaType = "Application/Json")),})
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('SUPERADMIN', 'USER')")
+    public ResponseEntity<?> deleDepartement(@PathVariable("id") Long id) {
+        Discipline discipline = iDisciplineService.getById(id);
+        disciplineRepository.deleteById(discipline.getId());
+        return ResponseEntity.ok().body(discipline);
     }
 }

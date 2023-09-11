@@ -12,7 +12,7 @@
     <artifactId>adelispringboot</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
-<!--    <name>adelispringboot</name>-->
+    <!--    <name>adelispringboot</name>-->
     <description>adelispringboot</description>
     <properties>
         <java.version>1.8</java.version>
@@ -81,6 +81,16 @@
             <version>0.9.1</version>
         </dependency>
         <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>3.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>javase</artifactId>
+            <version>3.4.0</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
@@ -104,7 +114,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
-            <version>2.2.2.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -151,8 +160,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-<!--                    <source>11</source>-->
-<!--                    <target>11</target>-->
+                    <!--                    <source>11</source>-->
+                    <!--                    <target>11</target>-->
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>

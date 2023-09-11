@@ -4,6 +4,8 @@ package com.adeli.adelispringboot.configuration.email.service;
 import com.adeli.adelispringboot.configuration.email.dto.EmailDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.io.Resource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,7 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import javax.mail.internet.MimeMessage;
 import javax.mail.util.ByteArrayDataSource;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 @Service
@@ -23,6 +26,9 @@ public class EmailServiceImpl implements IEmailService {
 
 	@Autowired
 	private SpringTemplateEngine templateEngine;
+
+	@Autowired
+	ApplicationContext appContext;
 
 	@Override
 	public void sendEmail(EmailDto emailDto) {
@@ -40,6 +46,9 @@ public class EmailServiceImpl implements IEmailService {
 			mimeMessageHelper.setSubject(emailDto.getSubject());
 			mimeMessageHelper.setReplyTo(emailDto.getReplyTo(),emailDto.getReplyToName());
 			mimeMessageHelper.setText(html, true);
+			Resource logo = appContext.getResource("classpath:/templates/logo.jpeg");
+
+			mimeMessageHelper.addInline("logo", logo);
 
 			if(emailDto.getAttachement() != null && emailDto.getNamefile() != null && emailDto.getContentType() != null){
 				mimeMessageHelper.addAttachment(emailDto.getNamefile(), new ByteArrayDataSource(emailDto.getAttachement(), emailDto.getContentType()));

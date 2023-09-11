@@ -54,7 +54,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@OpenAPIDefinition(info = @Info(title = "API ADELI V1.0", description = "Documentation de l'API", version = "1.0"))
+@OpenAPIDefinition(info = @Info(title = "API ADELI V1.0", description = "Documentation de l'API", version = "2.0"))
 @RestController
 @Tag(name = "authentification")
 @RequestMapping("/api/v1.0/auth")

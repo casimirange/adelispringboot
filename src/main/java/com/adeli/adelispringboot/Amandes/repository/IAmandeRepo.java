@@ -12,6 +12,7 @@ import com.adeli.adelispringboot.Users.entity.Users;
 import net.minidev.json.JSONObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -29,7 +30,8 @@ public interface IAmandeRepo extends JpaRepository<Amande, Long> {
 //    List<Amande> findByUser(Users user);
 //    Amande findFirstByOrderByIdAmandeDesc();
     Page<Amande> findBySeance(Seance seance, Pageable pageable);
-    
+    Page<Amande> findAll(Specification<Amande> specification, Pageable pageable);
+
 //    String amande = "select a.id_amande, a.date, a.credit, a.debit, a.motif, a.solde, "
 //            + "u.name from amande a "
 //            + "join session s on a.id_session = s.id_session "

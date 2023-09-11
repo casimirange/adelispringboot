@@ -16,17 +16,11 @@ import com.adeli.adelispringboot.Beneficiaires.service.IBeneficiaireService;
 import com.adeli.adelispringboot.Mangwa.entity.EStatusTransaction;
 import com.adeli.adelispringboot.Mangwa.entity.TypeTransaction;
 import com.adeli.adelispringboot.Mangwa.repository.IStatusTransactionRepo;
-import com.adeli.adelispringboot.Prêts.dto.PretReqDto;
-import com.adeli.adelispringboot.Prêts.entity.Prets;
 import com.adeli.adelispringboot.Seance.entity.Seance;
 import com.adeli.adelispringboot.Seance.service.ISeanceService;
-import com.adeli.adelispringboot.Session.entity.EStatusSession;
-import com.adeli.adelispringboot.Session.entity.Session;
-import com.adeli.adelispringboot.Session.entity.SessionStatus;
 import com.adeli.adelispringboot.Session.repository.ISessionRepo;
 import com.adeli.adelispringboot.Session.repository.IStatusSessionRepo;
 import com.adeli.adelispringboot.Tontine.entity.Tontine;
-import com.adeli.adelispringboot.Tontine.repository.TontineRepository;
 import com.adeli.adelispringboot.Tontine.service.ITontineService;
 import com.adeli.adelispringboot.Users.entity.Users;
 import com.adeli.adelispringboot.Users.repository.IUserRepo;
@@ -53,11 +47,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 
 
 /**
@@ -151,6 +141,57 @@ public class BeneficiaireController {
 
         iBeneficiaireService.createBeneficiaire(beneficiaire);
         iTontineService.createTontine(tontine);
+      return ResponseEntity.ok(beneficiaire);
+    }
+
+
+    @Operation(summary = "création des informations pour un bénéficiaire", tags = "Beneficiaire", responses = {
+            @ApiResponse(responseCode = "201", content = @Content(mediaType = "Application/Json", array = @ArraySchema(schema = @Schema(implementation = Beneficiaire.class)))),
+            @ApiResponse(responseCode = "404", description = "Session not found", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "401", description = "Full authentication is required to access this resource", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "403", description = "Forbidden : accès refusé", content = @Content(mediaType = "Application/Json")),})
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('SUPERADMIN', 'USER')")
+    public ResponseEntity<?> updateBenef(@RequestBody BenefReqDto benefReqDto, @PathVariable Long id) {
+        Beneficiaire beneficiaire = iBeneficiaireService.getBeneficiaire(id);
+        Users user = iUserService.getById(benefReqDto.getIdUser());
+        Tontine tontine = iTontineService.getTontineByDescriptionAndSeance(beneficiaire.getSeance(), beneficiaire.getUser().getLastName()+": a bouffé");
+
+        if((iTontineService.soldeTontine() + beneficiaire.getMontant()) < benefReqDto.getMontant()){
+            return ResponseEntity.badRequest().body(new MessageResponseDto(HttpStatus.BAD_REQUEST,
+                    messageSource.getMessage("messages.insufficient_amount", null, LocaleContextHolder.getLocale())));
+        }
+
+        tontine.setDescription(user.getLastName()+": a bouffé");
+        tontine.setUser(user);
+        tontine.setUpdatedAt(LocalDateTime.now());
+        tontine.setMontant(benefReqDto.getMontant());
+
+
+        beneficiaire.setUpdatedAt(LocalDateTime.now());
+        beneficiaire.setUser(user);
+        beneficiaire.setMontant(benefReqDto.getMontant());
+
+
+        iBeneficiaireService.createBeneficiaire(beneficiaire);
+        iTontineService.createTontine(tontine);
+      return ResponseEntity.ok(beneficiaire);
+    }
+
+
+    @Operation(summary = "création des informations pour un bénéficiaire", tags = "Beneficiaire", responses = {
+            @ApiResponse(responseCode = "201", content = @Content(mediaType = "Application/Json", array = @ArraySchema(schema = @Schema(implementation = Beneficiaire.class)))),
+            @ApiResponse(responseCode = "404", description = "Session not found", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "401", description = "Full authentication is required to access this resource", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "403", description = "Forbidden : accès refusé", content = @Content(mediaType = "Application/Json")),})
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('SUPERADMIN', 'USER')")
+    public ResponseEntity<?> deleteBenef(@PathVariable Long id) {
+        Beneficiaire beneficiaire = iBeneficiaireService.getBeneficiaire(id);
+        Tontine tontine = iTontineService.getTontineByDescriptionAndSeance(beneficiaire.getSeance(), beneficiaire.getUser().getLastName()+": a bouffé");
+
+        iBeneficiaireService.deleteBeneficiaire(beneficiaire);
+        iTontineService.deleteTontine(tontine);
       return ResponseEntity.ok(beneficiaire);
     }
 

@@ -117,83 +117,49 @@ public class TontineController {
     @PreAuthorize("hasAnyRole('SUPERADMIN', 'USER')")
     public ResponseEntity<?> createTontine(@RequestParam("seance") Long idSeance) {
         List<Users> usersList = iUserService.getUsers();
-        for (Users user : usersList) {
-            if (user.getStatus().getName() == EStatusUser.USER_ENABLED) {
-                Tontine tontine = new Tontine();
-                Retenue retenue = new Retenue();
-                Session session = iSessionService.findLastSession();
-                if (session.getStatus().getName() == EStatusSession.CREEE){
-                    retenue.setMontant(session.getMangwa());
-                }else {
-                    return ResponseEntity.badRequest().body(new MessageResponseDto(HttpStatus.BAD_REQUEST,
-                            messageSource.getMessage("messages.session_exists", null, LocaleContextHolder.getLocale())));
-                }
-                TypeTransaction typeTransaction = iStatusTransactionRepo.findByName(EStatusTransaction.DEPOT).orElseThrow(()-> new ResourceNotFoundException("Type de transaction not found"));
-                Seance seance = iSeanceService.getById(idSeance);
-                tontine.setSeance(seance);
-                tontine.setTypeTransaction(typeTransaction);
-                tontine.setCreatedAt(LocalDateTime.now());
+        Seance seance = iSeanceService.getById(idSeance);
+        List<Tontine> tontines = new ArrayList<>();
+        List<Retenue> retenueList = new ArrayList<>();
+        TypeTransaction typeTransaction = iStatusTransactionRepo.findByName(EStatusTransaction.DEPOT).orElseThrow(()-> new ResourceNotFoundException("Type de transaction not found"));
+        if (!iTontineService.existByDate(seance, typeTransaction)){
+            for (Users user : usersList) {
+                if (user.getStatus().getName() == EStatusUser.USER_ENABLED) {
+                    Tontine tontine = new Tontine();
+                    Retenue retenue = new Retenue();
+                    Session session = iSessionService.findLastSession();
+                    if (session.getStatus().getName() == EStatusSession.CREEE){
+                        retenue.setMontant(session.getMangwa());
+                    }else {
+                        return ResponseEntity.badRequest().body(new MessageResponseDto(HttpStatus.BAD_REQUEST,
+                                messageSource.getMessage("messages.session_exists", null, LocaleContextHolder.getLocale())));
+                    }
 
-                retenue.setTypeTransaction(typeTransaction);
-                retenue.setDate(seance.getDate());
-                retenue.setMotif("contribution mangwa");
-                retenue.setCreatedAt(LocalDateTime.now());
-                tontine.setUser(user);
-                tontine.setMontant(user.getMontant());
-                tontine.setDescription(user.getLastName() + " a cotisé");
-                retenue.setUser(user);
-                iTontineService.createTontine(tontine);
-                iMangwaService.createMangwa(retenue);
+                    tontine.setSeance(seance);
+                    tontine.setTypeTransaction(typeTransaction);
+                    tontine.setCreatedAt(LocalDateTime.now());
+
+                    tontines.add(tontine);
+
+                    retenue.setTypeTransaction(typeTransaction);
+                    retenue.setDate(seance.getDate());
+                    retenue.setMotif("contribution mangwa");
+                    retenue.setCreatedAt(LocalDateTime.now());
+                    tontine.setUser(user);
+                    tontine.setMontant(user.getMontant());
+                    tontine.setDescription(user.getLastName() + " a cotisé");
+                    retenue.setUser(user);
+
+                    retenueList.add(retenue);
+                }
             }
+            iTontineService.createTontines(tontines);
+            iMangwaService.createMangwas(retenueList);
+        }else {
+            return ResponseEntity.badRequest().body(new MessageResponseDto(HttpStatus.BAD_REQUEST,
+                    messageSource.getMessage("messages.cotisation", null, LocaleContextHolder.getLocale())));
         }
 
-//        Elections e = electionRepository.findByUserAndSession(user.getLastName(), session);
-//        double mangwa = session.getMangwa();
-//        Tontine ton = tontineRepository.findFirstByOrderByIdTontineDesc();
-//        double solde = 0;
-//        if (ton != null) {
-//            solde = ton.getMontant() + e.getMontant();
-//            tontine.setMontant(solde);
-//        } else {
-//            solde = e.getMontant();
-//            tontine.setMontant(solde);
-//        }
-//        double debit = e.getMontant();
-//
-//        tontine.setDebit(debit);
-//        tontine.setCredit(0);
-//        tontine.setMotif("cotisation " + user.getLastName());
-//        tontine.setUser(user);
-//        if (!planningRepository.existsByDate(LocalDate.now())) {
-//            return ResponseEntity.badRequest().body(new MessageResponseDto(HttpStatus.BAD_REQUEST,
-//                    messageSource.getMessage("messages.date_not_found", null, LocaleContextHolder.getLocale())));
-//        }
-//        tontine.setDate(LocalDate.now());
-//        tontine.setSession(session);
-//        if (tontineRepository.existsByDateAndUser(tontine.getDate(), tontine.getUser())) {
-//            return ResponseEntity.badRequest().body(new MessageResponseDto(HttpStatus.BAD_REQUEST,
-//                    messageSource.getMessage("messages.user_cotise", null, LocaleContextHolder.getLocale())));
-//        }
-
-//        tontineRepository.save(tontine);
-//
-//        Retenue rete = IRetenueRepository.findFirstByOrderByIdDesc();
-//        double solde2 = 0;
-//        if (rete != null) {
-//            solde2 = rete.getSolde() + mangwa;
-//            retenue.setSolde(solde2);
-//        } else {
-//            solde2 = mangwa;
-//            retenue.setSolde(solde2);
-//        }
-//        retenue.setDebit(mangwa);
-//        retenue.setCredit(0);
-//        retenue.setDate(LocalDate.now());
-//        retenue.setUser(user);
-//        retenue.setMotif("cotisation");
-
-//        IRetenueRepository.save(retenue);
-        return ResponseEntity.ok("tontine");
+        return ResponseEntity.ok().body(tontines);
     }
 
     @Parameters(value = {

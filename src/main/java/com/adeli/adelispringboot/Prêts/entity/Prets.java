@@ -55,6 +55,7 @@ public class Prets {
     private Seance seance;
 
     private LocalDateTime createdAt;
+    private LocalDate date;
 
     private LocalDateTime updatedAt;
 
