@@ -675,6 +675,8 @@
                                                                 th:text="${soldeMangwa}"> </strong>€
                                                             <br>Solde Cotisation : <strong
                                                                 th:text="${soldeTontine}"></strong>€
+                                                            <br>Solde Projet : <strong
+                                                                th:text="${soldeProjet}"></strong>€
                                                             <br>Solde Caisse : <strong
                                                                 th:text="${soldeCaisse}"></strong>€
                                                         </p>
@@ -790,7 +792,7 @@
                                                             <tr>
                                                                 <th>Membre</th>
                                                                 <th>Description</th>
-                                                                <th>Montant</th>
+                                                                <th>Motif</th>
                                                                 <th>Statut</th>
                                                             </tr>
                                                             </thead>
@@ -813,26 +815,53 @@
                                                             </tbody>
                                                         </table>
 
-                                                        <p th:if="${disciplines.getSize() > 0}"><h4>Discipline</h4></p>
-                                                        <table class="table table-striped table-bordered bg-white" th:if="${disciplines.getSize() > 0}">
+                                                        <p th:if="${projets.getSize() > 0}"><h4>Fond de solidarité Projet</h4></p>
+                                                        <table class="table table-striped table-bordered bg-white" th:if="${projets.getSize() > 0}">
                                                             <thead>
                                                             <tr>
                                                                 <th>Membre</th>
-                                                                <th>Motif</th>
+                                                                <th>Montant</th>
+                                                                <th>Montant</th>
+                                                                <th>Transaction</th>
                                                             </tr>
                                                             </thead>
                                                             <tbody>
-                                                            <tr th:each="products, stats : ${disciplines}">
+                                                            <tr th:each="products, stats : ${projets}">
                                                                 <td><span
                                                                         th:text="${products.getUser().getFirstName()}"></span>&nbsp;<span
                                                                         th:text="${products.getUser().getLastName()}"></span>
                                                                 </td>
                                                                 <td><span
-                                                                        th:text="${products.getTypeDiscipline().getName()}"></span>
+                                                                        th:text="${products.getMontant()}"></span>
+                                                                </td>
+                                                                <td ><span th:text="${products.getMotif()}"></span></td>
+                                                                <td><span
+                                                                        th:text="${products.getTypeTransaction().getName()}"></span>
                                                                 </td>
                                                             </tr>
                                                             </tbody>
                                                         </table>
+
+<!--                                                        <p th:if="${disciplines.getSize() > 0}"><h4>Discipline</h4></p>-->
+<!--                                                        <table class="table table-striped table-bordered bg-white" th:if="${disciplines.getSize() > 0}">-->
+<!--                                                            <thead>-->
+<!--                                                            <tr>-->
+<!--                                                                <th>Membre</th>-->
+<!--                                                                <th>Motif</th>-->
+<!--                                                            </tr>-->
+<!--                                                            </thead>-->
+<!--                                                            <tbody>-->
+<!--                                                            <tr th:each="products, stats : ${disciplines}">-->
+<!--                                                                <td><span-->
+<!--                                                                        th:text="${products.getUser().getFirstName()}"></span>&nbsp;<span-->
+<!--                                                                        th:text="${products.getUser().getLastName()}"></span>-->
+<!--                                                                </td>-->
+<!--                                                                <td><span-->
+<!--                                                                        th:text="${products.getTypeDiscipline().getName()}"></span>-->
+<!--                                                                </td>-->
+<!--                                                            </tr>-->
+<!--                                                            </tbody>-->
+<!--                                                        </table>-->
                                                     </div>
                                                     </br>
 

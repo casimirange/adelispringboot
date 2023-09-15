@@ -24,6 +24,8 @@ import com.adeli.adelispringboot.Document.service.IDocumentStorageService;
 import com.adeli.adelispringboot.Mangwa.dto.RetenueResDto;
 import com.adeli.adelispringboot.Mangwa.entity.Retenue;
 import com.adeli.adelispringboot.Mangwa.service.IMangwaService;
+import com.adeli.adelispringboot.Projet.entity.Projet;
+import com.adeli.adelispringboot.Projet.service.IProjetService;
 import com.adeli.adelispringboot.Prêts.entity.Prets;
 import com.adeli.adelispringboot.Prêts.service.IPretService;
 import com.adeli.adelispringboot.Seance.dto.SeanceReqDto;
@@ -105,6 +107,9 @@ public class SeanceController {
 
     @Autowired
     ITontineService iTontineService;
+
+    @Autowired
+    IProjetService iProjetService;
 
     @Autowired
     IPretService iPretService;
@@ -307,7 +312,8 @@ public class SeanceController {
         seance.setStatus(sessionStatus);
         double sm = iMangwaService.soldeMangwa();
         double st = iTontineService.soldeTontine();
-        double sc = sm + st;
+        double sp = iProjetService.soldeProjet();
+        double sc = sm + st + sp;
         Page<Beneficiaire> beneficiaires = iBeneficiaireService.getBeneficiaireBySeance(id, 0, 20, "id", "desc");
 //        Page<Prets> prets = iPretService.getAllPret("", null, "PRET", 0, 20, "idPret", "desc");
         Page<TontineResDto> tontines = iTontineService.getTontinesBySeance(seance.getId(), 0, 20, "idTontine", "desc");
@@ -315,6 +321,7 @@ public class SeanceController {
         Page<Amande> amandes = iAmandeService.getAmandesBySeance(seance.getId(), 0, 20, "idAmande", "desc");
         Page<Discipline> disciplines = iDisciplineService.getDisciplinesBySeance(seance.getId(), 0, 20, "id", "desc");
         Page<Retenue> mangwa = iMangwaService.getMangwaBySeance(seance.getId(), 0, 20, "id", "desc");
+        Page<Projet> projet = iProjetService.getProjetBySeance(seance.getId(), 0, 20, "id", "desc");
 //        seance.getTontines().get(0).getTypeTransaction().getName();
 
 //        log.info("La séance du " + seance.getDate() + " est terminée");
@@ -322,7 +329,7 @@ public class SeanceController {
 //        log.info("La séance du " + st + " est terminée");
 //        log.info("La séance du " + sc + " est terminée");
 //        log.info("La séance du " + prets.getContent().get(0).getMontant_prete() + " est terminée");
-//        log.info("La séance du " + disciplines.getContent().get(0).getTypeDiscipline().getName() + " est terminée");
+        log.info("La séance du " + projet.getContent().get(0).getTypeTransaction().getName() + " est terminée");
 
         
         String status  = seance.getStatus().getName().toString();
@@ -334,12 +341,14 @@ public class SeanceController {
         emailProps.put("soldeMangwa", sm1);
         emailProps.put("soldeTontine", st);
         emailProps.put("soldeCaisse", sc);
+        emailProps.put("soldeProjet", sp);
         emailProps.put("beneficiaires", beneficiaires);
         emailProps.put("prets", prets);
         emailProps.put("amandes", amandes);
         emailProps.put("disciplines", disciplines);
         emailProps.put("mangwa", mangwa);
         emailProps.put("tontines", tontines);
+        emailProps.put("projets", projet);
         List<Users> usersList = iUserService.getUsers();
         for (Users user : usersList) {
             if (user.getStatus().getName() == EStatusUser.USER_ENABLED) {
@@ -355,7 +364,8 @@ public class SeanceController {
 //        iSeanceService.createSeance(seance);
 //        return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF).body(data);
 
-        byte[] data = new byte[0];
+//        byte[] data = new byte[0];
+        byte[] data = generateReportSeance(seance);
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.CONTENT_DISPOSITION, "inline;filename=seance du " + seance.getDate() + ".pdf");
         iSeanceService.createSeance(seance);
@@ -374,6 +384,7 @@ public class SeanceController {
 
         double soldeTontine = iTontineService.soldeTontine();
         double soldeMangwa = iMangwaService.soldeMangwa();
+        double soldeProjet = iProjetService.soldeProjet();
         double soldeCaisse = soldeTontine + soldeMangwa;
         RuleBasedNumberFormat ruleBasedNumberFormat = new RuleBasedNumberFormat(Locale.FRANCE, RuleBasedNumberFormat.SPELLOUT);
         String solde = ruleBasedNumberFormat.format(soldeCaisse);

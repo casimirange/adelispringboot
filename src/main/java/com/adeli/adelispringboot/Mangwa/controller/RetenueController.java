@@ -160,9 +160,9 @@ public class RetenueController {
     }
 
 //    @PostMapping("")
-//    public ResponseEntity<RetenueResDto> createMangwa(@RequestBody RetenueReqDto retenueReqDto) {
+//    public ResponseEntity<ProjetResDto> createMangwa(@RequestBody ProjetReqDto retenueReqDto) {
 //        Users user = userRepository.findById(u.getUserId()).get();
-//        Retenue retenue = IRetenueRepository.findFirstByOrderByIdRetenueDesc();
+//        Projet retenue = IProjetRepository.findFirstByOrderByIdRetenueDesc();
 //        if(retenue  != null){
 //            if(ret.getTransaction().equals("Débit")){
 //                double solde = retenue.getSolde() + ret.getDebit();
@@ -184,13 +184,13 @@ public class RetenueController {
 //        ret.setUser(user);
 //
 //        double x = ret.getDebit() + ret.getCredit();
-//        IRetenueRepository.save(ret);
+//        IProjetRepository.save(ret);
 //      return ResponseEntity.ok(ret);
 //    }
     
 //    @GetMapping("/solde")
 //    public JSONObject soldeRetenue(){
-//        Retenue retenue = IRetenueRepository.findFirstByOrderByIdRetenueDesc();
+//        Projet retenue = IProjetRepository.findFirstByOrderByIdRetenueDesc();
 //        Map<String, Object> response = new HashMap<>();
 //        JSONObject solde;
 //        if(retenue != null){

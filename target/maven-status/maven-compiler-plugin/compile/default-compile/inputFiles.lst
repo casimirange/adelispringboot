@@ -6,6 +6,7 @@
 /home/casimir/Music/adeli/adelispringboot/src/main/java/com/adeli/adelispringboot/Discipline/entity/Discipline.java
 /home/casimir/Music/adeli/adelispringboot/src/main/java/com/adeli/adelispringboot/Users/entity/EStatusUser.java
 /home/casimir/Music/adeli/adelispringboot/src/main/java/com/adeli/adelispringboot/Seance/entity/Seance.java
+/home/casimir/Music/adeli/adelispringboot/src/main/java/com/adeli/adelispringboot/Projet/service/IProjetService.java
 /home/casimir/Music/adeli/adelispringboot/src/main/java/com/adeli/adelispringboot/Users/repository/IStatusUserRepo.java
 /home/casimir/Music/adeli/adelispringboot/src/main/java/com/adeli/adelispringboot/authentication/dto/EmailResetPasswordDto.java
 /home/casimir/Music/adeli/adelispringboot/src/main/java/com/adeli/adelispringboot/Beneficiaires/controller/BeneficiaireController.java
@@ -23,12 +24,15 @@
 /home/casimir/Music/adeli/adelispringboot/src/main/java/com/adeli/adelispringboot/Discipline/dto/DisciplineResDto.java
 /home/casimir/Music/adeli/adelispringboot/src/main/java/com/adeli/adelispringboot/Seance/repository/ISeanceRepository.java
 /home/casimir/Music/adeli/adelispringboot/src/main/java/com/adeli/adelispringboot/authentication/dto/EmailVerificationDto.java
+/home/casimir/Music/adeli/adelispringboot/src/main/java/com/adeli/adelispringboot/Projet/repository/IProjetRepository.java
 /home/casimir/Music/adeli/adelispringboot/src/main/java/com/adeli/adelispringboot/Discipline/entity/ETypeDiscipline.java
 /home/casimir/Music/adeli/adelispringboot/src/main/java/com/adeli/adelispringboot/Discipline/repository/DisciplineRepository.java
 /home/casimir/Music/adeli/adelispringboot/src/main/java/com/adeli/adelispringboot/initDatas/InitRoles.java
 /home/casimir/Music/adeli/adelispringboot/src/main/java/com/adeli/adelispringboot/Planning/entity/Planing.java
 /home/casimir/Music/adeli/adelispringboot/src/main/java/com/adeli/adelispringboot/Users/dto/UserModifyReqDto.java
+/home/casimir/Music/adeli/adelispringboot/src/main/java/com/adeli/adelispringboot/Projet/entity/Projet.java
 /home/casimir/Music/adeli/adelispringboot/src/main/java/com/adeli/adelispringboot/Session/dto/SessionResDto.java
+/home/casimir/Music/adeli/adelispringboot/src/main/java/com/adeli/adelispringboot/Projet/dto/ProjetReqDto.java
 /home/casimir/Music/adeli/adelispringboot/src/main/java/com/adeli/adelispringboot/Mangwa/service/impl/MangwaServiceImpl.java
 /home/casimir/Music/adeli/adelispringboot/src/main/java/com/adeli/adelispringboot/configuration/exception/DocumentsStorageException.java
 /home/casimir/Music/adeli/adelispringboot/src/main/java/com/adeli/adelispringboot/Amandes/controller/AmandesController.java
@@ -97,8 +101,10 @@
 /home/casimir/Music/adeli/adelispringboot/src/main/java/com/adeli/adelispringboot/authentication/service/AuthorizationService.java
 /home/casimir/Music/adeli/adelispringboot/src/main/java/com/adeli/adelispringboot/authentication/service/JwtUtils.java
 /home/casimir/Music/adeli/adelispringboot/src/main/java/com/adeli/adelispringboot/Discipline/dto/DisciplineReqDto.java
+/home/casimir/Music/adeli/adelispringboot/src/main/java/com/adeli/adelispringboot/Projet/controller/ProjetController.java
 /home/casimir/Music/adeli/adelispringboot/src/main/java/com/adeli/adelispringboot/Tontine/controller/TontineController.java
 /home/casimir/Music/adeli/adelispringboot/src/main/java/com/adeli/adelispringboot/Seance/dto/SeanceReqDto.java
+/home/casimir/Music/adeli/adelispringboot/src/main/java/com/adeli/adelispringboot/Projet/dto/ProjetResDto.java
 /home/casimir/Music/adeli/adelispringboot/src/main/java/com/adeli/adelispringboot/Users/entity/OldPassword.java
 /home/casimir/Music/adeli/adelispringboot/src/main/java/com/adeli/adelispringboot/Users/entity/RoleUser.java
 /home/casimir/Music/adeli/adelispringboot/src/main/java/com/adeli/adelispringboot/Users/dto/UserEditDto.java
@@ -144,5 +150,6 @@
 /home/casimir/Music/adeli/adelispringboot/src/main/java/com/adeli/adelispringboot/Users/controller/UserRest.java
 /home/casimir/Music/adeli/adelispringboot/src/main/java/com/adeli/adelispringboot/authentication/dto/SignInResponse.java
 /home/casimir/Music/adeli/adelispringboot/src/main/java/com/adeli/adelispringboot/Users/entity/ERole.java
+/home/casimir/Music/adeli/adelispringboot/src/main/java/com/adeli/adelispringboot/Projet/service/impl/ProjetServiceImpl.java
 /home/casimir/Music/adeli/adelispringboot/src/main/java/com/adeli/adelispringboot/authentication/service/AuthEntryPointJwt.java
 /home/casimir/Music/adeli/adelispringboot/src/main/java/com/adeli/adelispringboot/Session/repository/ISessionRepo.java
